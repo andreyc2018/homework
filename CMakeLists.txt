@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.2)
 
-set (lesson_VERSION_MAJOR 2)
-set (lesson_VERSION_MINOR 0)
-set (lesson_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
+set (homework_VERSION_MAJOR 2)
+set (homework_VERSION_MINOR 0)
+set (homework_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
 
-project(ip_filter VERSION ${lesson_VERSION_MAJOR}.${lesson_VERSION_MINOR}.${lesson_VERSION_BUILD})
+project(homework VERSION ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
@@ -38,13 +38,12 @@ install(TARGETS ip_filter RUNTIME DESTINATION bin)
 set(CPACK_GENERATOR DEB)
 
 set(CPACK_PACKAGE_CONTACT "sysdos286@yahoo.com")
-set(CPACK_PACKAGE_VERSION_MAJOR ${lesson_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${lesson_VERSION_MINOR})
-SET(CPACK_PACKAGE_VERSION_PATCH ${lesson_VERSION_BUILD})
+set(CPACK_PACKAGE_VERSION_MAJOR ${homework_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${homework_VERSION_MINOR})
+SET(CPACK_PACKAGE_VERSION_PATCH ${homework_VERSION_BUILD})
 
 include(CPack)
 
 enable_testing()
 
 add_test(test_version test_version)
-
