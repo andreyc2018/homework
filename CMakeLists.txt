@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.2)
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(homework_VERSION_MAJOR 2)
 set(homework_VERSION_MINOR 0)
 set(homework_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
@@ -20,8 +24,6 @@ add_library(ip_filter_tools ip_filter.cpp)
 add_executable(test_version test_version.cpp)
 
 set_target_properties(ip_filter ip_filter_tools test_version PROPERTIES
-    CXX_STANDARD 14
-    CXX_STANDARD_REQUIRED ON
     COMPILE_OPTIONS -Wpedantic -Wall -Wextra
 )
 

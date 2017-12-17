@@ -51,34 +51,6 @@ std::ostream& otus::print(std::ostream& out, const otus::pool_t& pool)
     return out;
 }
 
-bool operator<(const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)
-{
-    std::cout << "l = ";
-    print_entry(std::cout, lhs);
-
-    std::cout << "r = ";
-    print_entry(std::cout, rhs);
-
-    if (lhs.size() < rhs.size()) {
-        return true;
-    }
-    if (rhs.size() < lhs.size()) {
-        return false;
-    }
-    for (size_t i = 0; i < lhs.size(); ++i) {
-        if (std::stoi(lhs[i]) < std::stoi(rhs[i])) {
-            return true;
-        }
-    }
-    return false;
-}
-
-otus::pool_t& otus::sort(otus::pool_t& pool)
-{
-    std::stable_sort(pool.begin(), pool.end());
-    return pool;
-}
-
 otus::pool_t& otus::reverse(otus::pool_t& pool)
 {
     std::stable_sort(pool.begin(), pool.end(), [](auto& lhs, auto&rhs){
