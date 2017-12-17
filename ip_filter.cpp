@@ -53,7 +53,7 @@ std::ostream& otus::print(std::ostream& out, const otus::pool_t& pool)
 
 otus::pool_t& otus::reverse(otus::pool_t& pool)
 {
-    std::stable_sort(pool.begin(), pool.end(), [](auto& lhs, auto&rhs){
+    std::stable_sort(pool.begin(), pool.end(), [](const entry_t& lhs, const entry_t& rhs){
         return std::lexicographical_compare(rhs.begin(), rhs.end(),
                                             lhs.begin(), lhs.end(),
                                             string_number_cmp);
