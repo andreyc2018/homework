@@ -1,19 +1,11 @@
 #include "ip_filter.h"
-#include <cassert>
-#include <cstdlib>
 #include <iostream>
 
-// ("",  '.') -> [""]
-// ("11", '.') -> ["11"]
-// ("..", '.') -> ["", "", ""]
-// ("11.", '.') -> ["11", ""]
-// (".11", '.') -> ["", "11"]
-// ("11.22", '.') -> ["11", "22"]
-int main(int argc, char const *argv[])
+int main(int, char const**)
 {
     try
     {
-        std::vector<std::vector<std::string>> ip_pool;
+        otus::pool_t ip_pool;
 
         for(std::string line; std::getline(std::cin, line);)
         {
@@ -21,20 +13,13 @@ int main(int argc, char const *argv[])
             ip_pool.push_back(otus::split(v.at(0), '.'));
         }
 
-        // TODO reverse lexicographically sort
+        otus::print_reverse(std::cout, ip_pool);
+//        otus::print_filter(std::cout, ip_pool, 46);
+//        otus::print_filter(std::cout, ip_pool, 46, 70);
+//        otus::print_filter_any(std::cout, ip_pool, 46);
+//        otus::sort(ip_pool);
 
-        for(const auto& ip : ip_pool)
-        {
-            for(const auto& ip_part : ip)
-            {
-                if (ip_part != ip[0])
-                {
-                    std::cout << ".";
-                }
-                std::cout << ip_part;
-            }
-            std::cout << std::endl;
-        }
+        otus::print(std::cout, ip_pool);
 
         // 222.173.235.246
         // 222.130.177.64

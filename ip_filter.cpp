@@ -2,42 +2,15 @@
 #include <iostream>
 #include <algorithm>
 
-// ("",  '.') -> [""]
-// ("11", '.') -> ["11"]
-// ("..", '.') -> ["", "", ""]
-// ("11.", '.') -> ["11", ""]
-// (".11", '.') -> ["", "11"]
-// ("11.22", '.') -> ["11", "22"]
-otus::entry_t otus::split(const std::string &str, char d)
+namespace {
+bool string_number_cmp(const std::string& lhs, const std::string& rhs)
 {
-    otus::entry_t r;
-
-    std::string::size_type start = 0;
-    std::string::size_type stop = str.find_first_of(d);
-    while(stop != std::string::npos)
-    {
-        r.push_back(str.substr(start, stop - start));
-
-        start = stop + 1;
-        stop = str.find_first_of(d, start);
-    }
-
-    r.push_back(str.substr(start));
-
-    return r;
+    return (std::stoi(lhs) < std::stoi(rhs));
 }
 
-std::ostream& otus::print(std::ostream& out, const otus::pool_t& pool)
+std::ostream& print_entry(std::ostream& out, const otus::entry_t& ip)
 {
-    for(const auto& ip : pool) {
-        print_entry(out, ip) << std::endl;
-    }
-    return out;
-}
-
-std::ostream &otus::print_entry(std::ostream &out, const entry_t& ip)
-{
-    for(size_t i = 0; i < ip.size(); ++i) {
+    for (size_t i = 0; i < ip.size(); ++i) {
         if (i != 0) {
             out << ".";
         }
@@ -46,29 +19,79 @@ std::ostream &otus::print_entry(std::ostream &out, const entry_t& ip)
     return out;
 }
 
-bool otus::operator<(const otus::entry_t& l, const otus::entry_t& r)
+}
+
+// ("",  '.') -> [""]
+// ("11", '.') -> ["11"]
+// ("..", '.') -> ["", "", ""]
+// ("11.", '.') -> ["11", ""]
+// (".11", '.') -> ["", "11"]
+// ("11.22", '.') -> ["11", "22"]
+otus::entry_t otus::split(const std::string& str, char d)
 {
-    if (l.size() < r.size())
+    otus::entry_t r;
+
+    std::string::size_type start = 0;
+    std::string::size_type stop = str.find_first_of(d);
+    while (stop != std::string::npos) {
+        r.push_back(str.substr(start, stop - start));
+        start = stop + 1;
+        stop = str.find_first_of(d, start);
+    }
+    r.push_back(str.substr(start));
+
+    return r;
+}
+
+std::ostream& otus::print(std::ostream& out, const otus::pool_t& pool)
+{
+    for (const auto& ip : pool) {
+        print_entry(out, ip) << std::endl;
+    }
+    return out;
+}
+
+bool operator<(const std::vector<std::string>& lhs, const std::vector<std::string>& rhs)
+{
+    std::cout << "l = ";
+    print_entry(std::cout, lhs);
+
+    std::cout << "r = ";
+    print_entry(std::cout, rhs);
+
+    if (lhs.size() < rhs.size()) {
         return true;
-    if (r.size() < l.size())
+    }
+    if (rhs.size() < lhs.size()) {
         return false;
-    for (size_t i = 0; i < l.size(); ++i) {
-        if (std::stoi(l[i]) < std::stoi(r[i])) {
+    }
+    for (size_t i = 0; i < lhs.size(); ++i) {
+        if (std::stoi(lhs[i]) < std::stoi(rhs[i])) {
             return true;
         }
     }
     return false;
 }
 
-otus::pool_t& otus::sort(otus::pool_t &pool, bool reverse) {
-    std::stable_sort(pool.begin(), pool.end(),
-                     [reverse](const entry_t& l, const entry_t& r) {
-                         for (size_t i = 0; i < l.size(); ++i) {
-                             if ((reverse && std::stoi(l[i]) > std::stoi(r[i])) || std::stoi(l[i]) < std::stoi(r[i])) {
-                                 return true;
-                             }
-                         }
-                         return false;
-                     });
+otus::pool_t& otus::sort(otus::pool_t& pool)
+{
+    std::stable_sort(pool.begin(), pool.end());
     return pool;
+}
+
+otus::pool_t& otus::reverse(otus::pool_t& pool)
+{
+    std::stable_sort(pool.begin(), pool.end(), [](auto& lhs, auto&rhs){
+        return std::lexicographical_compare(rhs.begin(), rhs.end(),
+                                            lhs.begin(), lhs.end(),
+                                            string_number_cmp);
+    });
+    return pool;
+}
+
+std::ostream& otus::print_reverse(std::ostream& out, otus::pool_t pool)
+{
+    otus::reverse(pool);
+    otus::print(out, pool);
+    return out;
 }

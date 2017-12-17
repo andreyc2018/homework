@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.2)
 
-set (homework_VERSION_MAJOR 2)
-set (homework_VERSION_MINOR 0)
-set (homework_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
+set(homework_VERSION_MAJOR 2)
+set(homework_VERSION_MINOR 0)
+set(homework_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
 
-project(homework VERSION ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
+project(homework VERSION
+        ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
