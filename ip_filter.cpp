@@ -8,17 +8,6 @@ bool string_number_cmp(const std::string& lhs, const std::string& rhs)
     return (std::stoi(lhs) < std::stoi(rhs));
 }
 
-std::ostream& print_entry(std::ostream& out, const otus::entry_t& ip)
-{
-    for (size_t i = 0; i < ip.size(); ++i) {
-        if (i != 0) {
-            out << ".";
-        }
-        out << ip[i];
-    }
-    return out;
-}
-
 }
 
 // ("",  '.') -> [""]
@@ -41,6 +30,17 @@ otus::entry_t otus::split(const std::string& str, char d)
     r.push_back(str.substr(start));
 
     return r;
+}
+
+std::ostream& otus::print_entry(std::ostream& out, const otus::entry_t& ip)
+{
+    for (size_t i = 0; i < ip.size(); ++i) {
+        if (i != 0) {
+            out << ".";
+        }
+        out << ip[i];
+    }
+    return out;
 }
 
 std::ostream& otus::print(std::ostream& out, const otus::pool_t& pool)

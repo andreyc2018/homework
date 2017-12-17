@@ -14,12 +14,12 @@ int main(int, char const**)
         }
 
         otus::print_reverse(std::cout, ip_pool);
-//        otus::print_filter(std::cout, ip_pool, 46);
-//        otus::print_filter(std::cout, ip_pool, 46, 70);
+        otus::print_filter(std::cout, ip_pool, 219);
+        otus::print_filter(std::cout, ip_pool, 113, 162);
 //        otus::print_filter_any(std::cout, ip_pool, 46);
 //        otus::sort(ip_pool);
 
-        otus::print(std::cout, ip_pool);
+//        otus::print(std::cout, ip_pool);
 
         // 222.173.235.246
         // 222.130.177.64
