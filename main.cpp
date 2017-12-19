@@ -1,8 +1,13 @@
 #include "ip_filter.h"
+#include "version.h"
 #include <iostream>
 
-int main(int, char const**)
+int main(int argc, char const** argv)
 {
+    if (argc > 1 && argv[1][0] == '-' && argv[1][1] == 'v') {
+        std::cout << "Homework version " << VERSION << "\n";
+        exit(0);
+    }
     try
     {
         otus::pool_t ip_pool;

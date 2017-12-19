@@ -50,3 +50,6 @@ include(CPack)
 enable_testing()
 
 add_test(test_version test_version)
+
+message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}")
+
