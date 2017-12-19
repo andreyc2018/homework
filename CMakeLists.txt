@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(homework_VERSION_MAJOR 2)
+set(homework_VERSION_MAJOR 3)
 set(homework_VERSION_MINOR 0)
 set(homework_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
 
@@ -50,3 +50,6 @@ include(CPack)
 enable_testing()
 
 add_test(test_version test_version)
+
+message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}")
+
