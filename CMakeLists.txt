@@ -8,7 +8,7 @@ set(homework_VERSION_MAJOR 3)
 set(homework_VERSION_MINOR 0)
 set(homework_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
 
-project(homework VERSION
+project(allocator VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
