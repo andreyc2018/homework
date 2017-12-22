@@ -17,13 +17,13 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(ip_filter main.cpp)
+add_executable(allocator main.cpp)
 
-add_library(ip_filter_tools ip_filter.cpp)
+add_library(allocator_tools allocator.cpp)
 
 add_executable(test_version test_version.cpp)
 
-set_target_properties(ip_filter ip_filter_tools test_version PROPERTIES
+set_target_properties(allocator allocator_tools test_version PROPERTIES
     COMPILE_OPTIONS -Wpedantic -Wall -Wextra
 )
 
@@ -32,11 +32,11 @@ set_target_properties(test_version PROPERTIES
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(ip_filter ip_filter_tools)
+target_link_libraries(allocator allocator_tools)
 
-target_link_libraries(test_version ${Boost_LIBRARIES} ip_filter_tools)
+target_link_libraries(test_version ${Boost_LIBRARIES} allocator_tools)
 
-install(TARGETS ip_filter RUNTIME DESTINATION bin)
+install(TARGETS allocator RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 

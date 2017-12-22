@@ -15,4 +15,4 @@ deploy:
   on:
     branch: 3.0
   script:
-  - curl -T homework-3.0.$TRAVIS_BUILD_NUMBER-Linux.deb -uandreyc2018:$BINTRAY_API_KEY "https://api.bintray.com/content/andreyc2018/otus-cpp/homework/$TRAVIS_BUILD_NUMBER/homework-3.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+  - curl -T allocator-3.0.$TRAVIS_BUILD_NUMBER-Linux.deb -uandreyc2018:$BINTRAY_API_KEY "https://api.bintray.com/content/andreyc2018/otus-cpp/allocator/$TRAVIS_BUILD_NUMBER/allocator-3.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
