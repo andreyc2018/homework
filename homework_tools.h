@@ -5,7 +5,7 @@
 #include <algorithm>
 
 namespace otus {
-    constexpr int MaxElements = 10;
+    constexpr size_t MaxElements = 10;
     using map_t = std::map<int, int>;
     using map_alloc_t = std::map<int, int, std::less<int>,
                                  hw_allocator<std::pair<const int, int>,
@@ -14,7 +14,7 @@ namespace otus {
 
     struct generator
     {
-        int i = 0;
+        size_t i = 0;
         std::pair<int, int> operator()() {
             int f = (i < MaxElements)? factorial(i) : 0;
             return std::make_pair(i++, f);

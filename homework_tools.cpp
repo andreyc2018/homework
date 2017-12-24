@@ -9,8 +9,6 @@ struct Factorial<0> { enum { value = 1 }; };
 
 namespace otus {
 
-void* LatestHead = nullptr;
-
 int factorial(int n)
 {
     static int data[otus::MaxElements] = {
