@@ -17,11 +17,17 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(allocator main.cpp)
+set(HEADER_FILES
+        homework_tools.h
+        logging_allocator.h
+        allocator.h)
 
-add_library(allocator_tools allocator.cpp)
+add_executable(allocator main.cpp
+        ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_executable(test_version test_version.cpp)
+add_library(allocator_tools homework_tools.cpp ${HEADER_FILES})
+
+add_executable(test_version test_version.cpp ${HEADER_FILES})
 
 set_target_properties(allocator allocator_tools test_version PROPERTIES
     COMPILE_OPTIONS -Wpedantic -Wall -Wextra

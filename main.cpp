@@ -1,4 +1,4 @@
-#include "allocator.h"
+#include "homework_tools.h"
 #include "version.h"
 #include <iostream>
 
@@ -10,7 +10,12 @@ int main(int argc, char const** argv)
     }
     try
     {
-        std::cout << "Homework # " << VERSION << "\n";
+        otus::map_t m;
+        otus::fill(m);
+
+        otus::map_alloc_t m_ca;
+        otus::fill(m_ca);
+        otus::print(m_ca);
     }
     catch(const std::exception &e)
     {
