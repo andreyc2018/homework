@@ -60,15 +60,13 @@ void otus::print_filter_any(std::ostream& out, const otus::pool_t& pool, int val
 
 otus::pool_t otus::filter_any(const otus::pool_t& pool, filter_t value)
 {
-    auto f = [&value](const pool_t::value_type& e)
+    auto predicate = [&value](const pool_t::value_type& e)
     {
         return std::any_of(e.begin(), e.end(),
-                           [&value](const entry_t::value_type& d) {
-            return d == value;
-        });
+                           [&value](const entry_t::value_type& d) { return d == value; });
     };
 
     pool_t dst_pool;
-    std::copy_if(pool.begin(), pool.end(), std::back_inserter(dst_pool), f);
+    std::copy_if(pool.begin(), pool.end(), std::back_inserter(dst_pool), predicate);
     return dst_pool;
 }

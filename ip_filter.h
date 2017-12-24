@@ -17,7 +17,7 @@ struct input_types_t
 
 struct entry_types_t
 {
-    using value_type = uint16_t;
+    using value_type = uint32_t;
     using result_t = std::vector<value_type>;
     static value_type to_result(const std::string& v)
     {
@@ -51,21 +51,17 @@ void print(std::ostream& out, const pool_t& pool);
 std::ostream& print_entry(std::ostream& out, const entry_t& ip);
 pool_t& reverse(pool_t& pool);
 
-template<typename T, typename... Args>
-pool_t filter(const pool_t& pool, T first, Args... args)
+template<typename... Args>
+pool_t filter(const pool_t& pool, Args... args)
 {
-    std::array<T, sizeof... (args)+1> expr {first, args...};
-    auto f = [&expr](const entry_t& e)
+    std::array<filter_t, sizeof... (args)> expr {args...};
+    auto predicate = [&expr](const pool_t::value_type& e)
     {
-        for (size_t i = 0; i < expr.size(); ++i) {
-            if (e[i] != expr[i])
-                return false;
-        }
-        return true;
+        return std::equal(expr.begin(), expr.end(), e.begin());
     };
 
     pool_t dst_pool;
-    std::copy_if(pool.begin(), pool.end(), std::back_inserter(dst_pool), f);
+    std::copy_if(pool.begin(), pool.end(), std::back_inserter(dst_pool), predicate);
     return dst_pool;
 }
 
