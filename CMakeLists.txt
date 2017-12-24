@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.2)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
 
 set(homework_VERSION_MAJOR 3)
 set(homework_VERSION_MINOR 0)
@@ -29,9 +30,9 @@ add_library(allocator_tools homework_tools.cpp ${HEADER_FILES})
 
 add_executable(test_version test_version.cpp ${HEADER_FILES})
 
-target_compile_options(allocator PRIVATE -ggdb -Wpedantic -Wall -Wextra)
-target_compile_options(allocator_tools PRIVATE -ggdb -Wpedantic -Wall -Wextra)
-target_compile_options(test_version PRIVATE -ggdb -Wpedantic -Wall -Wextra)
+target_compile_options(allocator PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(allocator_tools PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
 set_target_properties(test_version PROPERTIES
     COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK

@@ -30,7 +30,7 @@ namespace otus {
 
     template <typename MapType>
     MapType& print(MapType& m) {
-        std::for_each(m.begin(), m.end(), [](auto e) {
+        std::for_each(m.begin(), m.end(), [](typename MapType::value_type e) {
             std::cout << e.first << " " << e.second << "\n";
         });
         return m;
