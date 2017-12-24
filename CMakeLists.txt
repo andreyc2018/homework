@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(homework_VERSION_MAJOR 2)
-set(homework_VERSION_MINOR 1)
+set(homework_VERSION_MINOR 0)
 set(homework_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
 
 project(ip_filter VERSION
