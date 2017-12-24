@@ -1,6 +1,7 @@
 #pragma once
 
 #include "logging_allocator.h"
+#include "allocator.h"
 #include <map>
 #include <algorithm>
 
@@ -8,7 +9,8 @@ namespace otus {
     constexpr int MaxElements = 10;
     using map_t = std::map<int, int>;
     using map_alloc_t = std::map<int, int, std::less<int>,
-                                 logging_allocator<std::pair<int, int>>>;
+                                 hw_allocator<std::pair<int, int>,
+                                              MaxElements>>;
 
     int factorial(int n);
 

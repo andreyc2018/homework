@@ -1,4 +1,4 @@
-#include "allocator.h"
+#include "homework_tools.h"
 #define BOOST_TEST_MODULE Test_Allocator
 #include <boost/test/unit_test.hpp>
 
@@ -40,6 +40,9 @@ BOOST_AUTO_TEST_CASE(allocator)
 
     otus::map_alloc_t m;
     otus::fill(m);
+
+    otus::map_alloc_t t;
+    otus::fill(t);
 
     BOOST_CHECK_EQUAL(expected.size(), m.size());
 
