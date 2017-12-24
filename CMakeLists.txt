@@ -5,10 +5,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(homework_VERSION_MAJOR 2)
-set(homework_VERSION_MINOR 0)
+set(homework_VERSION_MINOR 1)
 set(homework_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
 
-project(homework VERSION
+project(ip_filter VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
@@ -17,15 +17,18 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(ip_filter main.cpp)
+set(HEADER_FILES ip_filter.h)
 
-add_library(ip_filter_tools ip_filter.cpp)
+add_executable(ip_filter main.cpp
+        ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_executable(test_version test_version.cpp)
+add_library(ip_filter_tools ip_filter.cpp ${HEADER_FILES})
 
-set_target_properties(ip_filter ip_filter_tools test_version PROPERTIES
-    COMPILE_OPTIONS -Wpedantic -Wall -Wextra
-)
+add_executable(test_version test_version.cpp ${HEADER_FILES})
+
+target_compile_options(ip_filter PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(ip_filter_tools PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
 set_target_properties(test_version PROPERTIES
     COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
