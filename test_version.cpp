@@ -38,15 +38,32 @@ BOOST_AUTO_TEST_CASE(allocator)
     otus::map_t expected;
     fill_expected(expected);
 
-    otus::map_alloc_t m;
-    otus::fill(m);
+    otus::map_alloc_t map_one;
+    otus::fill(map_one);
 
-    otus::map_alloc_t t;
-    otus::fill(t);
+    otus::map_alloc_t map_two;
+    otus::fill(map_two);
 
-    BOOST_CHECK_EQUAL(expected.size(), m.size());
+    auto it = map_one.begin();
+    std::advance(it, 3);
+
+    auto h = static_cast<otus::map_alloc_t::value_type*>(otus::LatestHead);
+    std::cout << "h = " << h << "\n";
+
+//    auto h = map_one.get_allocator().head();
+    std::advance(h, 3);
+
+    std::cout << "it = " << it->first << "\n";
+    std::cout << "h = " << h->second << "\n";
+
+    BOOST_CHECK_EQUAL(expected.size(), map_one.size());
+    BOOST_CHECK_EQUAL(expected.size(), map_two.size());
 
     for (size_t i = 0; i < expected.size(); ++i) {
-        BOOST_CHECK_EQUAL(expected[i], m[i]);
+        BOOST_CHECK_EQUAL(expected[i], map_one[i]);
+    }
+
+    for (size_t i = 0; i < expected.size(); ++i) {
+        BOOST_CHECK_EQUAL(expected[i], map_two[i]);
     }
 }

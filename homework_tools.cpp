@@ -7,7 +7,11 @@ struct Factorial { enum { value = N * Factorial<N - 1>::value }; };
 template <>
 struct Factorial<0> { enum { value = 1 }; };
 
-int otus::factorial(int n)
+namespace otus {
+
+void* LatestHead = nullptr;
+
+int factorial(int n)
 {
     static int data[otus::MaxElements] = {
             Factorial<0>::value,
@@ -22,4 +26,6 @@ int otus::factorial(int n)
             Factorial<9>::value
     };
     return data[n];
+}
+
 }
