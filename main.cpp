@@ -18,7 +18,7 @@ int main(int argc, char const** argv)
         }
 
         otus::print_reverse(std::cout, ip_pool);
-        otus::print_filter(std::cout, ip_pool, 46u);
+        otus::print_filter(std::cout, ip_pool, 1u);
         otus::print_filter(std::cout, ip_pool, 46u, 70u);
         otus::print_filter_any(std::cout, ip_pool, 46u);
     }
