@@ -1,4 +1,5 @@
 #include "homework_tools.h"
+#include <numeric>
 #define BOOST_TEST_MODULE Test_Allocator
 #include <boost/test/unit_test.hpp>
 
@@ -53,5 +54,55 @@ BOOST_AUTO_TEST_CASE(allocator)
 
     for (size_t i = 0; i < expected.size(); ++i) {
         BOOST_CHECK_EQUAL(expected[i], map_two[i]);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(single_linked_list)
+{
+    otus::custom_list_t list(5);
+    auto it = list.begin();
+    *it = 7;
+    BOOST_CHECK_EQUAL(7, *it);
+    *(++it) = 8;
+    BOOST_CHECK_EQUAL(8, *it);
+    *(it++) = 9;
+    BOOST_CHECK_EQUAL(0, *it);
+    it = list.begin();
+    BOOST_CHECK_EQUAL(7, *it);
+    ++it;
+    BOOST_CHECK_EQUAL(9, *it);
+    ++it;
+    BOOST_CHECK_EQUAL(0, *it);
+
+    std::iota(list.begin(), list.end(), 0);
+    int i = 0;
+    for (auto& n : list) {
+        BOOST_CHECK_EQUAL(i, n);
+        ++i;
+    }
+}
+
+BOOST_AUTO_TEST_CASE(single_linked_list_custom_allocator)
+{
+    otus::custom_list_alloc_t list(5);
+    auto it = list.begin();
+    *it = 7;
+    BOOST_CHECK_EQUAL(7, *it);
+    *(++it) = 8;
+    BOOST_CHECK_EQUAL(8, *it);
+    *(it++) = 9;
+    BOOST_CHECK_EQUAL(0, *it);
+    it = list.begin();
+    BOOST_CHECK_EQUAL(7, *it);
+    ++it;
+    BOOST_CHECK_EQUAL(9, *it);
+    ++it;
+    BOOST_CHECK_EQUAL(0, *it);
+
+    std::iota(list.begin(), list.end(), 0);
+    int i = 0;
+    for (auto& n : list) {
+        BOOST_CHECK_EQUAL(i, n);
+        ++i;
     }
 }

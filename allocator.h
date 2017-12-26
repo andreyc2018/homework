@@ -29,6 +29,13 @@ class hw_allocator
             , head_(other.head())
             , copy_(true) {}
 
+        template<typename U>
+        hw_allocator(const hw_allocator<U, N>& other)
+            : i_(other.i())
+            , max_elements_(other.max_elements())
+            , head_(other.head())
+            , copy_(true) {}
+
         ~hw_allocator() { if (!copy_) free(head_); }
 
         T* allocate(std::size_t n)

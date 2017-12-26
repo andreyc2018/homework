@@ -21,14 +21,17 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 set(HEADER_FILES
         homework_tools.h
         logging_allocator.h
-        allocator.h)
+        allocator.h
+        sl_list.h)
 
 add_executable(allocator main.cpp
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_library(allocator_tools homework_tools.cpp ${HEADER_FILES})
+add_library(allocator_tools homework_tools.cpp sl_list.cpp ${HEADER_FILES})
 
 add_executable(test_version test_version.cpp ${HEADER_FILES})
+
+add_executable(test_list test_list.cpp)
 
 target_compile_options(allocator PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(allocator_tools PRIVATE -Wpedantic -Wall -Wextra)
@@ -50,7 +53,7 @@ set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_CONTACT "sysdos286@yahoo.com")
 set(CPACK_PACKAGE_VERSION_MAJOR ${homework_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${homework_VERSION_MINOR})
-SET(CPACK_PACKAGE_VERSION_PATCH ${homework_VERSION_BUILD})
+set(CPACK_PACKAGE_VERSION_PATCH ${homework_VERSION_BUILD})
 
 include(CPack)
 
