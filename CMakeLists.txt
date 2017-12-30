@@ -20,7 +20,6 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(HEADER_FILES
         homework_tools.h
-        logging_allocator.h
         allocator.h
         sl_list.h)
 
@@ -30,8 +29,6 @@ add_executable(allocator main.cpp
 add_library(allocator_tools homework_tools.cpp sl_list.cpp ${HEADER_FILES})
 
 add_executable(test_version test_version.cpp ${HEADER_FILES})
-
-add_executable(test_list test_list.cpp)
 
 target_compile_options(allocator PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(allocator_tools PRIVATE -Wpedantic -Wall -Wextra)
@@ -63,3 +60,4 @@ add_test(test_version test_version)
 
 message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}")
 
+add_subdirectory(sandbox EXCLUDE_FROM_ALL)
