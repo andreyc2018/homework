@@ -1,14 +1,14 @@
 #include <iostream>
 
-struct N
+struct Node
 {
     int a = 0;
-    struct N* n = nullptr;
+    struct Node* n = nullptr;
 };
 
-void dump(N* r)
+void dump(Node* r)
 {
-    for(N* it = r; it != nullptr; it = it->n) {
+    for(Node* it = r; it != nullptr; it = it->n) {
         std::cout << "n = " << it
                   << " a = " << it->a
                   << " n = " << it->n << "\n";
@@ -16,11 +16,11 @@ void dump(N* r)
     std::cout << "\n";
 }
 
-void destroy(N* r)
+void destroy(Node* r)
 {
     while(r != nullptr)
     {
-        N* n = r->n;
+        Node* n = r->n;
         delete r;
         r = n;
     }
@@ -28,18 +28,18 @@ void destroy(N* r)
 
 int main(int, char**)
 {
-    N* r = nullptr;
+    Node* r = nullptr;
     std::cout << "r = " << r << "\n";
-    N* tmp = nullptr;
-    tmp = r = new N;
+    Node* tmp = nullptr;
+    tmp = r = new Node;
     tmp->a = 1;
 
     dump(r);
 
-    tmp = tmp->n = new N;
+    tmp = tmp->n = new Node;
     tmp->a = 2;
 
-    tmp = tmp->n = new N;
+    tmp = tmp->n = new Node;
     tmp->a = 3;
 
     dump(r);

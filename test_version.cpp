@@ -42,21 +42,22 @@ BOOST_AUTO_TEST_CASE(allocator)
     otus::map_alloc_t map_one;
     otus::fill(map_one);
 
-    otus::map_alloc_t map_two;
-    otus::fill(map_two);
+//    otus::map_alloc_t map_two;
+//    otus::fill(map_two);
 
     BOOST_CHECK_EQUAL(expected.size(), map_one.size());
-    BOOST_CHECK_EQUAL(expected.size(), map_two.size());
+//    BOOST_CHECK_EQUAL(expected.size(), map_two.size());
 
     for (size_t i = 0; i < expected.size(); ++i) {
         BOOST_CHECK_EQUAL(expected[i], map_one[i]);
     }
 
-    for (size_t i = 0; i < expected.size(); ++i) {
-        BOOST_CHECK_EQUAL(expected[i], map_two[i]);
-    }
+//    for (size_t i = 0; i < expected.size(); ++i) {
+//        BOOST_CHECK_EQUAL(expected[i], map_two[i]);
+//    }
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(single_linked_list)
 {
     otus::custom_list_t list(5);
@@ -81,28 +82,29 @@ BOOST_AUTO_TEST_CASE(single_linked_list)
         ++i;
     }
 }
+#endif
 
-BOOST_AUTO_TEST_CASE(single_linked_list_custom_allocator)
-{
-    otus::custom_list_alloc_t list(5);
-    auto it = list.begin();
-    *it = 7;
-    BOOST_CHECK_EQUAL(7, *it);
-    *(++it) = 8;
-    BOOST_CHECK_EQUAL(8, *it);
-    *(it++) = 9;
-    BOOST_CHECK_EQUAL(0, *it);
-    it = list.begin();
-    BOOST_CHECK_EQUAL(7, *it);
-    ++it;
-    BOOST_CHECK_EQUAL(9, *it);
-    ++it;
-    BOOST_CHECK_EQUAL(0, *it);
+//BOOST_AUTO_TEST_CASE(single_linked_list_custom_allocator)
+//{
+//    otus::custom_list_alloc_t list(5);
+//    auto it = list.begin();
+//    *it = 7;
+//    BOOST_CHECK_EQUAL(7, *it);
+//    *(++it) = 8;
+//    BOOST_CHECK_EQUAL(8, *it);
+//    *(it++) = 9;
+//    BOOST_CHECK_EQUAL(0, *it);
+//    it = list.begin();
+//    BOOST_CHECK_EQUAL(7, *it);
+//    ++it;
+//    BOOST_CHECK_EQUAL(9, *it);
+//    ++it;
+//    BOOST_CHECK_EQUAL(0, *it);
 
-    std::iota(list.begin(), list.end(), 0);
-    int i = 0;
-    for (auto& n : list) {
-        BOOST_CHECK_EQUAL(i, n);
-        ++i;
-    }
-}
+//    std::iota(list.begin(), list.end(), 0);
+//    int i = 0;
+//    for (auto& n : list) {
+//        BOOST_CHECK_EQUAL(i, n);
+//        ++i;
+//    }
+//}
