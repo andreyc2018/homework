@@ -5,9 +5,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
 
+if ($ENV{TRAVIS_BUILD_NUMBER})
+    set(BUILD_NUM $ENV{TRAVIS_BUILD_NUMBER})
+else()
+    set(BUILD_NUM 1)
+endif()
+
 set(homework_VERSION_MAJOR 3)
 set(homework_VERSION_MINOR 0)
-set(homework_VERSION_BUILD $ENV{TRAVIS_BUILD_NUMBER})
+set(homework_VERSION_BUILD ${BUILD_NUM})
 
 project(allocator VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
@@ -58,7 +64,7 @@ enable_testing()
 
 add_test(test_version test_version)
 
-if(EXISTS sandbox/CMakeLists.txt)
+if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
     add_subdirectory(sandbox EXCLUDE_FROM_ALL)
 endif()
 
