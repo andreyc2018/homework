@@ -58,6 +58,9 @@ enable_testing()
 
 add_test(test_version test_version)
 
+if(EXISTS sandbox/CMakeLists.txt)
+    add_subdirectory(sandbox EXCLUDE_FROM_ALL)
+endif()
+
 message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}")
 
-add_subdirectory(sandbox EXCLUDE_FROM_ALL)

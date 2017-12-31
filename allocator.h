@@ -25,9 +25,6 @@ class hw_allocator
     public:
         using value_type = T;
         using pointer = T*;
-        using const_pointer = const T*;
-        using reference = T&;
-        using const_reference = const T&;
 
         template<typename U>
         struct rebind
@@ -67,19 +64,19 @@ class hw_allocator
                 free(head_);
         }
 
-        T* allocate(std::size_t n)
+        pointer allocate(std::size_t n)
         {
             if (head_ == nullptr) {
                 head_ = static_cast<T*>(malloc(max_elements_ * sizeof (T)));
             }
-            T* ptr = &(head_[i_]);
+            pointer ptr = &(head_[i_]);
             i_ += n;
             print_type("\nallocate: T ptr = ", *ptr);
             print_type("  allocate: T this = ", *this);
             return ptr;
         }
 
-        void deallocate(T* ptr, std::size_t)
+        void deallocate(pointer ptr, std::size_t)
         {
             print_type("\ndeallocate: T head = ", *head_);
             print_type("  deallocate: T ptr = ", *ptr);
@@ -106,12 +103,12 @@ class hw_allocator
 
         size_t i() const { return i_; }
         size_t max_elements() const { return max_elements_; }
-        T* head() const { return head_; }
+        pointer head() const { return head_; }
 
     private:
         size_t i_;
         const size_t max_elements_;
-        T* head_;
+        pointer head_;
         bool copy_;
 };
 
