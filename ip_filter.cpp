@@ -40,8 +40,9 @@ otus::pool_t& otus::reverse(otus::pool_t& pool)
     std::sort(pool.begin(), pool.end(),
               [](const entry_t& lhs, const entry_t& rhs)
     {
-        return std::lexicographical_compare(rhs.begin(), rhs.end(),
-                                            lhs.begin(), lhs.end());
+        return lhs > rhs;
+//        return std::lexicographical_compare(rhs.begin(), rhs.end(),
+//                                            lhs.begin(), lhs.end());
     });
     return pool;
 }
