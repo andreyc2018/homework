@@ -30,17 +30,17 @@ struct logging_allocator
 
     T* allocate(std::size_t n)
     {
-        T* ptr = alloc.allocate(n);
+        T* ptr = static_cast<T*>(::operator new(n * sizeof (T)));
         print_type("\nallocate: T ptr = ", *ptr);
         print_type("  allocate: T this = ", *this);
         return ptr;
     }
 
-    void deallocate(T* ptr, std::size_t n)
+    void deallocate(T* ptr, std::size_t)
     {
         print_type("\ndeallocate: T ptr = ", *ptr);
         print_type("  deallocate: T this = ", *this);
-        alloc.deallocate(ptr, n);
+        ::operator delete(ptr);
     }
 
     template <typename U, typename... Args>
@@ -50,7 +50,7 @@ struct logging_allocator
         print_type("\nconstruct: T head = ", *head_);
         print_type("  construct: U ptr = ", *ptr);
         print_type("  construct: T this = ", *this);
-        alloc.construct(ptr, std::forward<Args>(args)...);
+        ::new(static_cast<void*>(ptr)) U(std::forward<Args>(args)...);
     }
 
     template <typename U>
@@ -60,6 +60,6 @@ struct logging_allocator
         print_type("\ndestroy: T head = ", *head_);
         print_type("  destroy: U ptr = ", *ptr);
         print_type("  destroy: T this = ", *this);
-        alloc.destroy(ptr);
+        ptr->~U();
     }
 };
