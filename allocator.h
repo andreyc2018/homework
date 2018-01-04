@@ -33,7 +33,8 @@ class hw_allocator
         { }
 
         template<typename U>
-        hw_allocator(const hw_allocator<U, N>&) { }
+        hw_allocator(const hw_allocator<U, N>&)
+            : hw_allocator() { }
 
         ~hw_allocator()
         {

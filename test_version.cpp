@@ -42,22 +42,23 @@ BOOST_AUTO_TEST_CASE(allocator)
     otus::map_alloc_t map_one;
     otus::fill(map_one);
 
-//    otus::map_alloc_t map_two;
-//    otus::fill(map_two);
+    std::cout << map_one.get_allocator().max_elements() << "\n";
+
+    otus::map_alloc_t map_two;
+    otus::fill(map_two);
 
     BOOST_CHECK_EQUAL(expected.size(), map_one.size());
-//    BOOST_CHECK_EQUAL(expected.size(), map_two.size());
+    BOOST_CHECK_EQUAL(expected.size(), map_two.size());
 
     for (size_t i = 0; i < expected.size(); ++i) {
         BOOST_CHECK_EQUAL(expected[i], map_one[i]);
     }
 
-//    for (size_t i = 0; i < expected.size(); ++i) {
-//        BOOST_CHECK_EQUAL(expected[i], map_two[i]);
-//    }
+    for (size_t i = 0; i < expected.size(); ++i) {
+        BOOST_CHECK_EQUAL(expected[i], map_two[i]);
+    }
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(single_linked_list)
 {
     otus::custom_list_t list(5);
@@ -82,7 +83,6 @@ BOOST_AUTO_TEST_CASE(single_linked_list)
         ++i;
     }
 }
-#endif
 
 //BOOST_AUTO_TEST_CASE(single_linked_list_custom_allocator)
 //{

@@ -8,7 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if ($ENV{TRAVIS_BUILD_NUMBER})
     set(BUILD_NUM $ENV{TRAVIS_BUILD_NUMBER})
 else()
-    set(BUILD_NUM 1)
+    set(BUILD_NUM 99)
 endif()
 
 set(homework_VERSION_MAJOR 3)
@@ -68,5 +68,4 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
     add_subdirectory(sandbox EXCLUDE_FROM_ALL)
 endif()
 
-message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}")
-
+message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD}")

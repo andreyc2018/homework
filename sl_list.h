@@ -21,14 +21,12 @@ class sl_list
         class sl_iterator : public std::iterator<std::forward_iterator_tag, T>
         {
             public:
+                using base = std::iterator<std::forward_iterator_tag, T>;
                 using iterator = sl_iterator;
-//                using value_type = T;
-//                using pointer = T*;
-                using reference = T&;
 
                 sl_iterator(node* ptr) : ptr_(ptr) {}
 
-                reference operator*() { return ptr_->data_; }
+                typename base::reference operator*() { return ptr_->data_; }
 
                 // pre-increment
                 iterator& operator++()
