@@ -2,17 +2,23 @@
 #include "version.h"
 #include <iostream>
 
-void map_std_allocator()
+void std_map_std_allocator()
 {
     otus::map_t m;
     otus::fill(m);
 }
 
-void map_custom_allocator()
+void std_map_custom_allocator()
 {
     otus::map_alloc_t m_ca;
     otus::fill(m_ca);
     otus::print(m_ca);
+}
+
+void custom_list_std_allocator()
+{
+    otus::custom_list_t m;
+    otus::fill(m);
 }
 
 int main(int argc, char const** argv)
@@ -23,8 +29,8 @@ int main(int argc, char const** argv)
     }
     try
     {
-        map_std_allocator();
-        map_custom_allocator();
+        std_map_std_allocator();
+        std_map_custom_allocator();
     }
     catch(const std::exception &e)
     {

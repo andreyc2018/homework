@@ -65,20 +65,21 @@ class sl_list
 //        using const_iterator = const sl_iterator;
         using allocator_type = Allocator;
 
-        sl_list(size_t size, const allocator_type& alloc = allocator_type())
+        sl_list() : root_(nullptr), tail_(nullptr), alloc_(allocator_type()) {}
+        explicit sl_list(const allocator_type& alloc)
             : root_(nullptr), tail_(nullptr), alloc_(alloc)
         {
-            node_alloc_t node_alloc = alloc_;
-            node* tmp = nullptr;
-            for (size_t i = 0; i < size; ++i) {
-                if (tmp != nullptr) {
-                    tmp = tmp->next_ = node_alloc.allocate(1);
-                }
-                else {
-                    tmp = root_ = node_alloc.allocate(1);
-                }
-                node_alloc.construct(tmp);
-            }
+//            node_alloc_t node_alloc = alloc_;
+//            node* tmp = nullptr;
+//            for (size_t i = 0; i < size; ++i) {
+//                if (tmp != nullptr) {
+//                    tmp = tmp->next_ = node_alloc.allocate(1);
+//                }
+//                else {
+//                    tmp = root_ = node_alloc.allocate(1);
+//                }
+//                node_alloc.construct(tmp);
+//            }
         }
 //        sl_list(const sl_list& b);
         ~sl_list()
