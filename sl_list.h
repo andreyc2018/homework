@@ -149,21 +149,3 @@ class single_linked_list
             }
         }
 };
-
-//template <typename T, class Allocator = std::allocator<T>>
-//bool operator==(const sl_list<T, Allocator>& a, const sl_list<T, Allocator>& b)
-//{
-//    return std::equal(a.begin(), a.end(), b.begin(), b.end());
-//}
-
-//template <typename T, class Allocator = std::allocator<T>>
-//bool operator!=(const sl_list<T, Allocator>& a, const sl_list<T, Allocator>& b)
-//{
-//    return !(a == b);
-//}
-
-//template <typename T, class Allocator = std::allocator<T>>
-//void swap(sl_list<T, Allocator>& a, sl_list<T, Allocator>& b)
-//{
-//    a.swap(b);
-//}

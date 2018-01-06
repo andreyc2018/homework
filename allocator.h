@@ -24,25 +24,14 @@ class hw_allocator
         struct rebind
         { using other = hw_allocator<U, N>; };
 
-        hw_allocator()
-            : i_(0), max_elements_(N), head_(nullptr), copy_(false)
-        { }
-
-        hw_allocator(const hw_allocator<T, N>& other)
-            : i_(other.i())
-            , max_elements_(other.max_elements())
-            , head_(other.head())
-            , copy_(true)
-        { }
+        hw_allocator() : i_(0), max_elements_(N), head_(nullptr) { }
 
         template<typename U>
-        hw_allocator(const hw_allocator<U, N>&)
-            : hw_allocator() { }
+        hw_allocator(const hw_allocator<U, N>&) : hw_allocator() { }
 
         ~hw_allocator()
         {
-            if (!copy_)
-                ::operator delete(head_);
+            ::operator delete(head_);
         }
 
         T* allocate(std::size_t n)
@@ -79,7 +68,6 @@ class hw_allocator
         size_t i_;
         const size_t max_elements_;
         T* head_;
-        bool copy_;
 };
 
 }
