@@ -15,7 +15,6 @@ class hw_allocator
 {
     public:
         using value_type = T;
-//        using pointer = T*;
 
         template<typename U>
         struct rebind

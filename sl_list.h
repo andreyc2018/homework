@@ -6,14 +6,14 @@
 template <typename T>
 struct Node
 {
-    Node() : data_(), next_(nullptr) {}
+    Node() : data_(nullptr), next_(nullptr) {}
     ~Node() {}
-    T data_;
+    T* data_;
     struct Node<T>* next_;
 };
 
 template <typename T, class Allocator = std::allocator<T>>
-class sl_list
+class single_linked_list
 {
         using node = Node<T>;
         using node_alloc_t = typename Allocator::template rebind<node>::other;
@@ -26,13 +26,15 @@ class sl_list
 
                 sl_iterator(node* ptr) : ptr_(ptr) {}
 
-                typename base::reference operator*() { return ptr_->data_; }
+                typename base::reference operator*()
+                {
+                    return *(ptr_->data_);
+                }
 
                 // pre-increment
                 iterator& operator++()
                 {
-                    ptr_ = ptr_->next_;
-                    return *this;
+                    ptr_ = ptr_->next_; return *this;
                 }
 
                 // post-increment
@@ -60,51 +62,92 @@ class sl_list
     public:
         using value_type = T;
         using reference = T&;
-//        using const_reference = const T&;
+        using size_type = size_t;
         using iterator = sl_iterator;
-//        using const_iterator = const sl_iterator;
         using allocator_type = Allocator;
 
-        sl_list() : root_(nullptr), tail_(nullptr), alloc_(allocator_type()) {}
-        explicit sl_list(const allocator_type& alloc)
-            : root_(nullptr), tail_(nullptr), alloc_(alloc)
+        single_linked_list()
+            : head_(nullptr)
+            , alloc_(allocator_type()), node_alloc_(node_alloc_t()) {}
+
+        explicit single_linked_list(const allocator_type& alloc)
+            : head_(nullptr)
+            , alloc_(alloc), node_alloc_(alloc) {}
+
+        explicit single_linked_list(size_type n,
+                                    const allocator_type& alloc = allocator_type())
+            : head_(nullptr), alloc_(alloc)
         {
-//            node_alloc_t node_alloc = alloc_;
-//            node* tmp = nullptr;
-//            for (size_t i = 0; i < size; ++i) {
-//                if (tmp != nullptr) {
-//                    tmp = tmp->next_ = node_alloc.allocate(1);
-//                }
-//                else {
-//                    tmp = root_ = node_alloc.allocate(1);
-//                }
-//                node_alloc.construct(tmp);
-//            }
+            resize(n);
         }
-//        sl_list(const sl_list& b);
-        ~sl_list()
+
+        ~single_linked_list()
         {
-            node_alloc_t node_alloc = alloc_;
-            Node<T>* tmp = root_;
-            while(tmp) {
-                Node<T>* next = tmp->next_;
-                node_alloc.destroy(tmp);
-                node_alloc.deallocate(tmp, 1);
-                tmp = next;
+            destroy_node(head_);
+        }
+
+        void resize(size_type n)
+        {
+            node* tmp_head = nullptr;
+            node* tmp_next = nullptr;
+            for (size_t i = 0; i < n; ++i) {
+                tmp_next = tmp_head;
+                tmp_head = make_node();
+                tmp_head->next_ = tmp_next;
             }
+
+            for (node *orig = head_, *tmp = tmp_head;
+                 orig != nullptr && tmp != nullptr;
+                 orig = orig->next_, tmp = tmp->next_)
+            {
+                *(tmp->data_) = *(orig->data_);
+            }
+
+            destroy_node(head_);
+            head_ = tmp_head;
         }
 
-//        sl_list& operator=(const sl_list& b);
+        void push_front(const value_type& v)
+        {
+            node* tmp = make_node(v);
+            tmp->next_ = head_;
+            head_ = tmp;
+        }
 
-        iterator begin() const { return sl_iterator(root_); };
-        iterator end() const { return sl_iterator(tail_); };
+        reference front()
+        {
+            return *(head_->data_);
+        }
 
-//        void swap(sl_list& b);
+        iterator begin() const { return sl_iterator(head_); };
+        iterator end() const { return sl_iterator(nullptr); };
 
     private:
-        node* root_;
-        node* tail_;
+        node* head_;
         allocator_type alloc_;
+        node_alloc_t node_alloc_;
+
+        template<typename... Args>
+        node* make_node(Args&&... args)
+        {
+            node* tmp = node_alloc_.allocate(1);
+            node_alloc_.construct(tmp);
+            tmp->data_ = alloc_.allocate(1);
+            alloc_.construct(tmp->data_, std::forward<Args>(args)...);
+            return tmp;
+        }
+
+        void destroy_node(Node<T>* ptr)
+        {
+            while(ptr) {
+                Node<T>* next = ptr->next_;
+                alloc_.destroy(ptr->data_);
+                alloc_.deallocate(ptr->data_, 1);
+                node_alloc_.destroy(ptr);
+                node_alloc_.deallocate(ptr, 1);
+                ptr = next;
+            }
+        }
 };
 
 //template <typename T, class Allocator = std::allocator<T>>

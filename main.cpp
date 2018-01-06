@@ -5,20 +5,27 @@
 void std_map_std_allocator()
 {
     otus::map_t m;
-    otus::fill(m);
+    otus::fill_map(m, otus::MaxElements);
 }
 
 void std_map_custom_allocator()
 {
-    otus::map_alloc_t m_ca;
-    otus::fill(m_ca);
-    otus::print(m_ca);
+    otus::map_alloc_t m;
+    otus::fill_map(m, otus::MaxElements);
+    otus::print_map(std::cout, m);
 }
 
 void custom_list_std_allocator()
 {
     otus::custom_list_t m;
-    otus::fill(m);
+    otus::fill_list(m, otus::MaxElements);
+}
+
+void custom_list_custom_allocator()
+{
+    otus::custom_list_alloc_t m;
+    otus::fill_list(m, otus::MaxElements);
+    otus::print_list(std::cout, m);
 }
 
 int main(int argc, char const** argv)
@@ -31,6 +38,8 @@ int main(int argc, char const** argv)
     {
         std_map_std_allocator();
         std_map_custom_allocator();
+        custom_list_std_allocator();
+        custom_list_custom_allocator();
     }
     catch(const std::exception &e)
     {
