@@ -19,8 +19,9 @@ std::vector<byte> to_bytes(const T& value)
 }
 
 template<typename T>
-void print_ip(std::ostream& out, const T& ip)
+int print_ip(std::ostream& out, const T& ip)
 {
+    out << std::hex << ip << " --> ";
     std::vector<byte> bytes = to_bytes(ip);
     for (size_t i = 0; i < bytes.size(); ++i) {
         if (i != 0) {
@@ -28,6 +29,15 @@ void print_ip(std::ostream& out, const T& ip)
         }
         out << uint(bytes[i]);
     }
+    out << std::dec << " --> ";
+    for (size_t i = 0; i < bytes.size(); ++i) {
+        if (i != 0) {
+            out << ".";
+        }
+        out << uint(bytes[i]);
+    }
+    out << "\n";
+    return 0;
 }
 
 }

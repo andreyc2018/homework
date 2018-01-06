@@ -29,7 +29,7 @@ set(HEADER_FILES homework_tools.h)
 add_executable(print_ip main.cpp
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_library(homework_tools homework_tools.cpp ${HEADER_FILES})
+add_library(homework_tools homework_tools.cpp hw_assignment.txt ${HEADER_FILES})
 
 add_executable(test_version test_version.cpp ${HEADER_FILES})
 
@@ -66,4 +66,3 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
 endif()
 
 message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD}")
-
