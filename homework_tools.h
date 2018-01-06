@@ -19,9 +19,28 @@ std::vector<byte> to_bytes(const T& value)
 }
 
 template<typename T>
+std::ostream& print_original(std::ostream& out, const T& ip)
+{
+    out << std::hex << ip;
+    return out;
+}
+
+template<>
+std::ostream& print_original<char>(std::ostream& out, const char& ip)
+{
+    return print_original(out, uint(ip));
+}
+
+template<>
+std::ostream& print_original<unsigned char>(std::ostream& out, const unsigned char& ip)
+{
+    return print_original(out, uint(ip));
+}
+
+template<typename T>
 int print_ip(std::ostream& out, const T& ip)
 {
-    out << std::hex << ip << " --> ";
+    print_original(out, ip) << " --> ";
     std::vector<byte> bytes = to_bytes(ip);
     for (size_t i = 0; i < bytes.size(); ++i) {
         if (i != 0) {

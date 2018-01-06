@@ -9,6 +9,6 @@ BOOST_AUTO_TEST_CASE(print_ip)
     char ip = 1;
     otus::print_ip(buffer, ip);
 
-    std::string expected = "1";
+    std::string expected = "1 --> 1 --> 1\n";
     BOOST_CHECK_EQUAL(expected, buffer.str());
 }

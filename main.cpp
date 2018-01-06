@@ -25,10 +25,12 @@ int main(int, char const**)
         std::tuple<char, unsigned char,
                 short, unsigned short,
                 int, unsigned int,
-                long, unsigned long> v;
+                long, unsigned long,
+                float, double, long double> v;
         v = std::make_tuple(0x11, 0xf1, 0x2122, 0xe1e2,
                             0x31323334, 0xd1d2d3d4,
-                            0x4142434445464748, 0xc1c2c3c4c5c6c7c8);
+                            0x4142434445464748, 0xc1c2c3c4c5c6c7c8,
+                            1.1, 2.2, 3.3);
 
         print_ips(std::cout, v);
     }
