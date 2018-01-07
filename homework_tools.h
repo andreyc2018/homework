@@ -24,9 +24,8 @@ std::vector<byte> to_bytes(const T& value)
 /*! \brief Print original address presented a number
  */
 template<typename T,
-         typename std::enable_if<(std::is_integral<T>::value
-                                 || std::is_floating_point<T>::value)
-                                 && !is_char<T>::value, int>::type = 0>
+         enable_if_t<(std::is_integral<T>::value || std::is_floating_point<T>::value)
+                     && !is_char<T>::value, int> = 0>
 std::ostream& print_original(std::ostream& out, const T& ip)
 {
     out << std::hex << ip;
@@ -37,14 +36,14 @@ std::ostream& print_original(std::ostream& out, const T& ip)
  *         specialization for <I>char</I> and <I>unsigned char</I>
  */
 template<typename T,
-         typename std::enable_if_t<is_char<T>::value, int> = 0>
+         enable_if_t<is_char<T>::value, int> = 0>
 std::ostream& print_original(std::ostream& out, const T& ip)
 {
     return print_original(out, uint(ip));
 }
 
 template<typename T,
-         typename std::enable_if<std::is_integral<T>::value, int>::type = 0>
+         enable_if_t<std::is_integral<T>::value, int> = 0>
 std::ostream& print_segment(std::ostream& out, const T& ip)
 {
     out << uint(ip);
@@ -52,7 +51,7 @@ std::ostream& print_segment(std::ostream& out, const T& ip)
 }
 
 template<typename T,
-         typename std::enable_if_t<is_stl_string<T>::value, int> = 0>
+         enable_if_t<is_stl_string<T>::value, int> = 0>
 std::ostream& print_segment(std::ostream& out, const T& ip)
 {
     out << ip;
@@ -75,7 +74,7 @@ std::ostream& print_ip_container(std::ostream& out, const T& ip, char delimiter)
  *         specialization for <I>sequence_container</I>
  */
 template<typename T,
-         typename std::enable_if_t<is_stl_sequence_container<T>::value, int> = 0>
+         enable_if_t<is_stl_sequence_container<T>::value, int> = 0>
 std::ostream& print_original(std::ostream& out, const T& ip)
 {
     return print_ip_container(out, ip, ',');
@@ -84,8 +83,8 @@ std::ostream& print_original(std::ostream& out, const T& ip)
 /*! \brief Print address presented as an integral or floating point number
  */
 template<typename T,
-         typename std::enable_if<std::is_integral<T>::value
-                                 || std::is_floating_point<T>::value, int>::type = 0>
+         enable_if_t<std::is_integral<T>::value
+                     || std::is_floating_point<T>::value, int> = 0>
 int print_ip(std::ostream& out, const T& ip)
 {
     std::cout << __PRETTY_FUNCTION__ << "\n";
@@ -97,7 +96,7 @@ int print_ip(std::ostream& out, const T& ip)
 }
 
 template<typename T,
-         typename std::enable_if_t<is_stl_sequence_container<T>::value, int> = 0>
+         enable_if_t<is_stl_sequence_container<T>::value, int> = 0>
 int print_ip(std::ostream& out, const T& ip)
 {
     std::cout << __PRETTY_FUNCTION__ << "\n";

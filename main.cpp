@@ -5,14 +5,14 @@
 /*! \brief Base case: end template recursion when I == sizeof(Tuple)
  */
 template<std::size_t I = 0, typename... Tuple>
-inline typename std::enable_if<I == sizeof...(Tuple), void>::type
+inline enable_if_t<I == sizeof...(Tuple), void>
 print_ips(std::ostream&, std::tuple<Tuple...>&)
 { }
 
 /*! \brief Call print_ip for each element of std::tuple until I < sizeof(Tuple)
  */
 template<std::size_t I = 0, typename... Tuple>
-inline typename std::enable_if<I < sizeof...(Tuple), void>::type
+inline enable_if_t<I < sizeof...(Tuple), void>
 print_ips(std::ostream& out, std::tuple<Tuple...>& t)
 {
     otus::print_ip(out, std::get<I>(t));

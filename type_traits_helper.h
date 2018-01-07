@@ -31,19 +31,25 @@ template <> struct is_char<char>:std::true_type{};
 template <> struct is_char<unsigned char>:std::true_type{};
 }
 
+template<class T>
+using decay_t = typename std::decay<T>::type;
+
+template<bool B, class T = void>
+using enable_if_t = typename std::enable_if<B,T>::type;
+
 /*! \brief type trait to utilize the implementation type traits as well as decay the type
  */
 template <typename T> struct is_stl_sequence_container
 {
-    static constexpr bool const value = details::is_stl_sequence_container<std::decay_t<T>>::value;
+    static constexpr bool const value = details::is_stl_sequence_container<decay_t<T>>::value;
 };
 
 template <typename T> struct is_stl_string
 {
-    static constexpr bool const value = details::is_stl_string<std::decay_t<T>>::value;
+    static constexpr bool const value = details::is_stl_string<decay_t<T>>::value;
 };
 
 template <typename T> struct is_char
 {
-    static constexpr bool const value = details::is_char<std::decay_t<T>>::value;
+    static constexpr bool const value = details::is_char<decay_t<T>>::value;
 };
