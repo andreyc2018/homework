@@ -30,13 +30,13 @@ template <typename T> struct is_char:std::false_type{};
 template <> struct is_char<char>:std::true_type{};
 template <> struct is_char<unsigned char>:std::true_type{};
 
-/*! \brief C++17 compatibility
- */
-template <class T, class Tuple, std::size_t... I>
-constexpr T make_from_tuple_impl(Tuple&& t, std::index_sequence<I...>)
-{
-  return T(std::get<I>(std::forward<Tuple>(t))...);
-}
+///*! \brief C++17 compatibility
+// */
+//template <class T, class Tuple, std::size_t... I>
+//constexpr T make_from_tuple_impl(Tuple&& t, std::index_sequence<I...>)
+//{
+//  return T(std::get<I>(std::forward<Tuple>(t))...);
+//}
 
 } // namespace detail
 
@@ -50,14 +50,14 @@ template<bool B, class T = void>
 using enable_if_t = typename std::enable_if<B,T>::type;
 
 
-/*! \brief C++17 compatibility
- */
-template <class T, class Tuple>
-constexpr T make_from_tuple(Tuple&& t)
-{
-    return detail::make_from_tuple_impl<T>(std::forward<Tuple>(t),
-        std::make_index_sequence<std::tuple_size<std::remove_reference_t<Tuple>>::value>{});
-}
+///*! \brief C++17 compatibility
+// */
+//template <class T, class Tuple>
+//constexpr T make_from_tuple(Tuple&& t)
+//{
+//    return detail::make_from_tuple_impl<T>(std::forward<Tuple>(t),
+//        std::make_index_sequence<std::tuple_size<std::remove_reference_t<Tuple>>::value>{});
+//}
 
 /*! \brief type trait to utilize the implementation type traits as well as decay the type
  */
