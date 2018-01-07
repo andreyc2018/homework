@@ -19,6 +19,8 @@ print_ips(std::ostream& out, std::tuple<Tuple...>& t)
     print_ips<I + 1, Tuple...>(out, t);
 }
 
+/*! \todo print ips from the containers
+ */
 int main(int, char const**)
 {
     try {
@@ -34,8 +36,6 @@ int main(int, char const**)
                             1.1, 2.2, 3.3);
 
         print_ips(std::cout, v);
-        /*! \todo print ips from the containers
-         */
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;
