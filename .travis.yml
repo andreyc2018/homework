@@ -7,16 +7,12 @@ before_script:
 - sudo apt-get update -qq
 - sudo apt-get install libspdlog-dev -y
 script:
-- pwd
-- ls -la *
 - cmake .
 - cmake --build . -- VERBOSE=1
 - cmake --build . --target test
 - cmake --build . --target package
 - cmake --build . --target doc_doxygen
 - rsync -av doc_doxygen/html docs
-- pwd
-- ls -la *
 deploy:
 - provider: script
   skip_cleanup: true

@@ -34,6 +34,8 @@ int main(int, char const**)
                             1.1, 2.2, 3.3);
 
         print_ips(std::cout, v);
+        /*! \todo print ips from the containers
+         */
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;

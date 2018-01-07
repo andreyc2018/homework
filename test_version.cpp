@@ -3,6 +3,8 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
+/*! \test Simple unit test for print_ip
+ */
 BOOST_AUTO_TEST_CASE(print_ip)
 {
     std::stringstream buffer;
