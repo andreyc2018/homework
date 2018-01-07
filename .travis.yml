@@ -21,7 +21,7 @@ deploy:
 - provider: pages
   skip_cleanup: true
   github_token: $GITHUB_DOCS_KEY
-  local_dir: ${TRAVIS_BUILD_DIR}/docs
+  local_dir: ${TRAVIS_BUILD_DIR}/doc_doxygen/html
   on:
     branch: $TRAVIS_BRANCH
 
