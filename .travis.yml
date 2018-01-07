@@ -8,11 +8,13 @@ before_script:
 - sudo apt-get install libspdlog-dev -y
 script:
 - pwd
-- ls -l
+- ls -la *
 - cmake .
 - cmake --build . -- VERBOSE=1
 - cmake --build . --target test
 - cmake --build . --target package
+- pwd
+- ls -la *
 deploy:
 - provider: script
   skip_cleanup: true
@@ -23,7 +25,7 @@ deploy:
 - provider: pages
   skip_cleanup: true
   github_token: $GITHUB_DOCS_KEY
-  local_dir: ${TRAVIS_BUILD_DIR}/doc_doxygen/html
+  local_dir: ${TRAVIS_BUILD_DIR}/docs
   on:
     branch: $TRAVIS_BRANCH
 
