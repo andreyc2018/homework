@@ -40,3 +40,18 @@ BOOST_AUTO_TEST_CASE(print_ip_container)
     std::string expected = "1,2 --> 1.2\n";
     BOOST_CHECK_EQUAL(expected, buffer.str());
 }
+
+///*! \test Test a tuple for print_ip
+// */
+//BOOST_AUTO_TEST_CASE(print_ip_tuple)
+//{
+//    std::stringstream buffer;
+//    std::tuple<int, int, int, int, int> v;
+//    v = std::make_tuple(1, 2, 3, 4, 5);
+
+//    std::array<int, 5> ip = make_from_tuple<std::array<int, 5>>(v);
+//    otus::print_ip(buffer, ip);
+
+//    std::string expected = "1,2,3,4,5 --> 1.2.3.4.5\n";
+//    BOOST_CHECK_EQUAL(expected, buffer.str());
+//}

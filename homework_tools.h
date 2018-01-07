@@ -80,6 +80,19 @@ std::ostream& print_original(std::ostream& out, const T& ip)
     return print_ip_container(out, ip, ',');
 }
 
+/*! \brief Print address presented as a container
+ */
+template<typename T,
+         enable_if_t<is_stl_sequence_container<T>::value, int> = 0>
+int print_ip(std::ostream& out, const T& ip)
+{
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+
+    print_original(out, ip) << " --> ";
+    print_ip_container(out, ip, '.') << "\n";
+    return 0;
+}
+
 /*! \brief Print address presented as an integral or floating point number
  */
 template<typename T,
@@ -89,20 +102,9 @@ int print_ip(std::ostream& out, const T& ip)
 {
     std::cout << __PRETTY_FUNCTION__ << "\n";
 
-    print_original(out, ip) << " --> ";
     std::vector<byte> bytes = to_bytes(ip);
-    print_ip_container(out, bytes, '.') << "\n";
-    return 0;
-}
-
-template<typename T,
-         enable_if_t<is_stl_sequence_container<T>::value, int> = 0>
-int print_ip(std::ostream& out, const T& ip)
-{
-    std::cout << __PRETTY_FUNCTION__ << "\n";
-
     print_original(out, ip) << " --> ";
-    print_ip_container(out, ip, '.') << "\n";
+    print_ip_container(out, bytes, '.') << "\n";
     return 0;
 }
 
