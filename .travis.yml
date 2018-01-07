@@ -16,9 +16,9 @@ deploy:
     branch: $TRAVIS_BRANCH
   script:
   - curl -T print_ip-$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER-Linux.deb -uandreyc2018:$BINTRAY_API_KEY "https://api.bintray.com/content/andreyc2018/otus-cpp/print_ip/$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER/print_ip-$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
-deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_DOCS_KEY
   on:
-    branch: master
+    branch: $TRAVIS_BRANCH
+
