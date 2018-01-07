@@ -7,6 +7,8 @@ namespace otus {
 
 using byte = unsigned char;
 
+/*! \brief Convert value to a vector of bytes
+ */
 template <typename T>
 std::vector<byte> to_bytes(const T& value)
 {
@@ -18,6 +20,8 @@ std::vector<byte> to_bytes(const T& value)
     return bytes;
 }
 
+/*! \brief Print original address presented a number
+ */
 template<typename T>
 std::ostream& print_original(std::ostream& out, const T& ip)
 {
@@ -25,18 +29,24 @@ std::ostream& print_original(std::ostream& out, const T& ip)
     return out;
 }
 
+/*! \brief Print original address presented a number: specialization for <I>char</I>
+ */
 template<>
 std::ostream& print_original<char>(std::ostream& out, const char& ip)
 {
     return print_original(out, uint(ip));
 }
 
+/*! \brief Print original address presented a number: specialization for <I>unsigned char</I>
+ */
 template<>
 std::ostream& print_original<unsigned char>(std::ostream& out, const unsigned char& ip)
 {
     return print_original(out, uint(ip));
 }
 
+/*! \brief Print address presented a number
+ */
 template<typename T>
 int print_ip(std::ostream& out, const T& ip)
 {
