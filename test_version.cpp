@@ -11,6 +11,32 @@ BOOST_AUTO_TEST_CASE(print_ip)
     char ip = 1;
     otus::print_ip(buffer, ip);
 
-    std::string expected = "1 --> 1 --> 1\n";
+    std::string expected = "1 --> 1\n";
+    BOOST_CHECK_EQUAL(expected, buffer.str());
+}
+
+/*! \test Test std::string for print_ip
+ *
+ * Fails to compile
+ */
+BOOST_AUTO_TEST_CASE(print_ip_string)
+{
+//    std::stringstream buffer;
+//    std::string ip = "1";
+//    otus::print_ip(buffer, ip);
+
+//    std::string expected = "1 --> 1 --> 1\n";
+//    BOOST_CHECK_EQUAL(expected, buffer.str());
+}
+
+/*! \test Test a container for print_ip
+ */
+BOOST_AUTO_TEST_CASE(print_ip_container)
+{
+    std::stringstream buffer;
+    std::vector<std::string> ip { "1", "2" };
+    otus::print_ip(buffer, ip);
+
+    std::string expected = "1,2 --> 1.2\n";
     BOOST_CHECK_EQUAL(expected, buffer.str());
 }

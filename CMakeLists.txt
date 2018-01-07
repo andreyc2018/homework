@@ -26,15 +26,15 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(HEADER_FILES homework_tools.h)
 
-add_executable(print_ip main.cpp
+add_executable(print_ip main.cpp hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_library(homework_tools homework_tools.cpp hw_assignment.md ${HEADER_FILES})
+#add_library(homework_tools homework_tools.cpp hw_assignment.md ${HEADER_FILES})
 
 add_executable(test_version test_version.cpp ${HEADER_FILES})
 
 target_compile_options(print_ip PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(homework_tools PRIVATE -Wpedantic -Wall -Wextra)
+#target_compile_options(homework_tools PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
 set_target_properties(test_version PROPERTIES
@@ -42,9 +42,10 @@ set_target_properties(test_version PROPERTIES
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(print_ip homework_tools)
+#target_link_libraries(print_ip homework_tools)
 
-target_link_libraries(test_version ${Boost_LIBRARIES} homework_tools)
+#target_link_libraries(test_version ${Boost_LIBRARIES} homework_tools)
+target_link_libraries(test_version ${Boost_LIBRARIES})
 
 install(TARGETS print_ip RUNTIME DESTINATION bin)
 

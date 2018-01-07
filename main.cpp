@@ -36,6 +36,15 @@ int main(int, char const**)
                             1.1, 2.2, 3.3);
 
         print_ips(std::cout, v);
+
+        std::vector<std::string> vip {"1", "2", "100", "999", "1"};
+        otus::print_ip(std::cout, vip);
+
+        std::list<std::string> lip {"1", "2", "100", "999", "1"};
+        otus::print_ip(std::cout, lip);
+
+        std::array<std::string, 5> aip {{"1", "2", "100", "999", "1"}};
+        otus::print_ip(std::cout, aip);
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;

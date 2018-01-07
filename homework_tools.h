@@ -1,5 +1,6 @@
 #pragma once
 
+#include "type_traits_helper.h"
 #include <iostream>
 #include <vector>
 
@@ -22,50 +23,87 @@ std::vector<byte> to_bytes(const T& value)
 
 /*! \brief Print original address presented a number
  */
-template<typename T>
+template<typename T,
+         typename std::enable_if<(std::is_integral<T>::value
+                                 || std::is_floating_point<T>::value)
+                                 && !is_char<T>::value, int>::type = 0>
 std::ostream& print_original(std::ostream& out, const T& ip)
 {
     out << std::hex << ip;
     return out;
 }
 
-/*! \brief Print original address presented a number: specialization for <I>char</I>
+/*! \brief Print original address presented a number:
+ *         specialization for <I>char</I> and <I>unsigned char</I>
  */
-template<>
-std::ostream& print_original<char>(std::ostream& out, const char& ip)
+template<typename T,
+         typename std::enable_if_t<is_char<T>::value, int> = 0>
+std::ostream& print_original(std::ostream& out, const T& ip)
 {
     return print_original(out, uint(ip));
 }
 
-/*! \brief Print original address presented a number: specialization for <I>unsigned char</I>
- */
-template<>
-std::ostream& print_original<unsigned char>(std::ostream& out, const unsigned char& ip)
+template<typename T,
+         typename std::enable_if<std::is_integral<T>::value, int>::type = 0>
+std::ostream& print_segment(std::ostream& out, const T& ip)
 {
-    return print_original(out, uint(ip));
+    out << uint(ip);
+    return out;
 }
 
-/*! \brief Print address presented a number
- */
+template<typename T,
+         typename std::enable_if_t<is_stl_string<T>::value, int> = 0>
+std::ostream& print_segment(std::ostream& out, const T& ip)
+{
+    out << ip;
+    return out;
+}
+
 template<typename T>
+std::ostream& print_ip_container(std::ostream& out, const T& ip, char delimiter)
+{
+    size_t i = 0;
+    for (const auto& s : ip) {
+        if (i++ != 0)
+            out << delimiter;
+        print_segment(out, s);
+    }
+    return out;
+}
+
+/*! \brief Print original address presented a number:
+ *         specialization for <I>sequence_container</I>
+ */
+template<typename T,
+         typename std::enable_if_t<is_stl_sequence_container<T>::value, int> = 0>
+std::ostream& print_original(std::ostream& out, const T& ip)
+{
+    return print_ip_container(out, ip, ',');
+}
+
+/*! \brief Print address presented as an integral or floating point number
+ */
+template<typename T,
+         typename std::enable_if<std::is_integral<T>::value
+                                 || std::is_floating_point<T>::value, int>::type = 0>
 int print_ip(std::ostream& out, const T& ip)
 {
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+
     print_original(out, ip) << " --> ";
     std::vector<byte> bytes = to_bytes(ip);
-    for (size_t i = 0; i < bytes.size(); ++i) {
-        if (i != 0) {
-            out << ".";
-        }
-        out << uint(bytes[i]);
-    }
-    out << std::dec << " --> ";
-    for (size_t i = 0; i < bytes.size(); ++i) {
-        if (i != 0) {
-            out << ".";
-        }
-        out << uint(bytes[i]);
-    }
-    out << "\n";
+    print_ip_container(out, bytes, '.') << "\n";
+    return 0;
+}
+
+template<typename T,
+         typename std::enable_if_t<is_stl_sequence_container<T>::value, int> = 0>
+int print_ip(std::ostream& out, const T& ip)
+{
+    std::cout << __PRETTY_FUNCTION__ << "\n";
+
+    print_original(out, ip) << " --> ";
+    print_ip_container(out, ip, '.') << "\n";
     return 0;
 }
 
