@@ -2,7 +2,7 @@
 #include <iostream>
 #include "homework_tools.h"
 
-/*! \todo print ips from the containers
+/*! \todo print ips from std::tuple
  */
 int main(int, char const**)
 {
