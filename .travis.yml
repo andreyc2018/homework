@@ -8,7 +8,7 @@ before_script:
 - sudo apt-get install libspdlog-dev -y
 script:
 - cmake .
-- cmake --build . -- VERBOSE=0
+- cmake --build .
 - cmake --build . --target test
 - cmake --build . --target package
 - rm -f README.md
