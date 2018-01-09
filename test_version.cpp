@@ -1,7 +1,7 @@
-#include "homework_tools.h"
 #define BOOST_TEST_MODULE Test_Ip_Filter
 #include <boost/test/unit_test.hpp>
 #include <iostream>
+#include "homework_tools.h"
 
 /*! \test Simple unit test for print_ip
  */
@@ -46,12 +46,10 @@ BOOST_AUTO_TEST_CASE(print_ip_container)
 //BOOST_AUTO_TEST_CASE(print_ip_tuple)
 //{
 //    std::stringstream buffer;
-//    std::tuple<int, int, int, int, int> v;
-//    v = std::make_tuple(1, 2, 3, 4, 5);
+//    std::tuple<int, int> v = std::make_tuple(1, 2);
 
-//    std::array<int, 5> ip = make_from_tuple<std::array<int, 5>>(v);
-//    otus::print_ip(buffer, ip);
+//    otus::print_ip(buffer, v);
 
-//    std::string expected = "1,2,3,4,5 --> 1.2.3.4.5\n";
+//    std::string expected = "1,2,3 --> 1.2.3\n";
 //    BOOST_CHECK_EQUAL(expected, buffer.str());
 //}
