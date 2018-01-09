@@ -4,6 +4,12 @@
 #include <iostream>
 #include <vector>
 
+using otus::decay_t;
+using otus::enable_if_t;
+using otus::is_char;
+using otus::is_stl_sequence_container;
+using otus::is_stl_string;
+
 namespace otus {
 
 using byte = unsigned char;
@@ -107,5 +113,38 @@ int print_ip(std::ostream& out, const T& ip)
     print_ip_container(out, bytes, '.') << "\n";
     return 0;
 }
+
+/*! \brief Print all IPs in a tuple.
+ *
+ */
+template<std::size_t I = 0, typename... Tuple>
+enable_if_t<I == sizeof...(Tuple), void>
+print_ips(std::ostream&, std::tuple<Tuple...>&)
+{ }
+
+/*! \brief Call print_ip for each element of std::tuple until I < sizeof(Tuple)
+ */
+template<std::size_t I = 0, typename... Tuple>
+enable_if_t<I < sizeof...(Tuple), void>
+print_ips(std::ostream& out, std::tuple<Tuple...>& t)
+{
+    otus::print_ip(out, std::get<I>(t));
+    print_ips<I + 1, Tuple...>(out, t);
+}
+
+//template<std::size_t I = 0, typename... Tuple>
+//enable_if_t<I == sizeof...(Tuple), void>
+//print_ip(std::ostream&, const std::tuple<Tuple...>&)
+//{ }
+
+//template<std::size_t I = 0, typename... Tuple>
+//enable_if_t<I < sizeof...(Tuple), void>
+//print_ip(std::ostream& out, const std::tuple<Tuple...>& t)
+//{
+//    static_assert(sizeof...(Tuple) == 1 ||
+//                  std::is_same<decltype(std::get<I>(t)),
+//                               decltype(std::get<I+1>(t))>::value, "HEHEHE");
+//    print_ip<I + 1, Tuple...>(out, t);
+//}
 
 }
