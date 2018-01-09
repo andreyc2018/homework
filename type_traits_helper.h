@@ -60,17 +60,15 @@ template <typename T> struct is_char
     static constexpr bool const value = detail::is_char<decay_t<T>>::value;
 };
 
-template<typename T,
-         enable_if_t<std::is_integral<T>::value
-                     || std::is_floating_point<T>::value, int> = 0>
-std::string to_string(const T& value)
+template<typename T>
+enable_if_t<std::is_integral<T>::value || std::is_floating_point<T>::value, std::string>
+to_string(const T& value)
 {
     return std::to_string(value);
 }
 
-template<typename T,
-         enable_if_t<is_stl_string<T>::value, int> = 0>
-std::string to_string(const T& value)
+template<typename T>
+enable_if_t<is_stl_string<T>::value, std::string> to_string(const T& value)
 {
     return value;
 }
