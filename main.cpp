@@ -1,23 +1,6 @@
-#include "homework_tools.h"
 #include <tuple>
 #include <iostream>
-
-/*! \brief Base case: end template recursion when I == sizeof(Tuple)
- */
-template<std::size_t I = 0, typename... Tuple>
-inline enable_if_t<I == sizeof...(Tuple), void>
-print_ips(std::ostream&, std::tuple<Tuple...>&)
-{ }
-
-/*! \brief Call print_ip for each element of std::tuple until I < sizeof(Tuple)
- */
-template<std::size_t I = 0, typename... Tuple>
-inline enable_if_t<I < sizeof...(Tuple), void>
-print_ips(std::ostream& out, std::tuple<Tuple...>& t)
-{
-    otus::print_ip(out, std::get<I>(t));
-    print_ips<I + 1, Tuple...>(out, t);
-}
+#include "homework_tools.h"
 
 /*! \todo print ips from the containers
  */
@@ -35,7 +18,7 @@ int main(int, char const**)
                             0x4142434445464748, 0xc1c2c3c4c5c6c7c8,
                             1.1, 2.2, 3.3);
 
-        print_ips(std::cout, v);
+        otus::print_ips(std::cout, v);
 
         std::vector<std::string> vip {"1", "2", "100", "999", "1"};
         otus::print_ip(std::cout, vip);
