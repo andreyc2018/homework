@@ -18,7 +18,7 @@ int main(int, char const**)
                             0x4142434445464748, 0xc1c2c3c4c5c6c7c8,
                             1.1, 2.2, 3.3);
 
-        otus::print_ips(std::cout, v);
+        otus::print_all_ips(std::cout, v);
 
         std::vector<std::string> vip {"1", "2", "100", "999", "1"};
         otus::print_ip(std::cout, vip);
