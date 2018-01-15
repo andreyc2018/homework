@@ -13,7 +13,6 @@ script:
 - cmake --build . --target package
 - rm -f README.md
 - cmake --build . --target doc_doxygen
-- rsync -a doc_doxygen/html docs
 deploy:
 - provider: script
   skip_cleanup: true
