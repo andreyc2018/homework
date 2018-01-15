@@ -32,7 +32,7 @@ set(HEADER_FILES
 add_executable(allocator main.cpp
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_library(allocator_tools homework_tools.cpp sl_list.cpp ${HEADER_FILES})
+add_library(allocator_tools homework_tools.cpp ${HEADER_FILES})
 
 add_executable(test_version test_version.cpp ${HEADER_FILES})
 

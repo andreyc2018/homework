@@ -6,9 +6,9 @@
 template <typename T>
 struct Node
 {
-    Node() : data_(nullptr), next_(nullptr) {}
+    Node() : next_(nullptr) {}
     ~Node() {}
-    T* data_;
+    T data_;
     struct Node<T>* next_;
 };
 
@@ -28,7 +28,7 @@ class single_linked_list
 
                 typename base::reference operator*()
                 {
-                    return *(ptr_->data_);
+                    return ptr_->data_;
                 }
 
                 // pre-increment
@@ -100,7 +100,7 @@ class single_linked_list
                  orig != nullptr && tmp != nullptr;
                  orig = orig->next_, tmp = tmp->next_)
             {
-                *(tmp->data_) = *(orig->data_);
+                tmp->data_ = orig->data_;
             }
 
             destroy_node(head_);
@@ -116,7 +116,7 @@ class single_linked_list
 
         reference front()
         {
-            return *(head_->data_);
+            return head_->data_;
         }
 
         iterator begin() const { return sl_iterator(head_); };
@@ -132,8 +132,8 @@ class single_linked_list
         {
             node* tmp = node_alloc_.allocate(1);
             node_alloc_.construct(tmp);
-            tmp->data_ = alloc_.allocate(1);
-            alloc_.construct(tmp->data_, std::forward<Args>(args)...);
+            // tmp->data_ = alloc_.allocate(1);
+            alloc_.construct(&tmp->data_, std::forward<Args>(args)...);
             return tmp;
         }
 
@@ -141,8 +141,8 @@ class single_linked_list
         {
             while(ptr) {
                 Node<T>* next = ptr->next_;
-                alloc_.destroy(ptr->data_);
-                alloc_.deallocate(ptr->data_, 1);
+                alloc_.destroy(&ptr->data_);
+                // alloc_.deallocate(ptr->data_, 1);
                 node_alloc_.destroy(ptr);
                 node_alloc_.deallocate(ptr, 1);
                 ptr = next;
