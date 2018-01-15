@@ -8,7 +8,9 @@
 [Markdown: Syntax](https://daringfireball.net/projects/markdown/syntax)  
 
 # C++ videos
-## C++
+## CppCon
+[CppCon 2016](https://www.youtube.com/playlist?list=PLHTh1InhhwT7J5jl4vAhO1WvGHUUFgUQH)  
+  [CppCon 2016: Arthur O'Dwyer “Template Normal Programming (part 1 of 2)”](https://www.youtube.com/watch?v=vwrXHznaYLA&list=PLHTh1InhhwT7J5jl4vAhO1WvGHUUFgUQH&index=11)  
 
 ## Alexander Stepanov
 [Efficient Programming with Components](https://www.youtube.com/watch?v=aIHAEYyoTUc&list=PLHxtyCq_WDLXryyw91lahwdtpZsmo4BGD)

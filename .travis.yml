@@ -13,9 +13,6 @@ script:
 - cmake --build . --target package
 - rm -f README.md
 - cmake --build . --target doc_doxygen
-- ls -la *
-- echo ${TRAVIS_BUILD_DIR}
-- pwd
 deploy:
 - provider: script
   skip_cleanup: true
