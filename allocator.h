@@ -6,8 +6,6 @@
 #include <typeinfo>
 #include <cxxabi.h>
 
-#define CAST(x)  static_cast<hw_allocator<T, N>>(x)
-
 namespace otus {
 
 template <typename T, size_t N>
