@@ -143,8 +143,7 @@ class single_linked_list
         {
             node* tmp = node_alloc_.allocate(1);
             tmp->next_ = nullptr;
-            allocator_type alloc(node_alloc_);
-            alloc.construct(&(tmp->data_), std::forward<Args>(args)...);
+            node_alloc_.construct(&(tmp->data_), std::forward<Args>(args)...);
             return tmp;
         }
 
@@ -152,8 +151,7 @@ class single_linked_list
         {
             while(ptr) {
                 Node<T>* next = ptr->next_;
-                allocator_type alloc(node_alloc_);
-                alloc.destroy(&(ptr->data_));
+                node_alloc_.destroy(&(ptr->data_));
                 node_alloc_.deallocate(ptr, 1);
                 ptr = next;
             }
