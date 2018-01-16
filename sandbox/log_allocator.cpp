@@ -1,29 +1,33 @@
 #include "logging_allocator.h"
 #include "xray.h"
+#include "sl_list.h"
+
 #include <list>
 #include <map>
 #include <forward_list>
 #include <iostream>
 
-#define LINE(n)  std::cout << "---------- " << n << " ----------\n";
+#define LINE(msg)  std::cout << "\n" << __COUNTER__ << ": --- " << msg << " ---\n\n";
+
+using x_int = xray<int>;
 
 int main(int, char**)
 {
-//    std::list<int, logging_allocator<int>> l;
-//    l.push_back(19);
-
-//    std::map<int, int, std::less<int>, logging_allocator<std::pair<int, int>>> m;
-//    m[1] = 10;
-
-
-    LINE(1);
+    LINE("begin");
     {
-        std::forward_list<xray, logging_allocator<xray>> l;
-        LINE(2);
-        l.emplace_front();
-        LINE(3);
+        std::forward_list<x_int, logging_allocator<x_int>> l;
+        LINE("after list ctor");
+        l.emplace_front(99);
+        LINE("after emplace 99");
     }
-    LINE(4);
+    LINE("before my list");
+    {
+        single_linked_list<x_int, logging_allocator<x_int>> l;
+        LINE("after my list ctor");
+        l.emplace_front(17);
+        LINE("after emplace 17");
+    }
+    LINE("end");
 
     return 0;
 }
