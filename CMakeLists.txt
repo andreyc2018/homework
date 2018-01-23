@@ -11,11 +11,11 @@ else()
     set(BUILD_NUM 99)
 endif()
 
-set(homework_VERSION_MAJOR 0)
+set(homework_VERSION_MAJOR 5)
 set(homework_VERSION_MINOR 0)
 set(homework_VERSION_BUILD ${BUILD_NUM})
 
-project(homework VERSION
+project(sge VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
@@ -26,15 +26,15 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(HEADER_FILES homework_tools.h)
 
-add_executable(homework main.cpp
+add_executable(sge main.cpp hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_library(homework_tools homework.cpp ${HEADER_FILES})
+#add_library(homework_tools homework_tools.cpp hw_assignment.md ${HEADER_FILES})
 
 add_executable(test_version test_version.cpp ${HEADER_FILES})
 
-target_compile_options(homework PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(homework_tools PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(sge PRIVATE -Wpedantic -Wall -Wextra)
+#target_compile_options(homework_tools PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
 set_target_properties(test_version PROPERTIES
@@ -42,11 +42,12 @@ set_target_properties(test_version PROPERTIES
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(homework homework_tools)
+#target_link_libraries(sge homework_tools)
 
-target_link_libraries(test_version ${Boost_LIBRARIES} homework_tools)
+#target_link_libraries(test_version ${Boost_LIBRARIES} homework_tools)
+target_link_libraries(test_version ${Boost_LIBRARIES})
 
-install(TARGETS homework RUNTIME DESTINATION bin)
+install(TARGETS sge RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
@@ -66,3 +67,24 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
 endif()
 
 message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD}")
+
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+    # set input and output files
+    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in)
+    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+    # request to configure the file
+    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+
+    # note the option ALL which allows to build the docs together with the application
+    #add_custom_target(doc_doxygen ALL
+    add_custom_target(doc_doxygen
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM)
+else (DOXYGEN_FOUND)
+  message("Doxygen need to be installed to generate the doxygen documentation")
+endif (DOXYGEN_FOUND)
+
