@@ -24,7 +24,7 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(HEADER_FILES homework_tools.h)
+set(HEADER_FILES document.h)
 
 add_executable(sge main.cpp hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
@@ -76,6 +76,8 @@ if (DOXYGEN_FOUND)
 
     # request to configure the file
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/README.md ${CMAKE_CURRENT_BINARY_DIR}/docs/README.md COPYONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/_config.yml ${CMAKE_CURRENT_BINARY_DIR}/docs/_config.yml COPYONLY)
 
     # note the option ALL which allows to build the docs together with the application
     #add_custom_target(doc_doxygen ALL
