@@ -1,4 +1,9 @@
 #pragma once
+/** @file document.h
+    @brief The document representation.
+
+    Details.
+*/
 
 #include "item.h"
 #include <vector>

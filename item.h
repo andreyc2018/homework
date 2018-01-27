@@ -1,4 +1,9 @@
 #pragma once
+/** @file item.h
+    @brief The base classes for the graphic primitives.
+
+    Details.
+*/
 
 #include <map>
 #include <memory>
@@ -10,8 +15,7 @@ namespace svge {
 using item_id_t = size_t;
 
 /**
- * @brief The Item is a base class a Composite pattern.
- * @link https://en.wikipedia.org/wiki/Composite_pattern
+ * @brief The Item is a base class of a Composite pattern.
  *
  * All derived classes must have the constructors that accept
  * an item id of type item_id_t as a first parameter.
@@ -88,7 +92,7 @@ inline item_id_t generate_id()
  * @param args - list of arguments for a constructor, except item id
  *        item id will be generated and provided as a first argument of
  *        the constuctor
- * @return an item of type T* via pointer to the base type Item
+ * @return an item of type T*
  */
 template<typename T, typename... Args>
 inline T* create_item(Args&&... args)

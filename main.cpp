@@ -1,3 +1,8 @@
+/** @file main.cpp
+    @brief All GUI handlers are here.
+
+    Details.
+*/
 #include <iostream>
 
 int main(int, char const**)
