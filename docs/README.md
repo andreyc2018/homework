@@ -14,3 +14,7 @@
 
 ## Alexander Stepanov
 [Efficient Programming with Components](https://www.youtube.com/watch?v=aIHAEYyoTUc&list=PLHxtyCq_WDLXryyw91lahwdtpZsmo4BGD)
+
+## Sean Parent: Value Semantics and Concepts-based Polymorphism
+[Inheritance Is The Base Class of Evil](https://channel9.msdn.com/Events/GoingNative/2013/Inheritance-Is-The-Base-Class-of-Evil)
+
