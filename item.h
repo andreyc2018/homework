@@ -1,14 +1,13 @@
 #pragma once
 /** @file item.h
-    @brief The base classes for the graphic primitives.
-
-    Details.
-*/
+ *  @brief The base classes for the graphic primitives.
+ */
 
 #include <map>
 #include <memory>
 #include <string>
 #include <atomic>
+#include <fstream>
 
 namespace svge {
 
@@ -27,6 +26,8 @@ class Item
         virtual ~Item() {}
 
         item_id_t id() const { return id_; }
+        virtual std::ofstream& write(std::ofstream& out) = 0;
+        virtual std::ifstream& read(std::ifstream& in) = 0;
 
     protected:
         const item_id_t id_;
@@ -57,6 +58,22 @@ class ComplexItem : public Item
                 delete v.second;
             }
             items_.clear();
+        }
+
+        std::ofstream& write(std::ofstream& out) override
+        {
+            for (auto& v : items_) {
+                v.second->write(out);
+            }
+            return out;
+        }
+
+        std::ifstream& read(std::ifstream& in) override
+        {
+            for (auto& v : items_) {
+                v.second->read(in);
+            }
+            return in;
         }
 
     protected:

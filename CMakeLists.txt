@@ -24,7 +24,7 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(HEADER_FILES document.h item.h simplevectorgraphicseditor.h)
+set(HEADER_FILES document.h item.h svgecontroller.h svge.h)
 
 add_executable(svge main.cpp hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
