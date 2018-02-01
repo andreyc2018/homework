@@ -24,7 +24,7 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(HEADER_FILES homework_tools.h)
+set(HEADER_FILES homework_tools.h type_traits_helper.h)
 
 add_executable(print_ip main.cpp hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
