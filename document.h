@@ -17,13 +17,13 @@ class Document : public ComplexItem
         Document(item_id_t id) : ComplexItem(id) {}
         ~Document() {}
 
-        std::ofstream& write(std::ofstream& out) override
+        std::ostream& write(std::ostream& out) override
         {
             out << id_;
             return base::write(out);
         }
 
-        std::ifstream& read(std::ifstream& in) override
+        std::istream& read(std::istream& in) override
         {
             in >> id_;
             return base::read(in);

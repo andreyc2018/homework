@@ -1,6 +1,7 @@
 #pragma once
 
 #include "document.h"
+#include <tuple>
 #include <vector>
 #include <memory>
 #include <fstream>
@@ -13,7 +14,10 @@ class Svge
         Svge() {}
         ~Svge() {}
 
-        item_id_t create_new_document();
+        item_id_t create_document()
+        {
+            if (docs_) {}
+        }
 
         void export_document(item_id_t id, const std::string& filename)
         {
@@ -21,7 +25,7 @@ class Svge
         }
 
     private:
-        std::vector<Document> docs_;
+        DocumentUPtr docs_;
 };
 
 using SvgeUPtr = std::unique_ptr<Svge>;

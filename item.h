@@ -26,8 +26,8 @@ class Item
         virtual ~Item() {}
 
         item_id_t id() const { return id_; }
-        virtual std::ofstream& write(std::ofstream& out) = 0;
-        virtual std::ifstream& read(std::ifstream& in) = 0;
+        virtual std::ostream& write(std::ostream& out) = 0;
+        virtual std::istream& read(std::istream& in) = 0;
 
     protected:
         const item_id_t id_;
@@ -46,7 +46,8 @@ class SimpleItem : public Item
 };
 
 /**
- * @brief The ComplexItem is a container class in the Composite pattern
+ * @brief The ComplexItem is a container class for the other Items
+ *        in the Composite pattern
  */
 class ComplexItem : public Item
 {
@@ -60,7 +61,7 @@ class ComplexItem : public Item
             items_.clear();
         }
 
-        std::ofstream& write(std::ofstream& out) override
+        std::ostream& write(std::ostream& out) override
         {
             for (auto& v : items_) {
                 v.second->write(out);
@@ -68,7 +69,7 @@ class ComplexItem : public Item
             return out;
         }
 
-        std::ifstream& read(std::ifstream& in) override
+        std::istream& read(std::istream& in) override
         {
             for (auto& v : items_) {
                 v.second->read(in);
