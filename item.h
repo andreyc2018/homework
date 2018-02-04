@@ -1,17 +1,20 @@
 #pragma once
-/** @file item.h
+/**
+ * @file item.h
  *  @brief The base classes for the graphic primitives.
  */
 
 #include <map>
-#include <memory>
-#include <string>
-#include <atomic>
-#include <fstream>
+//#include <iostream>
 
 namespace svge {
 
 using item_id_t = size_t;
+
+enum class item_type_t
+{
+    Point, Line
+};
 
 /**
  * @brief The Item is a base class of a Composite pattern.
@@ -55,10 +58,7 @@ class ComplexItem : public Item
         ComplexItem(const item_id_t& v) : Item(v) {}
         ~ComplexItem()
         {
-            for (auto& v : items_) {
-                delete v.second;
-            }
-            items_.clear();
+            clear();
         }
 
         std::ostream& write(std::ostream& out) override
@@ -89,33 +89,16 @@ class ComplexItem : public Item
             items_.erase(v);
         }
 
+        void clear()
+        {
+            for (auto& v : items_) {
+                delete v.second;
+            }
+            items_.clear();
+        }
+
     protected:
         items_t items_;
 };
-
-/**
- * @brief generate an id for an item
- * @return generated id
- */
-inline item_id_t generate_id()
-{
-    static std::atomic<item_id_t> next_id(1);
-    item_id_t id = next_id;
-    next_id.fetch_add(1, std::memory_order_relaxed);
-    return id;
-}
-
-/**
- * @brief Create new item of type T
- * @param args - list of arguments for a constructor, except item id
- *        item id will be generated and provided as a first argument of
- *        the constuctor
- * @return an item of type T*
- */
-template<typename T, typename... Args>
-inline T* create_item(Args&&... args)
-{
-    return new T(generate_id(), std::forward<Args>(args)...);
-}
 
 }

@@ -1,33 +1,60 @@
 #pragma once
+/**
+ * @file svge.h
+ */
 
 #include "document.h"
-#include <tuple>
-#include <vector>
-#include <memory>
-#include <fstream>
+#include "storage.h"
+#include "logger.h"
 
 namespace svge {
 
+/**
+ * @brief Simple Vector Graphics Editor
+ *
+ * Contains a document and storage subsystem
+ */
 class Svge
 {
     public:
-        Svge() {}
+        Svge(const LoggerPtr& logger)
+            : logger_(logger)
+            , doc_(std::make_unique<Document>(logger))
+            , storage_(logger) {}
         ~Svge() {}
 
-        item_id_t create_document()
+        void create_document()
         {
-            if (docs_) {}
+            // There is no checking if the document contains some modifications.
+            // Just clean it up and move forward.
+            doc_->reset();
         }
 
-        void export_document(item_id_t id, const std::string& filename)
+        void export_document(const std::string& filename)
         {
+            storage_.export_document(filename, doc_);
+        }
 
+        void import_document(const std::string& filename)
+        {
+            doc_ = storage_.import_document(filename);
+        }
+
+        item_id_t create_item(item_type_t type)
+        {
+            doc_->create_item(type);
+        }
+
+        void delete_item(item_id_t id)
+        {
+            doc_->delete_item(id);
         }
 
     private:
-        DocumentUPtr docs_;
-};
+        LoggerPtr logger_;
+        DocumentUPtr doc_;
+        Storage storage_;
 
-using SvgeUPtr = std::unique_ptr<Svge>;
+};
 
 }

@@ -24,9 +24,10 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(HEADER_FILES document.h item.h svgecontroller.h svge.h point.h line.h storage.h)
+set(HEADER_FILES document.h item.h svgecontroller.h svge.h
+        point.h line.h storage.h logger.h)
 
-add_executable(svge main.cpp hw_assignment.md design.md
+add_executable(svge main.cpp
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 #add_library(homework_tools homework_tools.cpp hw_assignment.md ${HEADER_FILES})
@@ -66,7 +67,8 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
     add_subdirectory(sandbox EXCLUDE_FROM_ALL)
 endif()
 
-message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD}")
+message(STATUS "Homework version
+        ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD}")
 
 find_package(Doxygen)
 if (DOXYGEN_FOUND)
@@ -76,8 +78,14 @@ if (DOXYGEN_FOUND)
 
     # request to configure the file
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/README.md ${CMAKE_CURRENT_BINARY_DIR}/docs/README.md COPYONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/_config.yml ${CMAKE_CURRENT_BINARY_DIR}/docs/_config.yml COPYONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/README.md
+            ${CMAKE_CURRENT_BINARY_DIR}/docs/README.md COPYONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/hw_assignment.md
+            ${CMAKE_CURRENT_BINARY_DIR}/docs/hw_assignment.md COPYONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/design.md
+            ${CMAKE_CURRENT_BINARY_DIR}/docs/design.md COPYONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/_config.yml
+            ${CMAKE_CURRENT_BINARY_DIR}/docs/_config.yml COPYONLY)
 
     # note the option ALL which allows to build the docs together with the application
     #add_custom_target(doc_doxygen ALL

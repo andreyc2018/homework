@@ -4,6 +4,7 @@
  */
 
 #include "svge.h"
+#include "logger.h"
 #include <vector>
 
 namespace svge {
@@ -11,17 +12,37 @@ namespace svge {
 class SvgeController
 {
     public:
-        SvgeController() : editor_(std::make_unique<Svge>()) {}
+        SvgeController(const LoggerPtr& logger) : logger_(logger), editor_(logger) {}
         ~SvgeController();
 
-        item_id_t create_document() { return editor_->create_document(); }
-        void export_document(const std::string& filename) {}
-        void import_document(const std::string& filename) {}
-        item_id_t create_item() {}
-        void delete_item(item_id_t id) {}
+        void create_document()
+        {
+            editor_.create_document();
+        }
+
+        void export_document(const std::string& filename)
+        {
+            editor_.export_document(filename);
+        }
+
+        void import_document(const std::string& filename)
+        {
+            editor_.import_document(filename);
+        }
+
+        item_id_t create_item(item_type_t type)
+        {
+            return editor_.create_item(type);
+        }
+
+        void delete_item(item_id_t id)
+        {
+            editor_.delete_item(id);
+        }
 
     private:
-        SvgeUPtr editor_;
+        LoggerPtr logger_;
+        Svge editor_;
 };
 
 }
