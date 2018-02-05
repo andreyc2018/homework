@@ -18,15 +18,19 @@ set(homework_VERSION_BUILD ${BUILD_NUM})
 project(svge VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+
+find_package(Threads REQUIRED)
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
 configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(HEADER_FILES graphicsprimitive.h
-        document.h item.h svgecontroller.h svge.h
-        point.h line.h storage.h logger.h itemcreator.h)
+#set(HEADER_FILES graphicsprimitive.h
+#        document.h item.h svge.h
+#        point.h line.h storage.h logger.h itemcreator.h)
+set(HEADER_FILES graphicsprimitive.h document.h svge.h storage.h logger.h)
 
 add_executable(svge main.cpp
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
@@ -44,10 +48,11 @@ set_target_properties(test_version PROPERTIES
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
+target_link_libraries(svge Threads::Threads)
 #target_link_libraries(svge homework_tools)
 
 #target_link_libraries(test_version ${Boost_LIBRARIES} homework_tools)
-target_link_libraries(test_version ${Boost_LIBRARIES})
+target_link_libraries(test_version ${Boost_LIBRARIES} Threads::Threads)
 
 install(TARGETS svge RUNTIME DESTINATION bin)
 

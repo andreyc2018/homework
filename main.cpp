@@ -4,60 +4,61 @@
  *
  *  GUI events.
  */
-#include "svgecontroller.h"
+#include "svge.h"
 #include "logger.h"
 
 #include <iostream>
 #include <string>
 
-using svge::SvgeController;
-using svge::item_id_t;
-using svge::item_type_t;
+using svge::Svge;
+using svge::gp_id_t;
+using svge::gs_type_t;
+
+LoggerPtr gLogger = spdlog::stdout_logger_mt("console");
 
 class GuiApp
 {
     public:
-        GuiApp(const LoggerPtr& logger) : logger_(logger), controller_(logger) {}
+        GuiApp() {}
         ~GuiApp() {}
 
         void on_new_document()
         {
+            TRACE();
             controller_.create_document();
-            logger_->info("created new document");
+            gLogger->info("created new document");
         }
 
-        void on_export_document(const std::string& filename)
-        {
-            controller_.export_document(filename);
-            logger_->info("exported document to a file {}", filename);
-        }
+//        void on_export_document(const std::string& filename)
+//        {
+//            controller_.export_document(filename);
+//            gLogger->info("exported document to a file {}", filename);
+//        }
 
-        void on_import_document(const std::string& filename)
-        {
-            controller_.import_document(filename);
-        }
+//        void on_import_document(const std::string& filename)
+//        {
+//            controller_.import_document(filename);
+//        }
 
-        void on_create_item(item_type_t type)
-        {
-            item_id_t id = controller_.create_item(type);
-            logger_->info("Added item id = {}", id);
-        }
+//        void on_create_item(item_type_t type)
+//        {
+//            item_id_t id = controller_.create_item(type);
+//            gLogger->info("Added item id = {}", id);
+//        }
 
-        void on_delete_item(item_id_t id)
-        {
-            controller_.delete_item(id);
-        }
+//        void on_delete_item(item_id_t id)
+//        {
+//            controller_.delete_item(id);
+//        }
 
     private:
-        LoggerPtr logger_;
-        SvgeController controller_;
+        Svge controller_;
 };
 
 int main(int, char const**)
 {
     try {
-        auto console = spdlog::stdout_logger_mt("console");
-        GuiApp app(console);
+        GuiApp app;
         app.on_new_document();
 
     }

@@ -5,3 +5,8 @@
 #include <spdlog/spdlog.h>
 
 using LoggerPtr = std::shared_ptr<spdlog::logger>;
+
+extern LoggerPtr gLogger;
+
+#define TRACE()  SPDLOG_TRACE(gLogger)
+

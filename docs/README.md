@@ -1,4 +1,5 @@
 # Homework documentation
+[Assignment](hw_assignment.md)
 [Generated from sources](html/index.html)
 
 # Sources of the inspiration
