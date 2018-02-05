@@ -5,16 +5,55 @@
  */
 
 #include <map>
-//#include <iostream>
+#include <iostream>
 
 namespace svge {
 
+class Item;
+
 using item_id_t = size_t;
 
-enum class item_type_t
+enum class item_type_t : uint8_t
 {
-    Point, Line
+    Unknown, Document, Point, Line
 };
+
+/**
+ * @brief Create new item of type T
+ * @param args - list of arguments for a constructor, except item id
+ *        item id will be generated and provided as a first argument of
+ *        the constuctor
+ * @return an item of type T*
+ */
+template<typename T, typename... Args>
+inline T* new_item(item_id_t id, Args&&... args)
+{
+    return new T(id, std::forward<Args>(args)...);
+}
+
+class IItemCreator
+{
+    public:
+        virtual ~IItemCreator() {}
+
+        virtual Item* create(item_type_t type) = 0;
+};
+
+Item* create_item(item_type_t type)
+{
+    Item* item = nullptr;
+    switch(type) {
+        case item_type_t::Point:
+            item = new_item<Point>(next_id());
+            break;
+        case item_type_t::Line:
+            item = new_item<Line>(next_id());
+            break;
+        default:
+            break;
+    }
+    return item;
+}
 
 /**
  * @brief The Item is a base class of a Composite pattern.
@@ -25,15 +64,17 @@ enum class item_type_t
 class Item
 {
     public:
-        Item(const item_id_t& v) : id_(v) {}
+        Item(item_id_t v, item_type_t t) : id_(v), type_(t) {}
         virtual ~Item() {}
 
         item_id_t id() const { return id_; }
+        item_type_t type() const { return type_; }
         virtual std::ostream& write(std::ostream& out) = 0;
         virtual std::istream& read(std::istream& in) = 0;
 
     protected:
-        const item_id_t id_;
+        item_id_t id_;
+        item_type_t type_;
 };
 
 using items_t = std::map<item_id_t, Item*>;
@@ -44,7 +85,7 @@ using items_t = std::map<item_id_t, Item*>;
 class SimpleItem : public Item
 {
     public:
-        SimpleItem(const item_id_t& v) : Item (v) {}
+        SimpleItem(item_id_t v, item_type_t t) : Item (v, t) {}
         ~SimpleItem() {}
 };
 
@@ -55,7 +96,7 @@ class SimpleItem : public Item
 class ComplexItem : public Item
 {
     public:
-        ComplexItem(const item_id_t& v) : Item(v) {}
+        ComplexItem(item_id_t v, item_type_t t) : Item(v, t) {}
         ~ComplexItem()
         {
             clear();
@@ -64,6 +105,7 @@ class ComplexItem : public Item
         std::ostream& write(std::ostream& out) override
         {
             for (auto& v : items_) {
+                out << static_cast<uint8_t>(v.second->type());
                 v.second->write(out);
             }
             return out;
@@ -71,8 +113,14 @@ class ComplexItem : public Item
 
         std::istream& read(std::istream& in) override
         {
-            for (auto& v : items_) {
-                v.second->read(in);
+            size_t items_size = 0;
+            in >> items_size;
+            for (size_t i = 0; i < items_size; ++i) {
+                uint8_t type;
+                in >> type;
+                auto item = create_item(static_cast<item_type_t>(type));
+                item->read(in);
+                add_item(item);
             }
             return in;
         }

@@ -23,11 +23,13 @@ class GuiApp
         void on_new_document()
         {
             controller_.create_document();
+            logger_->info("created new document");
         }
 
         void on_export_document(const std::string& filename)
         {
             controller_.export_document(filename);
+            logger_->info("exported document to a file {}", filename);
         }
 
         void on_import_document(const std::string& filename)

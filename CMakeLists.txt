@@ -25,7 +25,7 @@ configure_file(version.h.in version.h)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(HEADER_FILES document.h item.h svgecontroller.h svge.h
-        point.h line.h storage.h logger.h)
+        point.h line.h storage.h logger.h itemcreator.h)
 
 add_executable(svge main.cpp
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)

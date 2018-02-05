@@ -2,6 +2,7 @@
 
 #include "document.h"
 #include "logger.h"
+#include <fstream>
 
 namespace svge {
 
@@ -15,12 +16,15 @@ class Storage
         {
             auto doc = std::make_unique<Document>(logger_);
             logger_->info("Import document from file {}", filename);
+            std::ifstream file(filename, std::ios::binary);
+            doc->read(file);
             return doc;
         }
 
         void export_document(const std::string& filename, const DocumentUPtr& doc)
         {
-            logger_->info("Export document {} to file {}", doc, filename);
+            std::ofstream file(filename, std::ios::binary);
+            doc->write(file);
         }
 
     private:
