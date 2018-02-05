@@ -24,7 +24,8 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(HEADER_FILES document.h item.h svgecontroller.h svge.h
+set(HEADER_FILES graphicsprimitive.h
+        document.h item.h svgecontroller.h svge.h
         point.h line.h storage.h logger.h itemcreator.h)
 
 add_executable(svge main.cpp
@@ -82,8 +83,6 @@ if (DOXYGEN_FOUND)
             ${CMAKE_CURRENT_BINARY_DIR}/docs/README.md COPYONLY)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/hw_assignment.md
             ${CMAKE_CURRENT_BINARY_DIR}/docs/hw_assignment.md COPYONLY)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/design.md
-            ${CMAKE_CURRENT_BINARY_DIR}/docs/design.md COPYONLY)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/_config.yml
             ${CMAKE_CURRENT_BINARY_DIR}/docs/_config.yml COPYONLY)
 
