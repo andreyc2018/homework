@@ -16,13 +16,13 @@ class Storage
         {
             TRACE();
             auto doc = std::make_unique<Document>();
-//            gLogger->info("Import document from file {}", filename);
+            gLogger->info("Import document from file {}", filename);
 //            std::ifstream file(filename, std::ios::binary);
 //            doc->read(file);
             return doc;
         }
 
-        void export_document(const std::string& filename, const DocumentUPtr& doc)
+        void export_document(const std::string& filename, const DocumentUPtr& /*doc*/)
         {
             TRACE();
             std::ofstream file(filename, std::ios::binary);
