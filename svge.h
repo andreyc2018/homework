@@ -24,7 +24,8 @@ class Svge
         {
             TRACE();
             // There is no checking if the document contains any modifications.
-            doc_ = std::make_unique<Document>();
+            // std::make_unique() is not available on Travis
+            doc_.reset(new Document);
         }
 
 //        void export_document(const std::string& filename)
