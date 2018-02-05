@@ -15,7 +15,8 @@ class Storage
         DocumentUPtr import_document(const std::string& filename)
         {
             TRACE();
-            auto doc = std::make_unique<Document>();
+            // std::make_unique() is not available on Travis
+            DocumentUPtr doc(new Document);
             gLogger->info("Import document from file {}", filename);
 //            std::ifstream file(filename, std::ios::binary);
 //            doc->read(file);
