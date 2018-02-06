@@ -5,10 +5,11 @@
  */
 
 #include "graphicsprimitive.h"
-//#include "point.h"
-//#include "line.h"
+#include "point.h"
+#include "vector.h"
 #include "logger.h"
 #include <vector>
+#include <iostream>
 
 namespace svge {
 
@@ -29,22 +30,55 @@ class Document
             }
         }
 
-//        std::ostream& write(std::ostream& out)
-//        {
-//            if (!modified_) {
-//                out << shapes_.size();
-//                for (const auto& shape : shapes_) {
-//                    shape.second->write(out);
-//                }
-//            }
-//            return out;
-//        }
+        std::ostream& write(std::ostream& out)
+        {
+            TRACE();
+            if (modified_) {
+                out << shapes_.size();
+                for (const auto& shape : shapes_) {
+                    shape.second->write(out);
+                }
+            }
+            return out;
+        }
 
-//        std::istream& read(std::istream& in)
-//        {
-//            return in;
-//        }
+        std::istream& read(std::istream& in)
+        {
+            TRACE();
+            size_t shapes_size = 0;
+            in >> shapes_size;
+            for (size_t i = 0; i < shapes_size; ++i) {
+                gs_type_t type;
+                in >> type;
+                GraphicsPrimitive* item = make_item(type);
+                item->read(in);
+                shapes_[item->id()] = item;
+            }
+            return in;
+        }
 
+        gp_id_t create_item(gs_type_t type)
+        {
+            GraphicsPrimitive* item = make_item(type);
+            shapes_[item->id()] = item;
+            return item->id();
+        }
+
+        GraphicsPrimitive* make_item(gs_type_t type)
+        {
+            GraphicsPrimitive* item = nullptr;
+            switch(type) {
+                case gs_type_t::Point:
+                    item = new Point;
+                    break;
+                case gs_type_t::Vector:
+                    item = new Vector;
+                    break;
+                default:
+                    break;
+            }
+            return item;
+        }
     private:
         gp_id_t next_id_;
         bool modified_;

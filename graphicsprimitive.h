@@ -14,8 +14,26 @@ using gp_id_t = size_t;
  */
 enum class gs_type_t : uint8_t
 {
-    Point, Vector
+    Point = 1, Vector, Unknown
 };
+
+std::istream& operator>> (std::istream& in, gs_type_t& val)
+{
+    uint8_t t;
+    uint8_t min = static_cast<uint8_t>(gs_type_t::Point);
+    uint8_t max = static_cast<uint8_t>(gs_type_t::Unknown);
+    in >> t;
+    if (t >= min && t < max) {
+        val = static_cast<gs_type_t>(t);
+    }
+    return in;
+}
+
+std::ostream& operator<< (std::ostream& out, gs_type_t val)
+{
+    out << static_cast<uint8_t>(val);
+    return out;
+}
 
 class GraphicsPrimitive;
 
@@ -25,6 +43,10 @@ class GraphicsPrimitive
 {
     public:
         GraphicsPrimitive() : id_(0)
+        {
+            TRACE();
+        }
+        explicit GraphicsPrimitive(gs_type_t type) : type_(type)
         {
             TRACE();
         }
@@ -52,12 +74,12 @@ class GraphicsShape : public GraphicsPrimitive
     public:
         GraphicsShape()
         {
-            SPDLOG_TRACE(gLogger);
+            TRACE();
         }
 
         ~GraphicsShape()
         {
-            SPDLOG_TRACE(gLogger);
+            TRACE();
             for (const auto& item : items_) {
                 delete item.second;
             }
@@ -65,7 +87,7 @@ class GraphicsShape : public GraphicsPrimitive
 
         std::ostream& write(std::ostream& out) override
         {
-            SPDLOG_TRACE(gLogger);
+            TRACE();
             out << items_.size();
             for (const auto& item : items_) {
                 item.second->write(out);
@@ -73,8 +95,43 @@ class GraphicsShape : public GraphicsPrimitive
             return out;
         }
 
+        void add_item(GraphicsPrimitive* p)
+        {
+            items_[p->id()] = p;
+        }
+
     protected:
         gp_container_t items_;
 };
+
+std::ostream& GraphicsPrimitive::write(std::ostream& out)
+{
+    TRACE();
+    out << type_ << id_;
+    return out;
+}
+
+std::istream& GraphicsPrimitive::read(std::istream& in)
+{
+    TRACE();
+    in >> id_;
+    return in;
+}
+
+//GraphicsPrimitive* make_gp(gs_type_t type)
+//{
+//    GraphicsPrimitive* item = nullptr;
+//    switch(type) {
+//        case gs_type_t::Point:
+//            item = new Point;
+//            break;
+//        case gs_type_t::Vector:
+//            item = new Vector;
+//            break;
+//        default:
+//            break;
+//    }
+//    return item;
+//}
 
 }

@@ -2,18 +2,30 @@
 /** @file point.h
  *  @brief Point
  */
-#include "item.h"
+#include "graphicsprimitive.h"
+#include "logger.h"
 
 namespace svge {
 
-class Point : public SimpleItem
+class Point : public GraphicsPrimitive
 {
     public:
-        Point(item_id_t id)
-            : SimpleItem(id, item_type_t::Point), x_(0), y_(0) {}
+        using base = GraphicsPrimitive;
 
-        Point(item_id_t id, ssize_t x, ssize_t y)
-            : SimpleItem(id, item_type_t::Point), x_(x), y_(y) {}
+        Point() : x_(0), y_(0)
+        {
+            TRACE();
+        }
+
+        Point(ssize_t x, ssize_t y) : x_(x), y_(y)
+        {
+            TRACE();
+        }
+
+        ~Point()
+        {
+            TRACE();
+        }
 
         ssize_t x() const { return x_; }
         void setX(const ssize_t& x) { x_ = x; }
@@ -23,12 +35,18 @@ class Point : public SimpleItem
 
         std::ostream& write(std::ostream& out) override
         {
+            TRACE();
+            base::write(out);
             out << x_ << y_;
             return out;
         }
 
         std::istream& read(std::istream& in) override
         {
+            TRACE();
+            base::read(in);
+            in >> x_ >> y_;
+            return in;
         }
 
     protected:

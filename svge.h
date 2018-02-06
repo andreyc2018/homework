@@ -28,20 +28,20 @@ class Svge
             doc_.reset(new Document);
         }
 
-//        void export_document(const std::string& filename)
-//        {
-//            storage_.export_document(filename, doc_);
-//        }
+        void export_document(const std::string& filename)
+        {
+            storage_.export_document(filename, doc_);
+        }
 
-//        void import_document(const std::string& filename)
-//        {
-//            doc_ = storage_.import_document(filename);
-//        }
+        void import_document(const std::string& filename)
+        {
+            doc_ = storage_.import_document(filename);
+        }
 
-//        item_id_t create_item(item_type_t type)
-//        {
-////            doc_->create_item(type);
-//        }
+        gp_id_t create_item(gs_type_t type)
+        {
+            return doc_->create_item(type);
+        }
 
 //        void delete_item(item_id_t id)
 //        {

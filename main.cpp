@@ -14,7 +14,7 @@ using svge::Svge;
 using svge::gp_id_t;
 using svge::gs_type_t;
 
-LoggerPtr gLogger = spdlog::stdout_logger_mt("console");
+LoggerPtr gLogger = spdlog::stdout_logger_mt("console", true);
 
 class GuiApp
 {
@@ -29,22 +29,24 @@ class GuiApp
             gLogger->info("created new document");
         }
 
-//        void on_export_document(const std::string& filename)
-//        {
-//            controller_.export_document(filename);
-//            gLogger->info("exported document to a file {}", filename);
-//        }
+        void on_export_document(const std::string& filename)
+        {
+            controller_.export_document(filename);
+            gLogger->info("exported document to a file {}", filename);
+        }
 
-//        void on_import_document(const std::string& filename)
-//        {
-//            controller_.import_document(filename);
-//        }
+        void on_import_document(const std::string& filename)
+        {
+            controller_.import_document(filename);
+            gLogger->info("imported document from a file {}", filename);
+        }
 
-//        void on_create_item(item_type_t type)
-//        {
-//            item_id_t id = controller_.create_item(type);
-//            gLogger->info("Added item id = {}", id);
-//        }
+        gp_id_t on_create_item(gs_type_t type)
+        {
+            gp_id_t id = controller_.create_item(type);
+            gLogger->info("Added item id = {}", id);
+            return id;
+        }
 
 //        void on_delete_item(item_id_t id)
 //        {
@@ -55,12 +57,16 @@ class GuiApp
         Svge controller_;
 };
 
-int main(int, char const**)
+int main(int argc, char const**)
 {
     try {
+        if (argc > 1)
+            gLogger->set_level(spdlog::level::trace);
         GuiApp app;
         app.on_new_document();
-
+        app.on_create_item(gs_type_t::Point);
+        app.on_export_document("hello.svg");
+        app.on_import_document("hello.svg");
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;
