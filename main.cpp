@@ -48,7 +48,7 @@ class GuiApp
             return id;
         }
 
-//        void on_delete_item(item_id_t id)
+//        void on_delete_item(gp_id_t id)
 //        {
 //            controller_.delete_item(id);
 //        }
@@ -65,6 +65,7 @@ int main(int argc, char const**)
         GuiApp app;
         app.on_new_document();
         app.on_create_item(gs_type_t::Point);
+        app.on_create_item(gs_type_t::Vector);
         app.on_export_document("hello.svg");
         app.on_import_document("hello.svg");
     }

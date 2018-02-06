@@ -37,16 +37,17 @@ std::ostream& operator<< (std::ostream& out, gs_type_t val)
 
 class GraphicsPrimitive;
 
-using gp_container_t = std::map<gp_id_t, GraphicsPrimitive*>;
+using GPUPtr = std::unique_ptr<GraphicsPrimitive>;
+using gp_container_t = std::map<gp_id_t, GPUPtr>;
 
 class GraphicsPrimitive
 {
     public:
-        GraphicsPrimitive() : id_(0)
+        GraphicsPrimitive() : type_(gs_type_t::Unknown), id_(0)
         {
             TRACE();
         }
-        explicit GraphicsPrimitive(gs_type_t type) : type_(type)
+        explicit GraphicsPrimitive(gs_type_t type) : type_(type), id_(0)
         {
             TRACE();
         }
@@ -65,43 +66,16 @@ class GraphicsPrimitive
         virtual std::istream& read(std::istream& in) = 0;
 
     protected:
-        gp_id_t id_;
         gs_type_t type_;
+        gp_id_t id_;
 };
 
 class GraphicsShape : public GraphicsPrimitive
 {
     public:
-        GraphicsShape()
-        {
-            TRACE();
-        }
-
-        ~GraphicsShape()
-        {
-            TRACE();
-            for (const auto& item : items_) {
-                delete item.second;
-            }
-        }
-
-        std::ostream& write(std::ostream& out) override
-        {
-            TRACE();
-            out << items_.size();
-            for (const auto& item : items_) {
-                item.second->write(out);
-            }
-            return out;
-        }
-
-        void add_item(GraphicsPrimitive* p)
-        {
-            items_[p->id()] = p;
-        }
-
-    protected:
-        gp_container_t items_;
+        GraphicsShape() { TRACE(); }
+        explicit GraphicsShape(gs_type_t type) : GraphicsPrimitive(type) {}
+        ~GraphicsShape() { TRACE(); }
 };
 
 std::ostream& GraphicsPrimitive::write(std::ostream& out)
@@ -117,21 +91,5 @@ std::istream& GraphicsPrimitive::read(std::istream& in)
     in >> id_;
     return in;
 }
-
-//GraphicsPrimitive* make_gp(gs_type_t type)
-//{
-//    GraphicsPrimitive* item = nullptr;
-//    switch(type) {
-//        case gs_type_t::Point:
-//            item = new Point;
-//            break;
-//        case gs_type_t::Vector:
-//            item = new Vector;
-//            break;
-//        default:
-//            break;
-//    }
-//    return item;
-//}
 
 }

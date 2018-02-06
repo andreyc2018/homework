@@ -17,7 +17,7 @@ class Document
 {
     public:
 
-        Document() : next_id_(1), modified_(false)
+        Document() : next_id_(1)
         {
             TRACE();
         }
@@ -25,19 +25,14 @@ class Document
         ~Document()
         {
             TRACE();
-            for (const auto& shape : shapes_) {
-                delete shape.second;
-            }
         }
 
         std::ostream& write(std::ostream& out)
         {
             TRACE();
-            if (modified_) {
-                out << shapes_.size();
-                for (const auto& shape : shapes_) {
-                    shape.second->write(out);
-                }
+            out << shapes_.size();
+            for (const auto& shape : shapes_) {
+                shape.second->write(out);
             }
             return out;
         }
@@ -50,38 +45,39 @@ class Document
             for (size_t i = 0; i < shapes_size; ++i) {
                 gs_type_t type;
                 in >> type;
-                GraphicsPrimitive* item = make_item(type);
+                GPUPtr item = make_item(type);
                 item->read(in);
-                shapes_[item->id()] = item;
+                shapes_[item->id()] = std::move(item);
             }
             return in;
         }
 
         gp_id_t create_item(gs_type_t type)
         {
-            GraphicsPrimitive* item = make_item(type);
-            shapes_[item->id()] = item;
-            return item->id();
+            GPUPtr item = make_item(type);
+            gp_id_t id = item->id();
+            shapes_[id] = std::move(item);
+            return id;
         }
 
-        GraphicsPrimitive* make_item(gs_type_t type)
+        GPUPtr make_item(gs_type_t type)
         {
-            GraphicsPrimitive* item = nullptr;
+            GPUPtr item = nullptr;
             switch(type) {
                 case gs_type_t::Point:
-                    item = new Point;
+                    item.reset(new Point);
                     break;
                 case gs_type_t::Vector:
-                    item = new Vector;
+                    item.reset(new Vector);
                     break;
                 default:
                     break;
             }
+            item->setId(next_id());
             return item;
         }
     private:
         gp_id_t next_id_;
-        bool modified_;
         gp_container_t shapes_;
 
         gp_id_t next_id() { return next_id_++; }

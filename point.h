@@ -12,12 +12,7 @@ class Point : public GraphicsPrimitive
     public:
         using base = GraphicsPrimitive;
 
-        Point() : x_(0), y_(0)
-        {
-            TRACE();
-        }
-
-        Point(ssize_t x, ssize_t y) : x_(x), y_(y)
+        Point() : base(gs_type_t::Point), x_(0), y_(0)
         {
             TRACE();
         }
