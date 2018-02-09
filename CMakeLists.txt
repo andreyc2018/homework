@@ -25,7 +25,7 @@ add_executable(hieroglyphs hieroglyphs.cpp docs/1545-Hieroglyphs.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 add_executable(spammer spammer.cpp docs/1496-Spammer.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(history_exam history_exam.cpp
+add_executable(history_exam history_exam.cpp docs/1196-History_Exam.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 add_executable(isenbaev_s_number isenbaev_s_number.cpp
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
