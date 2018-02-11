@@ -22,18 +22,18 @@ void read_input(T& student, T& proffesor)
     }
 }
 
-template<typename T>
-void print_input(const T& student, const T& proffesor)
-{
-    std::cout << "Proffesor:\n";
-    for (const auto& s : proffesor) {
-        std::cout << s << "\n";
-    }
-    std::cout << "Student:\n";
-    for (const auto& s : student) {
-        std::cout << s << "\n";
-    }
-}
+// template<typename T>
+// void print_input(const T& student, const T& proffesor)
+// {
+//     std::cout << "Proffesor:\n";
+//     for (const auto& s : proffesor) {
+//         std::cout << s << "\n";
+//     }
+//     std::cout << "Student:\n";
+//     for (const auto& s : student) {
+//         std::cout << s << "\n";
+//     }
+// }
 
 template<typename T>
 void print_output(T& student, T& proffesor)
@@ -44,19 +44,19 @@ void print_output(T& student, T& proffesor)
     std::set_intersection(proffesor.begin(), proffesor.end(),
                           student.begin(), student.end(),
                           std::back_inserter(intersection));
-    std::cout << "Proffesor:\n";
-    for (const auto& s : proffesor) {
-        std::cout << s << "\n";
-    }
-    std::cout << "Student:\n";
-    for (const auto& s : student) {
-        std::cout << s << "\n";
-    }
-    std::cout << "Intersection:\n";
+    // std::cout << "Proffesor:\n";
+    // for (const auto& s : proffesor) {
+    //     std::cout << s << "\n";
+    // }
+    // std::cout << "Student:\n";
+    // for (const auto& s : student) {
+    //     std::cout << s << "\n";
+    // }
+    // std::cout << "Intersection:\n";
 
-    for (const auto& s : intersection) {
-        std::cout << s << "\n";
-    }
+    // for (const auto& s : intersection) {
+    //     std::cout << s << "\n";
+    // }
 
     size_t count = 0;
     for (const auto& s : intersection) {
