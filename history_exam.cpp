@@ -40,13 +40,13 @@ typename std::iterator_traits<InputIt>::difference_type
     count_until(InputIt first, InputIt last, const T& value)
 {
     typename std::iterator_traits<InputIt>::difference_type ret = 0;
-    std::cout << "enter: " << *first << " : " << *(last-1) << "\n";
+    // std::cout << "enter: " << *first << " : " << *(last-1) << "\n";
     for (; first != last && *first <= value; ++first) {
         if (*first == value) {
             ret++;
         }
     }
-    std::cout << "exit: " << *first << " : " << *(last-1) << "\n";
+    // std::cout << "exit: " << *first << " : " << *(last-1) << "\n";
 
     return ret;
 }
@@ -76,7 +76,10 @@ void print_output(T& student, T& professor)
 
     size_t count = 0;
     for (const auto& s : professor) {
-        count += count_until(student.begin(), student.end(), s);
+        // count += count_until(student.begin(), student.end(), s);
+        auto lower = std::lower_bound(student.begin(), student.end(), s);
+        auto upper = std::upper_bound(student.begin(), student.end(), s);
+        count += std::distance(lower, upper);
     }
     std::cout << count << "\n";
 }
