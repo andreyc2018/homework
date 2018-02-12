@@ -4,7 +4,7 @@
 #include <algorithm>
 
 template<typename T>
-void read_input(T& student, T& proffesor)
+void read_input(T& student, T& professor)
 {
     size_t n;
     std::string line;
@@ -12,7 +12,7 @@ void read_input(T& student, T& proffesor)
     n = std::stoul(line);
     for (size_t i = 0; i < n; ++i) {
         std::getline(std::cin, line);
-        proffesor.push_back(line);
+        professor.push_back(line);
     }
     std::getline(std::cin, line);
     n = std::stoul(line);
@@ -23,10 +23,10 @@ void read_input(T& student, T& proffesor)
 }
 
 // template<typename T>
-// void print_input(const T& student, const T& proffesor)
+// void print_input(const T& student, const T& professor)
 // {
-//     std::cout << "Proffesor:\n";
-//     for (const auto& s : proffesor) {
+//     std::cout << "professor:\n";
+//     for (const auto& s : professor) {
 //         std::cout << s << "\n";
 //     }
 //     std::cout << "Student:\n";
@@ -35,32 +35,48 @@ void read_input(T& student, T& proffesor)
 //     }
 // }
 
+template<class InputIt, class T>
+typename std::iterator_traits<InputIt>::difference_type
+    count_until(InputIt first, InputIt last, const T& value)
+{
+    typename std::iterator_traits<InputIt>::difference_type ret = 0;
+    std::cout << "enter: " << *first << " : " << *(last-1) << "\n";
+    for (; first != last && *first <= value; ++first) {
+        if (*first == value) {
+            ret++;
+        }
+    }
+    std::cout << "exit: " << *first << " : " << *(last-1) << "\n";
+
+    return ret;
+}
+
 template<typename T>
-void print_output(T& student, T& proffesor)
+void print_output(T& student, T& professor)
 {
     std::sort(student.begin(), student.end());
-    std::sort(proffesor.begin(), proffesor.end());
-    T intersection;
-    std::set_intersection(proffesor.begin(), proffesor.end(),
-                          student.begin(), student.end(),
-                          std::back_inserter(intersection));
-    // std::cout << "Proffesor:\n";
-    // for (const auto& s : proffesor) {
-    //     std::cout << s << "\n";
-    // }
-    // std::cout << "Student:\n";
-    // for (const auto& s : student) {
-    //     std::cout << s << "\n";
-    // }
-    // std::cout << "Intersection:\n";
+    // std::sort(professor.begin(), professor.end());
+    // T intersection;
+    // std::set_difference(student.begin(), student.end(),
+    //                       professor.begin(), professor.end(),
+    //                       std::back_inserter(intersection));
+    std::cout << "professor:\n";
+    for (const auto& s : professor) {
+        std::cout << s << "\n";
+    }
+    std::cout << "Student:\n";
+    for (const auto& s : student) {
+        std::cout << s << "\n";
+    }
+    std::cout << "Intersection:\n";
 
     // for (const auto& s : intersection) {
     //     std::cout << s << "\n";
     // }
 
     size_t count = 0;
-    for (const auto& s : intersection) {
-        count += std::count(student.begin(), student.end(), s);
+    for (const auto& s : professor) {
+        count += count_until(student.begin(), student.end(), s);
     }
     std::cout << count << "\n";
 }
@@ -69,10 +85,10 @@ int main(int, char const**)
 {
     try {
         std::vector<std::string> student;
-        std::vector<std::string> proffesor;
-        read_input(student, proffesor);
-        // print_input(student, proffesor);
-        print_output(student, proffesor);
+        std::vector<std::string> professor;
+        read_input(student, professor);
+        // print_input(student, professor);
+        print_output(student, professor);
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;
