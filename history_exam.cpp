@@ -12,13 +12,13 @@ void read_input(T& student, T& professor)
     n = std::stoul(line);
     for (size_t i = 0; i < n; ++i) {
         std::getline(std::cin, line);
-        professor.push_back(line);
+        professor.push_back(std::stoul(line));
     }
     std::getline(std::cin, line);
     n = std::stoul(line);
     for (size_t i = 0; i < n; ++i) {
         std::getline(std::cin, line);
-        student.push_back(line);
+        student.push_back(std::stoul(line));
     }
 }
 
@@ -55,30 +55,39 @@ template<typename T>
 void print_output(T& student, T& professor)
 {
     std::sort(student.begin(), student.end());
-    // std::sort(professor.begin(), professor.end());
+    std::sort(professor.begin(), professor.end());
+    T up;
+    std::unique_copy(professor.begin(), professor.end(), std::back_inserter(up));
     // T intersection;
     // std::set_difference(student.begin(), student.end(),
     //                       professor.begin(), professor.end(),
     //                       std::back_inserter(intersection));
-    std::cout << "professor:\n";
+    std::cout << "--- Professor: " << professor.size() << "\n";
     for (const auto& s : professor) {
         std::cout << s << "\n";
     }
-    std::cout << "Student:\n";
+    std::cout << "--- U Professor: " << up.size() << "\n";
+    for (const auto& s : up) {
+        std::cout << s << "\n";
+    }
+    std::cout << "--- Student: " << student.size() << "\n";
     for (const auto& s : student) {
         std::cout << s << "\n";
     }
-    std::cout << "Intersection:\n";
+    std::cout << "--- Intersection:\n";
 
     // for (const auto& s : intersection) {
     //     std::cout << s << "\n";
     // }
 
     size_t count = 0;
-    for (const auto& s : professor) {
+    for (const auto& s : up) {
         // count += count_until(student.begin(), student.end(), s);
+//        std::cout << "s = " << s << "\n";
         auto lower = std::lower_bound(student.begin(), student.end(), s);
-        auto upper = std::upper_bound(student.begin(), student.end(), s);
+//        std::cout << "lower = " << *lower << "\n";
+        auto upper = std::upper_bound(lower, student.end(), s);
+//        std::cout << "upper = " << *upper << "\n";
         count += std::distance(lower, upper);
     }
     std::cout << count << "\n";
@@ -87,8 +96,8 @@ void print_output(T& student, T& professor)
 int main(int, char const**)
 {
     try {
-        std::vector<std::string> student;
-        std::vector<std::string> professor;
+        std::vector<uint64_t> student;
+        std::vector<uint64_t> professor;
         read_input(student, professor);
         // print_input(student, professor);
         print_output(student, professor);
