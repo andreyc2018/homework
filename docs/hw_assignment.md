@@ -17,4 +17,4 @@
 ## Ответы
 http://acm.timus.ru/status.aspx?space=1&num=1545&author=243440
 http://acm.timus.ru/status.aspx?space=1&num=1496&author=243440
-
+http://acm.timus.ru/status.aspx?space=1&num=1196&author=243440

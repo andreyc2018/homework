@@ -21,13 +21,17 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(hieroglyphs hieroglyphs.cpp docs/1545-Hieroglyphs.md
+add_executable(hieroglyphs hieroglyphs.cpp
+        docs/1545-Hieroglyphs.md docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(spammer spammer.cpp docs/1496-Spammer.md
+add_executable(spammer spammer.cpp
+        docs/1496-Spammer.md docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(history_exam history_exam.cpp docs/1196-History_Exam.md
+add_executable(history_exam history_exam.cpp
+        docs/1196-History_Exam.md docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 add_executable(isenbaev_s_number isenbaev_s_number.cpp
+        docs/1837-Isenbaev_s_Number.md docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 target_compile_options(hieroglyphs PRIVATE -Wpedantic -Wall -Wextra)
