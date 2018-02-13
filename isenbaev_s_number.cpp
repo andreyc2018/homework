@@ -12,7 +12,6 @@ using key = std::string;
 using value = std::set<std::string>;
 using graph = std::map<key, value>;
 
-/// Insert the pointers to adjacent nodes u and v into grapth g. keep real value in d
 void add_node(graph& g, const std::string& u, const std::string& v)
 {
     g[u].insert(v);
@@ -52,6 +51,9 @@ void read_input(data& d, graph& g)
 
 void create_numbers(data& d, graph& g, std::string initial)
 {
+    if (d.find(initial) == d.end()) {
+        return;
+    }
     data sd;
     sd.insert(std::make_pair(initial, 0));
     d[initial] = 0;
@@ -76,19 +78,6 @@ int main(int, char const**)
         data d;
         graph g;
         read_input(d, g);
-//        for (const auto& it : d) {
-//            std::cout << it.first << ": " << it.second << "\n";
-//        }
-//        std::cout << "\n";
-
-//        for (const auto& it : g) {
-//            std::cout << it.first << ": ";
-//            for (const auto& jt : it.second) {
-//                std::cout << jt << ", ";
-//            }
-//            std::cout << "\n";
-//        }
-//        std::cout << "\n";
 
         create_numbers(d, g, "Isenbaev");
 
@@ -101,7 +90,6 @@ int main(int, char const**)
                 std::cout << "undefined\n";
             }
         }
-//        std::cout << "\n";
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;
