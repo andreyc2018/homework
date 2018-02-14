@@ -20,8 +20,7 @@ void add_node(data& dta, dist& dst, graph& g, const uv_nodes& uv_n)
 {
     std::array<size_t, 2> uv;
     for (size_t i = 0; i < uv_n.size(); ++i) {
-        const std::string& ref = uv_n[i].get();
-        auto it = std::find(dta.begin(), dta.end(), ref);
+        auto it = std::find(dta.begin(), dta.end(), uv_n[i].get());
         if (it == dta.end()) {
             dta.push_back(uv_n[i]);
             it = dta.end() - 1;
@@ -48,10 +47,9 @@ void tokenize(const std::string& s, std::vector<std::string>& v,
 
 void read_input(data& dta, dist& dst, graph& g)
 {
-    size_t n;
     std::string line;
     std::getline(std::cin, line);
-    n = std::stoul(line);
+    size_t n = std::stoul(line);
     std::vector<std::string> v;
     v.reserve(3);
     for (size_t i = 0; i < n; ++i) {

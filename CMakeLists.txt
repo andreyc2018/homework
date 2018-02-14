@@ -21,16 +21,16 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(hieroglyphs hieroglyphs.cpp
+add_executable(hieroglyphs 1545-hieroglyphs.cpp
         docs/1545-Hieroglyphs.md docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(spammer spammer.cpp
+add_executable(spammer 1496-spammer.cpp
         docs/1496-Spammer.md docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(history_exam history_exam.cpp
+add_executable(history_exam 1196-history_exam.cpp
         docs/1196-History_Exam.md docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(isenbaev_s_number isenbaev_s_number.cpp
+add_executable(isenbaev_s_number 1837-isenbaev_s_number.cpp
         docs/1837-Isenbaev_s_Number.md docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 

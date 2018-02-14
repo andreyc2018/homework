@@ -6,10 +6,9 @@
 template<typename T>
 void read_input(T& student, T& professor)
 {
-    size_t n;
     std::string line;
     std::getline(std::cin, line);
-    n = std::stoul(line);
+    size_t n = std::stoul(line);
     for (size_t i = 0; i < n; ++i) {
         std::getline(std::cin, line);
         professor.push_back(std::stoul(line));

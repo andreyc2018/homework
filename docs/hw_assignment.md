@@ -14,6 +14,8 @@ http://acm.timus.ru/problem.aspx?num=1837
 задач получил статус Accepted.
 
 ## Ответы
+профиль: http://acm.timus.ru/author.aspx?id=243440
+
 http://acm.timus.ru/status.aspx?space=1&num=1545&author=243440
 http://acm.timus.ru/status.aspx?space=1&num=1496&author=243440
 http://acm.timus.ru/status.aspx?space=1&num=1196&author=243440
