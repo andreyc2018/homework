@@ -7,10 +7,11 @@
 #include <type_traits>
 #include <limits>
 #include <array>
+#include <functional>
 
 using data = std::vector<std::string>;
 using data_set = std::map<std::string, size_t>;
-using uv_nodes = std::array<std::string, 2>;
+using uv_nodes = std::array<std::reference_wrapper<const std::string>, 2>;
 using dist = std::map<size_t, size_t>;
 using graph = std::map<size_t, std::vector<size_t>>;
 constexpr size_t inf = std::numeric_limits<size_t>::max();
@@ -19,7 +20,8 @@ void add_node(data& dta, dist& dst, graph& g, const uv_nodes& uv_n)
 {
     std::array<size_t, 2> uv;
     for (size_t i = 0; i < uv_n.size(); ++i) {
-        auto it = std::find(dta.begin(), dta.end(), uv_n[i]);
+        const std::string& ref = uv_n[i].get();
+        auto it = std::find(dta.begin(), dta.end(), ref);
         if (it == dta.end()) {
             dta.push_back(uv_n[i]);
             it = dta.end() - 1;
@@ -50,15 +52,17 @@ void read_input(data& dta, dist& dst, graph& g)
     std::string line;
     std::getline(std::cin, line);
     n = std::stoul(line);
+    std::vector<std::string> v;
+    v.reserve(3);
     for (size_t i = 0; i < n; ++i) {
         std::getline(std::cin, line);
-        std::vector<std::string> v;
         tokenize(line, v);
         for (size_t j = 0; j < v.size(); ++j) {
             size_t j_p = (j < v.size()-1)? j+1 : 0;
-            uv_nodes uv_n { { v[j], v[j_p] } };
+            uv_nodes uv_n { { std::cref(v[j]), std::cref(v[j_p]) } };
             add_node(dta, dst, g, uv_n);
         }
+        v.clear();
     }
 }
 
@@ -72,8 +76,10 @@ void create_numbers(dist& dst, graph& g, size_t initial)
         sd.erase(sd.begin());
         for (const auto& v : g[u.first]) {
             if (dst[v] > dst[u.first] + 1) {
-                if (dst[v] != inf) {
-                    sd.erase(sd.find(v));
+                if (dst[v] != inf && sd.size() > 0) {
+                    auto it = sd.find(v);
+                    if (it != sd.end())
+                        sd.erase(it);
                 }
                 dst[v] = dst[u.first] + 1;
                 sd.insert(std::make_pair(v, dst[v]));
