@@ -2,17 +2,17 @@
 /** @file point.h
  *  @brief Point
  */
-#include "graphicsprimitive.h"
+#include "shape.h"
 #include "logger.h"
 
 namespace svge {
 
-class Point : public GraphicsPrimitive
+class Point : public Shape
 {
     public:
-        using base = GraphicsPrimitive;
+        using base = Shape;
 
-        Point() : base(gs_type_t::Point), x_(0), y_(0)
+        Point() : base(shape_type_t::Point), x_(0), y_(0)
         {
             TRACE();
         }

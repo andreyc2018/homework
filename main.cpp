@@ -11,8 +11,8 @@
 #include <string>
 
 using svge::Svge;
-using svge::gp_id_t;
-using svge::gs_type_t;
+using svge::shape_id_t;
+using svge::shape_type_t;
 
 LoggerPtr gLogger = spdlog::stdout_logger_mt("console", true);
 
@@ -41,9 +41,9 @@ class GuiApp
             gLogger->info("imported document from a file {}", filename);
         }
 
-        gp_id_t on_create_item(gs_type_t type)
+        shape_id_t on_create_item(shape_type_t type)
         {
-            gp_id_t id = controller_.create_item(type);
+            shape_id_t id = controller_.create_item(type);
             gLogger->info("Added item id = {}", id);
             return id;
         }
@@ -64,8 +64,8 @@ int main(int argc, char const**)
             gLogger->set_level(spdlog::level::trace);
         GuiApp app;
         app.on_new_document();
-        app.on_create_item(gs_type_t::Point);
-        app.on_create_item(gs_type_t::Vector);
+        app.on_create_item(shape_type_t::Point);
+        app.on_create_item(shape_type_t::Vector);
         app.on_export_document("hello.svg");
         app.on_import_document("hello.svg");
     }

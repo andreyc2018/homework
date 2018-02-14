@@ -27,10 +27,10 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-#set(HEADER_FILES graphicsprimitive.h
+#set(HEADER_FILES shape.h
 #        document.h item.h svge.h
 #        point.h line.h storage.h logger.h itemcreator.h)
-set(HEADER_FILES graphicsprimitive.h document.h svge.h storage.h logger.h
+set(HEADER_FILES shape.h document.h svge.h storage.h logger.h
         point.h vector.h)
 
 add_executable(svge main.cpp

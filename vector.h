@@ -7,12 +7,12 @@
 
 namespace svge {
 
-class Vector : public GraphicsShape
+class Vector : public Shape
 {
     public:
-        using base = GraphicsShape;
+        using base = Shape;
 
-        Vector() : base(gs_type_t::Vector)
+        Vector() : base(shape_type_t::Vector)
         {
             TRACE();
         }
@@ -22,11 +22,11 @@ class Vector : public GraphicsShape
             TRACE();
         }
 
-        void setStart(GPUPtr& p) { start_ = std::move(p); }
-        const GPUPtr& start() const { return start_; }
+        void setStart(ShapeUPtr& p) { start_ = std::move(p); }
+        const ShapeUPtr& start() const { return start_; }
 
-        void setEnd(GPUPtr& p) { end_ = std::move(p); }
-        const GPUPtr& end() const { return end_; }
+        void setEnd(ShapeUPtr& p) { end_ = std::move(p); }
+        const ShapeUPtr& end() const { return end_; }
 
         std::ostream& write(std::ostream& out) override
         {
@@ -50,8 +50,8 @@ class Vector : public GraphicsShape
         }
 
     private:
-        GPUPtr start_;
-        GPUPtr end_;
+        ShapeUPtr start_;
+        ShapeUPtr end_;
 };
 
 }

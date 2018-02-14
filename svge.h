@@ -38,7 +38,7 @@ class Svge
             doc_ = storage_.import_document(filename);
         }
 
-        gp_id_t create_item(gs_type_t type)
+        shape_id_t create_item(shape_type_t type)
         {
             return doc_->create_item(type);
         }

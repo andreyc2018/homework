@@ -8,7 +8,7 @@
 #include <boost/test/unit_test.hpp>
 #include <sstream>
 
-using svge::gs_type_t;
+using svge::shape_type_t;
 //using svge::create_item;
 using svge::Point;
 //using svge::ComplexItem;
@@ -21,9 +21,9 @@ BOOST_AUTO_TEST_CASE(gs_type)
     TRACE();
     gLogger->info("Set type to Point and write to stringstream");
 
-    gs_type_t t = gs_type_t::Point;
+    shape_type_t t = shape_type_t::Point;
     gLogger->info("sizeof(t) = {}, sizeof(gs_type_t) = {}",
-                  sizeof (t), sizeof (gs_type_t));
+                  sizeof (t), sizeof (shape_type_t));
 
     std::stringstream ss;
     ss << t;
@@ -39,15 +39,15 @@ BOOST_AUTO_TEST_CASE(gs_type)
 
     gLogger->info("Read type as gs_type_t and compare with Point");
     ss.seekg(0);
-    gs_type_t t2;
+    shape_type_t t2;
     ss >> t2;
-    BOOST_CHECK_EQUAL(gs_type_t::Point, t2);
+    BOOST_CHECK_EQUAL(shape_type_t::Point, t2);
 
     gLogger->info("Write uninitialized gs_type_t to stringstream");
     gLogger->info("The value of uninitialzied enum is not defined");
-    gs_type_t t3;
+    shape_type_t t3;
     gLogger->info("sizeof(t3) = {}, sizeof(gs_type_t) = {}",
-                  sizeof (t3), sizeof (gs_type_t));
+                  sizeof (t3), sizeof (shape_type_t));
     ss.str(std::string());
     ss << t3;
     for (const auto& c : ss.str()) {
