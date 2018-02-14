@@ -1,0 +1,24 @@
+{
+    "cmake.buildDirectory": "${workspaceRoot}/../build",
+    "files.associations": {
+        "algorithm": "cpp",
+        "__config": "cpp",
+        "__nullptr": "cpp",
+        "exception": "cpp",
+        "initializer_list": "cpp",
+        "new": "cpp",
+        "stdexcept": "cpp",
+        "typeinfo": "cpp",
+        "cctype": "cpp",
+        "cstddef": "cpp",
+        "cstdlib": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "utility": "cpp",
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "vector": "cpp",
+        "*.ipp": "cpp"
+    }
+}
