@@ -9,6 +9,7 @@
 #include <array>
 
 using data = std::vector<std::string>;
+using data_set = std::map<std::string, size_t>;
 using uv_nodes = std::array<std::string, 2>;
 using dist = std::map<size_t, size_t>;
 using graph = std::map<size_t, std::vector<size_t>>;
@@ -55,30 +56,27 @@ void read_input(data& dta, dist& dst, graph& g)
         tokenize(line, v);
         for (size_t j = 0; j < v.size(); ++j) {
             size_t j_p = (j < v.size()-1)? j+1 : 0;
-            uv_nodes uv_n { v[j], v[j_p] };
+            uv_nodes uv_n { { v[j], v[j_p] } };
             add_node(dta, dst, g, uv_n);
         }
     }
 }
 
-void create_numbers(data& dta, dist& dst, graph& g, size_t initial)
+void create_numbers(dist& dst, graph& g, size_t initial)
 {
-    if (dst.find(initial) == dta.end()) {
-        return;
-    }
     dist sd;
     sd.insert(std::make_pair(initial, 0));
-    dta[initial] = 0;
+    dst[initial] = 0;
     while(!sd.empty()) {
         auto u = *(sd.begin());
         sd.erase(sd.begin());
         for (const auto& v : g[u.first]) {
-            if (dta[v] > dta[u.first] + 1) {
-                if (dta[v] != inf) {
+            if (dst[v] > dst[u.first] + 1) {
+                if (dst[v] != inf) {
                     sd.erase(sd.find(v));
                 }
-                dta[v] = dta[u.first] + 1;
-                sd.insert(std::make_pair(v, dta[v]));
+                dst[v] = dst[u.first] + 1;
+                sd.insert(std::make_pair(v, dst[v]));
             }
         }
     }
@@ -96,10 +94,14 @@ int main(int, char const**)
 
         if (it != dta.end()) {
             auto init = std::distance(dta.begin(), it);
-            create_numbers(dta, dst, g, init);
+            create_numbers(dst, g, init);
         }
 
-        for (const auto& it : dta) {
+        data_set sorted;
+        for (const auto& it : dst) {
+            sorted[dta[it.first]] = it.second;
+        }
+        for (const auto& it : sorted) {
             std::cout << it.first << " ";
             if (it.second < inf) {
                 std::cout << it.second << "\n";
