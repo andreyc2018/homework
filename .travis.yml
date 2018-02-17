@@ -11,9 +11,15 @@ script:
 - cmake --build . --target package
 - echo $TRAVIS_BRANCH
 deploy:
-  provider: script
+- provider: script
   skip_cleanup: true
   on:
     branch: $TRAVIS_BRANCH
   script:
   - curl -T matrix-$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER-Linux.deb -uandreyc2018:$BINTRAY_API_KEY "https://api.bintray.com/content/andreyc2018/otus-cpp/matrix/$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER/matrix-$TRAVIS_BRANCH.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+- provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_DOCS_KEY
+  local_dir: docs
+  on:
+    branch: $TRAVIS_BRANCH
