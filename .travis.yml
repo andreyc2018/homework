@@ -9,6 +9,7 @@ script:
 - cmake --build . -- VERBOSE=1
 - cmake --build . --target test
 - cmake --build . --target package
+- echo $TRAVIS_BRANCH
 deploy:
   provider: script
   skip_cleanup: true
