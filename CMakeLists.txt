@@ -30,7 +30,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(HEADER_FILES matrix.h)
 
-add_executable(${EXECUTABLE_NAME} main.cpp
+add_executable(${EXECUTABLE_NAME} main.cpp docs/hw_assignment.md
     ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 add_library(${LIBRARY_NAME} matrix.cpp ${HEADER_FILES})
