@@ -10,24 +10,26 @@
 При чтении элемента из свободной ячейки возвращать значение по-умолчанию.
 Способ передачи координат на усмотрение автора.
 Пример:
-    Matrix<int, -1> matirx; // int -1
-    assert(matrix.size() == 0); //
-    auto a = matrix[0][0];
-    assert(a == -1);
-    assert(matrix.size() == 0);
-    matrix[100][100] = 314;
-    assert(matrix[100][100] == 314);
-    assert(matrix.size() == 1);
-    //
-    // 100100314
-    for(auto c: matrix)
-    {
-        int x;
-        int y;
-        int v;
-        std::tie(x, y, v) = c;
-        std::cout << x << y << v << std::endl;
-    }
+```c++
+Matrix<int, -1> matirx; // int -1
+assert(matrix.size() == 0); //
+auto a = matrix[0][0];
+assert(a == -1);
+assert(matrix.size() == 0);
+matrix[100][100] = 314;
+assert(matrix[100][100] == 314);
+assert(matrix.size() == 1);
+//
+// 100100314
+for(auto c: matrix)
+{
+    int x;
+    int y;
+    int v;
+    std::tie(x, y, v) = c;
+    std::cout << x << y << v << std::endl;
+}
+```
 При запуске программы необходимо создать матрицу со пустым значением 0,
 заполнить главную диагональ матрицы (от [0,0] до [9,9]) значениями от 0 до 9.
 Второстепенную диагональ (от [0,9] до [9,0]) значениями от 9 до 0.
