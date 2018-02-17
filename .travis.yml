@@ -4,13 +4,14 @@ before_script:
 - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
 - sudo apt-get update -qq
 - sudo apt-get install libspdlog-dev -y
+- sudo apt-get install doxygen -y
+- sudo apt-get install graphviz -y
 script:
 - cmake .
 - cmake --build . -- VERBOSE=1
 - cmake --build . --target test
 - cmake --build . --target package
 - cmake --build . --target doc_doxygen
-- echo $TRAVIS_BRANCH
 deploy:
 - provider: script
   skip_cleanup: true
