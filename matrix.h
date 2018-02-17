@@ -2,10 +2,26 @@
 
 #include <set>
 #include <array>
+#include <iostream>
 
 namespace matrix
 {
 
+template<typename T>
+class CellData
+{
+    public:
+        using value_t = T;
+        using data_t = CellData<T>;
+
+        void set_value(T&& v) { std::move(value_, v); }
+        T value() const { return value_; }
+
+        data_t& operator=(value_t v) noexcept { set_value(v); return *this; }
+
+    private:
+        T value_;
+};
 /**
  * @brief The Cell class
  *
@@ -24,7 +40,7 @@ class Cell
 
         template<typename... Args,
                  typename std::enable_if_t<Dimension == sizeof...(Args), int> = 0>
-        Cell(Args&&... args)
+        Cell(Args&&... args) : value_()
         {
             set_coordinates(std::forward<Args>(args)...);
         }
@@ -59,13 +75,14 @@ class Matrix
         using value_t = T;
         using cell_t = Cell<T, Dimension>;
 
-        Matrix();
-        ~Matrix();
+        Matrix() {}
+        ~Matrix() {}
 
         template<typename... Args>
         typename std::enable_if_t<Dimension == sizeof...(Args), value_t>&
         operator[](Args&&... args)
         {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
 //            return mVector[idx];
         }
 
@@ -73,6 +90,7 @@ class Matrix
         typename std::enable_if_t<Dimension == sizeof...(Args), const value_t>&
         operator[](Args&&... args) const
         {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
 //            return mVector[idx];
         }
 

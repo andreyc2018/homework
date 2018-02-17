@@ -1,9 +1,10 @@
 #include "matrix.h"
-#define BOOST_TEST_MODULE Test_Ip_Filter
+#define BOOST_TEST_MODULE Matrix
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
 using matrix::Cell;
+using matrix::Matrix;
 
 BOOST_AUTO_TEST_CASE(init)
 {
@@ -86,3 +87,11 @@ BOOST_AUTO_TEST_CASE(assignment)
     BOOST_CHECK(it != matrix.end());
     BOOST_CHECK_EQUAL(c5.get_value(), it->get_value());
 }
+
+//BOOST_AUTO_TEST_CASE(matrix_init)
+//{
+//    using matrix_t = Matrix<int, 2, -1>;
+
+//    matrix_t m;
+//    std::cout << m[1] << "\n";
+//}
