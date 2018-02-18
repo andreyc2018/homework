@@ -77,6 +77,29 @@ class Cell
         value_t value_;
 };
 
+template<typename T>
+class DataPlane
+{
+    public:
+        DataPlane() {}
+        ~DataPlane() {}
+
+        T& operator[](size_t idx)
+        {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+            return data_.find(idx);
+        }
+
+        const T& operator[](size_t idx) const
+        {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+            return data_.find(idx);
+        }
+
+    private:
+        std::set<T> data_;
+};
+
 template<typename T, int Dimension, T Default>
 class Matrix
 {

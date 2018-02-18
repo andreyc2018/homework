@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "Homework: Simple Vector Graphics Editor (SVGE)"
+PROJECT_NAME           = "Homework: Sparse Matrix"
 PROJECT_NUMBER         = 4
 PROJECT_BRIEF          = 
 PROJECT_LOGO           = 
