@@ -48,14 +48,14 @@ class Cell
         Cell() = default;
 
         template<typename... Args,
-                 typename ::enable_if_t<Dimension == sizeof...(Args), int> = 0>
+                 typename std::enable_if_t<Dimension == sizeof...(Args), int> = 0>
         Cell(Args&&... args) : value_()
         {
             set_coordinates(std::forward<Args>(args)...);
         }
 
         template<typename... Args>
-        typename ::enable_if_t<Dimension == sizeof...(Args), void>
+        typename std::enable_if_t<Dimension == sizeof...(Args), void>
         set_coordinates(Args&&... args)
         {
             coords_t coords = { { args... } };
@@ -111,7 +111,7 @@ class Matrix
         ~Matrix() {}
 
         template<typename... Args>
-        typename ::enable_if_t<Dimension == sizeof...(Args), value_t>&
+        typename std::enable_if_t<Dimension == sizeof...(Args), value_t>&
         operator[](Args&&... args)
         {
             std::cout << __PRETTY_FUNCTION__ << "\n";
@@ -119,7 +119,7 @@ class Matrix
         }
 
         template<typename... Args>
-        typename ::enable_if_t<Dimension == sizeof...(Args), const value_t>&
+        typename std::enable_if_t<Dimension == sizeof...(Args), const value_t>&
         operator[](Args&&... args) const
         {
             std::cout << __PRETTY_FUNCTION__ << "\n";
