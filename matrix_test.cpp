@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include <map>
 #define BOOST_TEST_MODULE Matrix
 #include <boost/test/unit_test.hpp>
 #include <iostream>
@@ -88,10 +89,51 @@ BOOST_AUTO_TEST_CASE(assignment)
     BOOST_CHECK_EQUAL(c5.get_value(), it->get_value());
 }
 
-//BOOST_AUTO_TEST_CASE(matrix_init)
-//{
-//    using matrix_t = Matrix<int, 2, -1>;
+template<typename T, T Default>
+class M
+{
+    public:
+        using value_t = T;
+        using index_t = size_t;
 
-//    matrix_t m;
-//    std::cout << m[1] << "\n";
-//}
+        M() {}
+        ~M() {}
+
+        value_t& operator[](index_t idx)
+        {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+            if (idx >= matrix_.size()) {
+                matrix_.reserve(matrix_.size() + idx);
+                for (size_t i = 0; i <= idx; ++i) {
+                    matrix_.push_back(Default);
+                }
+            }
+            return matrix_[idx];
+        }
+
+        const value_t& operator[](index_t idx) const
+        {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+            if (idx >= matrix_.size()) {
+                std::string what = "Index ";
+                what.append(std::to_string(idx)).
+                        append(" is out of range ").
+                        append(std::to_string(matrix_.size()));
+                throw std::out_of_range(what);
+            }
+            return matrix_[idx];
+        }
+
+    private:
+        std::vector<value_t> matrix_;
+};
+
+BOOST_AUTO_TEST_CASE(matrix_init)
+{
+    using matrix_t = M<int, -1>;
+
+    matrix_t m;
+    m[0] = 99;
+    std::cout << m[0] << "\n";
+    std::cout << m[1] << "\n";
+}
