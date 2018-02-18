@@ -1,6 +1,17 @@
+matrix:
+  include:
+  - os: linux
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-7
+    env:
+      - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 language: cpp
-compiler: clang
 before_script:
+- eval "${MATRIX_EVAL}"
 - sudo apt-get install libboost-test-dev -y
 - sudo apt-get install doxygen -y
 - sudo apt-get install graphviz -y
