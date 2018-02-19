@@ -89,7 +89,11 @@ BOOST_AUTO_TEST_CASE(assignment)
     BOOST_CHECK_EQUAL(c5.get_value(), it->get_value());
 }
 
-template<typename T>
+namespace test {
+
+using index_t = size_t;
+
+template<typename T, T Default>
 class Data
 {
     public:
@@ -104,22 +108,22 @@ class Data
             std::cout << __PRETTY_FUNCTION__ << "\n";
             return v_;
         }
-        template <typename U>
-        Data(const Data<U>& x) : v_(x.v_) {
-            std::cout << __PRETTY_FUNCTION__ << "\n";
-        }
+//        template <typename U>
+//        Data(const Data<U>& x) : v_(x.v_) {
+//            std::cout << __PRETTY_FUNCTION__ << "\n";
+//        }
 
         // Semiregular:
-        Data(const Data& x) : v_(x.v_) { // could be implicitly declared
+        Data(const Data& x) : v_(x.v_) {
             std::cout << __PRETTY_FUNCTION__ << "\n";
         }
-        Data() : v_() { // could be implicitly declared sometimes
+        Data() : v_(Default) {
             std::cout << __PRETTY_FUNCTION__ << "\n";
         }
-        ~Data() { // could be implicitly declared
+        ~Data() {
             std::cout << __PRETTY_FUNCTION__ << "\n";
         }
-        Data& operator=(const Data& x) { // could be implicitly declared
+        Data& operator=(const Data& x) {
             if (this != &x) {
                 std::cout << __PRETTY_FUNCTION__ << "\n";
                 v_ = x.v_;
@@ -140,6 +144,7 @@ class Data
         bool operator==(const Data& x, const Data& y) {
             return x.v_ == y.v_;
         }
+        // std::rel_ops::operator!=
         friend
         bool operator!=(const Data& x, const Data& y) {
             return !(x == y);
@@ -150,6 +155,7 @@ class Data
         bool operator<(const Data& x, const Data& y) {
             return x.v_ < y.v_;
         }
+        // std::rel_ops::operator>,<=,>=
         friend
         bool operator>(const Data& x, const Data& y) {
             return y < x;
@@ -164,15 +170,15 @@ class Data
         }
 };
 
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const Data<T>& obj)
+template<typename T, T Default>
+std::ostream& operator<<(std::ostream& os, const Data<T, Default>& obj)
 {
     os << obj.v_;
     return os;
 }
 
-template<typename T>
-std::istream& operator>>(std::istream& is, Data<T>& obj)
+template<typename T, T Default>
+std::istream& operator>>(std::istream& is, Data<T, Default>& obj)
 {
     T t;
     is >> t;
@@ -180,12 +186,53 @@ std::istream& operator>>(std::istream& is, Data<T>& obj)
     return is;
 }
 
-template<typename T, T Default>
+template<typename T, index_t Dimension, T Default>
+class Cell
+{
+    public:
+        using value_t = typename std::conditional<Dimension == 1,
+                                                  Data<T, Default>,
+                                                  std::set<Data<T, Default>>>::type;
+
+        using coords_t = std::array<size_t, Dimension>;
+
+        Cell() = default;
+
+        template<typename... Args,
+                 typename std::enable_if_t<Dimension == sizeof...(Args), int> = 0>
+        Cell(Args&&... args) : value_()
+        {
+            set_coordinates(std::forward<Args>(args)...);
+        }
+
+        template<typename... Args>
+        typename std::enable_if_t<Dimension == sizeof...(Args), void>
+        set_coordinates(Args&&... args)
+        {
+            coords_t coords = { { static_cast<index_t>(args)... } };
+            coordinates_.swap(coords);
+        }
+
+        Cell& operator=(value_t v) noexcept { set_value(v); return *this; }
+
+        void set_value(value_t v) { value_ = v; }
+        T get_value() const { return value_; }
+
+        bool operator< (const Cell& other) const
+        {
+            return coordinates_ < other.coordinates_;
+        }
+
+    private:
+        coords_t coordinates_;
+        value_t value_;
+};
+
+template<typename T, size_t Dimension, T Default>
 class M
 {
     public:
-        using value_t = Data<T>;
-        using index_t = size_t;
+        using value_t = Cell<T, Dimension, Default>;
 
         M() {}
         ~M() {}
@@ -194,45 +241,40 @@ class M
         {
             std::cout << __PRETTY_FUNCTION__ << "\n";
             auto it = matrix_.find(idx);
-            if (it != matrix_.end()) {
-                std::cout << it->first << ":" << it->second << "\n";
-            }
-            else {
+            if (it == matrix_.end()) {
                 std::cout << "not found " << idx << "\n";
             }
-//            if (idx >= matrix_.size()) {
-//                matrix_.reserve(matrix_.size() + idx);
-//                for (size_t i = 0; i <= idx; ++i) {
-//                    matrix_.push_back(Default);
-//                }
-//            }
             return matrix_[idx];
         }
 
         const value_t& operator[](index_t idx) const
         {
             std::cout << __PRETTY_FUNCTION__ << "\n";
-            auto it = matrix_.find(idx);
-            if (idx >= matrix_.size()) {
-                std::string what = "Index ";
-                what.append(std::to_string(idx)).
-                        append(" is out of range ").
-                        append(std::to_string(matrix_.size()));
-                throw std::out_of_range(what);
-            }
+//            auto it = matrix_.find(idx);
+//            if (idx >= matrix_.size()) {
+//                std::string what = "Index ";
+//                what.append(std::to_string(idx)).
+//                        append(" is out of range ").
+//                        append(std::to_string(matrix_.size()));
+//                throw std::out_of_range(what);
+//            }
             return matrix_[idx];
         }
 
+        size_t size() const { return matrix_.size(); }
+
     private:
-        std::map<index_t, value_t> matrix_;
+        std::set<value_t> matrix_;
 };
+}
 
 BOOST_AUTO_TEST_CASE(matrix_init)
 {
-    using matrix_t = M<int, -1>;
+    using matrix_t = test::M<int, 1, -1>;
 
     matrix_t m;
+    std::cout << "size = " << m.size() << "\n";
     m[0] = 99;
-    std::cout << m[0] << "\n";
-    std::cout << m[1] << "\n";
+    std::cout << "0 = " << m[0] << ", size = " << m.size() << "\n";
+    std::cout << "1 = " << m[1] << ", size = " << m.size() << "\n";
 }
