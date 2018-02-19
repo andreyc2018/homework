@@ -89,11 +89,102 @@ BOOST_AUTO_TEST_CASE(assignment)
     BOOST_CHECK_EQUAL(c5.get_value(), it->get_value());
 }
 
+template<typename T>
+class Data
+{
+    public:
+        using value_t = T;
+        value_t v_;
+
+        // Conversions from T and to T:
+        explicit Data(const T& x) : v_(x) {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+        }
+        explicit operator T() const {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+            return v_;
+        }
+        template <typename U>
+        Data(const Data<U>& x) : v_(x.v_) {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+        }
+
+        // Semiregular:
+        Data(const Data& x) : v_(x.v_) { // could be implicitly declared
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+        }
+        Data() : v_() { // could be implicitly declared sometimes
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+        }
+        ~Data() { // could be implicitly declared
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+        }
+        Data& operator=(const Data& x) { // could be implicitly declared
+            if (this != &x) {
+                std::cout << __PRETTY_FUNCTION__ << "\n";
+                v_ = x.v_;
+            }
+            return *this;
+        }
+
+        Data& operator=(const T& x) {
+            if (&(this->v_) != &x) {
+                std::cout << __PRETTY_FUNCTION__ << "\n";
+                v_ = x;
+            }
+            return *this;
+        }
+
+        // Regular
+        friend
+        bool operator==(const Data& x, const Data& y) {
+            return x.v_ == y.v_;
+        }
+        friend
+        bool operator!=(const Data& x, const Data& y) {
+            return !(x == y);
+        }
+
+        // TotallyOrdered
+        friend
+        bool operator<(const Data& x, const Data& y) {
+            return x.v_ < y.v_;
+        }
+        friend
+        bool operator>(const Data& x, const Data& y) {
+            return y < x;
+        }
+        friend
+        bool operator<=(const Data& x, const Data& y) {
+            return !(y < x);
+        }
+        friend
+        bool operator>=(const Data& x, const Data& y) {
+            return !(x < y);
+        }
+};
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const Data<T>& obj)
+{
+    os << obj.v_;
+    return os;
+}
+
+template<typename T>
+std::istream& operator>>(std::istream& is, Data<T>& obj)
+{
+    T t;
+    is >> t;
+    obj = t;
+    return is;
+}
+
 template<typename T, T Default>
 class M
 {
     public:
-        using value_t = T;
+        using value_t = Data<T>;
         using index_t = size_t;
 
         M() {}
@@ -102,18 +193,26 @@ class M
         value_t& operator[](index_t idx)
         {
             std::cout << __PRETTY_FUNCTION__ << "\n";
-            if (idx >= matrix_.size()) {
-                matrix_.reserve(matrix_.size() + idx);
-                for (size_t i = 0; i <= idx; ++i) {
-                    matrix_.push_back(Default);
-                }
+            auto it = matrix_.find(idx);
+            if (it != matrix_.end()) {
+                std::cout << it->first << ":" << it->second << "\n";
             }
+            else {
+                std::cout << "not found " << idx << "\n";
+            }
+//            if (idx >= matrix_.size()) {
+//                matrix_.reserve(matrix_.size() + idx);
+//                for (size_t i = 0; i <= idx; ++i) {
+//                    matrix_.push_back(Default);
+//                }
+//            }
             return matrix_[idx];
         }
 
         const value_t& operator[](index_t idx) const
         {
             std::cout << __PRETTY_FUNCTION__ << "\n";
+            auto it = matrix_.find(idx);
             if (idx >= matrix_.size()) {
                 std::string what = "Index ";
                 what.append(std::to_string(idx)).
@@ -125,7 +224,7 @@ class M
         }
 
     private:
-        std::vector<value_t> matrix_;
+        std::map<index_t, value_t> matrix_;
 };
 
 BOOST_AUTO_TEST_CASE(matrix_init)
