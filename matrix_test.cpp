@@ -89,6 +89,27 @@ BOOST_AUTO_TEST_CASE(assignment)
     BOOST_CHECK_EQUAL(c5.get_value(), it->get_value());
 }
 
+BOOST_AUTO_TEST_CASE(matrix_example)
+{
+    Matrix<int, 2, -1> m;
+    BOOST_CHECK_EQUAL(0, m.size());
+    auto a = m.get(0, 0);
+    BOOST_CHECK_EQUAL(-1, a);
+    BOOST_CHECK_EQUAL(0, m.size());
+    m.set(314, 100, 100);
+    BOOST_CHECK_EQUAL(314, m.get(100, 100));
+    BOOST_CHECK_EQUAL(1, m.size());
+//    for(auto c : m)
+//    {
+//        int x;
+//        int y;
+//        int v;
+//        std::tie(x, y, v) = c;
+//        std::cout << x << y << v << std::endl;
+//    }
+}
+
+#if 0
 namespace test {
 
 using index_t = size_t;
@@ -323,3 +344,4 @@ BOOST_AUTO_TEST_CASE(matrix_init)
 //    std::cout << "0 = " << m[0] << ", size = " << m.size() << "\n";
 //    std::cout << "1 = " << m[1] << ", size = " << m.size() << "\n";
 }
+#endif
