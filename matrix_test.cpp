@@ -240,11 +240,11 @@ class M
         value_t& operator[](index_t idx)
         {
             std::cout << __PRETTY_FUNCTION__ << "\n";
-            auto it = matrix_.find(idx);
-            if (it == matrix_.end()) {
-                std::cout << "not found " << idx << "\n";
-            }
-            return matrix_[idx];
+//            auto it = matrix_.find(idx);
+//            if (it == matrix_.end()) {
+//                std::cout << "not found " << idx << "\n";
+//            }
+//            return matrix_[idx];
         }
 
         const value_t& operator[](index_t idx) const
@@ -266,15 +266,60 @@ class M
     private:
         std::set<value_t> matrix_;
 };
+
+template<typename T, int Dimension, T Default>
+class DataPlane
+{
+    public:
+        using plane_t = DataPlane<T, Dimension-1, Default>;
+        using value_t = typename std::conditional<Dimension == 0,
+                                                  T, std::set<plane_t>>::type;
+
+
+        DataPlane() {}
+        ~DataPlane() {}
+
+        template<std::enable_if_t<Dimension != 0, int> = 0>
+        value_t&
+        operator[](size_t idx)
+        {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+            return data_.find(idx);
+        }
+
+        template<std::enable_if_t<Dimension == 0, int> = 0>
+        value_t&
+        operator[](size_t)
+        {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+            return data_;
+        }
+
+        const value_t& operator[](size_t idx) const
+        {
+            std::cout << __PRETTY_FUNCTION__ << "\n";
+            return data_.find(idx);
+        }
+
+        bool operator< (const DataPlane& other) const
+        {
+            return coordinates_ < other.coordinates_;
+        }
+
+    private:
+        value_t data_;
+};
 }
 
 BOOST_AUTO_TEST_CASE(matrix_init)
 {
-    using matrix_t = test::M<int, 1, -1>;
+    test::DataPlane<int, 1, -1> d;
+    std::cout << d[0] << "\n";
+//    using matrix_t = test::M<int, 1, -1>;
 
-    matrix_t m;
-    std::cout << "size = " << m.size() << "\n";
-    m[0] = 99;
-    std::cout << "0 = " << m[0] << ", size = " << m.size() << "\n";
-    std::cout << "1 = " << m[1] << ", size = " << m.size() << "\n";
+//    matrix_t m;
+//    std::cout << "size = " << m.size() << "\n";
+//    m[0] = 99;
+//    std::cout << "0 = " << m[0] << ", size = " << m.size() << "\n";
+//    std::cout << "1 = " << m[1] << ", size = " << m.size() << "\n";
 }

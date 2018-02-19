@@ -2,16 +2,8 @@
 
 #include <set>
 #include <array>
+#include <stdexcept>
 #include <iostream>
-
-namespace details
-{
-template< bool B, class T = void >
-using enable_if_t = typename std::enable_if<B,T>::type;
-}
-
-template<bool B, class T = void>
-using enable_if_t = details::enable_if_t<B, T>;
 
 namespace matrix
 {
@@ -31,6 +23,7 @@ class CellData
     private:
         T value_;
 };
+
 /**
  * @brief The Cell class
  *
@@ -77,12 +70,15 @@ class Cell
         value_t value_;
 };
 
-template<typename T>
-class DataPlane
+template<typename T, int Dimension, T Default>
+class Data
 {
     public:
-        DataPlane() {}
-        ~DataPlane() {}
+        using value_t = T;
+        using data_t = Data<T, Dimension-1, Default>;
+
+        Data() {}
+        ~Data() {}
 
         T& operator[](size_t idx)
         {
@@ -97,7 +93,7 @@ class DataPlane
         }
 
     private:
-        std::set<T> data_;
+        std::set<data_t> data_;
 };
 
 template<typename T, int Dimension, T Default>
@@ -105,7 +101,7 @@ class Matrix
 {
     public:
         using value_t = T;
-        using cell_t = Cell<T, Dimension>;
+        using data_t = Data<T, Dimension-1, Default>;
 
         Matrix() {}
         ~Matrix() {}
@@ -127,7 +123,7 @@ class Matrix
         }
 
     private:
-        std::set<cell_t> matrix_;
+        std::set<data_t> matrix_;
 };
 
 }
