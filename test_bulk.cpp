@@ -5,7 +5,7 @@
 
 BOOST_AUTO_TEST_CASE(init)
 {
-    BOOST_CHECK_EQUAL(1, 0);
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL(1, 1);
+    BOOST_CHECK(true);
 }
 
