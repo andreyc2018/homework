@@ -11,11 +11,11 @@ else()
     set(BUILD_NUM 99)
 endif()
 
-set(homework_VERSION_MAJOR 0)
+set(homework_VERSION_MAJOR 7)
 set(homework_VERSION_MINOR 0)
 set(homework_VERSION_BUILD ${BUILD_NUM})
 
-project(homework VERSION
+project(bulk VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
@@ -24,29 +24,29 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(HEADER_FILES homework_tools.h)
+set(HEADER_FILES bulk.h)
 
-add_executable(homework main.cpp
+add_executable(bulk main.cpp
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_library(homework_tools homework.cpp ${HEADER_FILES})
+add_library(bulk_tools bulk.cpp ${HEADER_FILES})
 
-add_executable(test_version test_version.cpp ${HEADER_FILES})
+add_executable(test_bulk test_bulk.cpp ${HEADER_FILES})
 
-target_compile_options(homework PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(homework_tools PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(bulk PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(bulk_tools PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(test_bulk PRIVATE -Wpedantic -Wall -Wextra)
 
-set_target_properties(test_version PROPERTIES
+set_target_properties(test_bulk PROPERTIES
     COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(homework homework_tools)
+target_link_libraries(bulk bulk_tools)
 
-target_link_libraries(test_version ${Boost_LIBRARIES} homework_tools)
+target_link_libraries(test_bulk ${Boost_LIBRARIES} bulk_tools)
 
-install(TARGETS homework RUNTIME DESTINATION bin)
+install(TARGETS bulk RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
@@ -59,10 +59,12 @@ include(CPack)
 
 enable_testing()
 
-add_test(test_version test_version)
+add_test(test_bulk test_bulk)
 
 if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
     add_subdirectory(sandbox EXCLUDE_FROM_ALL)
 endif()
 
-message(STATUS "Homework version ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD}")
+message(STATUS "Homework version
+    ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD}")
+
