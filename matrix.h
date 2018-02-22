@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <map>
 #include <array>
 #include <stdexcept>
 #include <iostream>
@@ -8,47 +9,29 @@
 namespace matrix
 {
 
-//template<typename T>
-//class CellData
-//{
-//    public:
-//        using value_t = T;
-//        using data_t = CellData<T>;
+/**
+ * @brief array_to_tuple_helper
+ * @param array
+ * @returns std::tuple
+ *
+ * Helper to converts std::array to std::tuple using std::index_sequence
+ */
+template <typename A, std::size_t... Indices>
+auto array_to_tuple_helper(A& array, std::index_sequence<Indices...>)
+{
+    return std::forward_as_tuple(array[Indices]...);
+}
 
-//        void set_value(T&& v) { std::move(value_, v); }
-//        T value() const { return value_; }
-
-//        data_t& operator=(value_t v) noexcept { set_value(v); return *this; }
-
-//    private:
-//        T value_;
-//};
-
-//template<typename T, int Dimension, T Default>
-//class Data
-//{
-//    public:
-//        using value_t = T;
-//        using data_t = Data<T, Dimension-1, Default>;
-
-//        Data() {}
-//        ~Data() {}
-
-//        T& operator[](size_t idx)
-//        {
-//            std::cout << __PRETTY_FUNCTION__ << "\n";
-//            return data_.find(idx);
-//        }
-
-//        const T& operator[](size_t idx) const
-//        {
-//            std::cout << __PRETTY_FUNCTION__ << "\n";
-//            return data_.find(idx);
-//        }
-
-//    private:
-//        std::set<data_t> data_;
-//};
+/**
+ * @brief array_to_tuple
+ * @param array
+ * @returns std::tuple
+ */
+template <typename A>
+auto array_to_tuple(A& array)
+{
+    return array_to_tuple_helper(array, std::make_index_sequence<array.size()>());
+}
 
 /**
  * @brief The Cell class
@@ -56,12 +39,12 @@ namespace matrix
  * Represents a cell in a matrix of dimension Dimension
  * Keeps it's own coordinates and a value
  */
-template<typename T, size_t Dimension = 2>
+template<typename T, int Dimension = 2>
 class Cell
 {
     public:
         using value_t = T;
-        using coords_t = std::array<size_t, Dimension>;
+        using coords_t = std::array<int, Dimension>;
 
         Cell() = default;
 
@@ -76,17 +59,24 @@ class Cell
         typename std::enable_if_t<Dimension == sizeof...(Args), void>
         set_coordinates(Args&&... args)
         {
-            coords_t coords = { { static_cast<size_t>(args)... } };
+            coords_t coords { static_cast<int>(args)... };
             coordinates_.swap(coords);
         }
 
         Cell& operator=(value_t v) noexcept { set_value(v); return *this; }
 
+        template<typename... Args,
+                 typename std::enable_if_t<Dimension+1 == sizeof...(Args), int> = 0>
+        operator std::tuple<Args...> () {
+//            std::cout << __PRETTY_FUNCTION__ << "\n";
+            auto coords = array_to_tuple(coordinates_);
+            return std::tuple_cat(coords, std::tie(value_));
+        }
+
         void set_value(value_t v) { value_ = v; }
         T get_value() const { return value_; }
 
-        bool operator< (const Cell& other) const
-        {
+        bool operator< (const Cell& other) const {
             return coordinates_ < other.coordinates_;
         }
 
@@ -100,29 +90,72 @@ class Matrix
 {
     public:
         using value_t = T;
-        using cell_t = Cell<T, Dimension>;
-        using coords_t = typename cell_t::coords_t;
-        using matrix_t = std::set<cell_t>;
-        using iterator = typename matrix_t::iterator;
+        using coords_t = std::array<int, Dimension>;
+        using cell_t = Cell<value_t, Dimension>;
+        using matrix_t = std::map<coords_t, cell_t>;
+        class m_iterator : public std::iterator<std::bidirectional_iterator_tag, cell_t>
+        {
+            public:
+                using map_it_t = typename matrix_t::iterator;
+                using base = std::iterator<std::bidirectional_iterator_tag, cell_t>;
+                using iterator = m_iterator;
+
+                m_iterator(map_it_t& it) : it_(it) {}
+
+                typename base::reference operator*()
+                {
+                    return it_->second;
+                }
+
+                //! pre-increment
+                iterator& operator++()
+                {
+                    it_++; return *this;
+                }
+
+                iterator& operator--()
+                {
+                    it_--; return *this;
+                }
+
+                //! post-increment
+                iterator operator++(int)
+                {
+                    m_iterator tmp(it_);
+                    ++it_;
+                    return tmp;
+                }
+
+                iterator operator--(int)
+                {
+                    m_iterator tmp(it_);
+                    --it_;
+                    return tmp;
+                }
+
+                bool operator==(const iterator& b) const
+                {
+                    return it_->first == b.it_->first;
+                }
+
+                bool operator!=(const iterator& b) const
+                {
+                    return !(*this == b);
+                }
+
+                void set_it(map_it_t& it)
+                {
+                    it_ = it;
+                }
+
+            private:
+                map_it_t& it_;
+        };
+
+        using iterator = m_iterator;
 
         Matrix() {}
         ~Matrix() {}
-
-//        template<typename... Args>
-//        typename std::enable_if_t<Dimension == sizeof...(Args), value_t>&
-//        operator[](Args&&... args)
-//        {
-//            std::cout << __PRETTY_FUNCTION__ << "\n";
-////            return matrix_[idx];
-//        }
-
-//        template<typename... Args>
-//        typename std::enable_if_t<Dimension == sizeof...(Args), const value_t>&
-//        operator[](Args&&... args) const
-//        {
-//            std::cout << __PRETTY_FUNCTION__ << "\n";
-////            return matrix_[idx];
-//        }
 
         size_t size() const {
             return matrix_.size();
@@ -132,36 +165,47 @@ class Matrix
         typename std::enable_if_t<Dimension == sizeof...(Args), value_t>
         get(Args&&... args)
         {
-            std::cout << __PRETTY_FUNCTION__ << "\n";
-            cell_t c(std::forward<Args>(args)...);
-            auto it = matrix_.find(c);
-            if (it != matrix_.end()) {
-                return it->get_value();
+//            std::cout << __PRETTY_FUNCTION__ << "\n";
+            coords_t coords = { { static_cast<int>(args)... } };
+            auto it = matrix_.find(coords);
+            if (it == matrix_.end()) {
+                return Default;
             }
-            return Default;
+            return it->second.get_value();
         }
 
         template<typename... Args>
         typename std::enable_if_t<Dimension == sizeof...(Args), void>
         set(value_t value, Args&&... args)
         {
-            std::cout << __PRETTY_FUNCTION__ << "\n";
-            cell_t c(std::forward<Args>(args)...);
-            auto it = const_cast<iterator>(matrix_.find(c));
+//            std::cout << __PRETTY_FUNCTION__ << "\n";
+            coords_t coords = { { static_cast<int>(args)... } };
+            auto it = matrix_.find(coords);
             if (it != matrix_.end()) {
                 if (value == Default) {
                     matrix_.erase(it);
                 }
                 else {
-                    it->set_value(value);
+                    it->second.set_value(value);
                 }
                 return;
             }
             if (value == Default) {
                 return;
             }
+            cell_t c(std::forward<Args>(args)...);
             c.set_value(value);
-            matrix_.insert(c);
+            matrix_.insert(std::make_pair(coords, c));
+        }
+
+        iterator begin() noexcept {
+            iterator it(matrix_.begin());
+            return it;
+        }
+
+        iterator end() noexcept {
+            iterator it(matrix_.end());
+            return it;
         }
 
     private:
