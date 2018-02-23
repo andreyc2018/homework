@@ -93,16 +93,15 @@ class Matrix
         using coords_t = std::array<int, Dimension>;
         using cell_t = Cell<value_t, Dimension>;
         using matrix_t = std::map<coords_t, cell_t>;
-        class m_iterator : public std::iterator<std::bidirectional_iterator_tag, cell_t>
+        class m_iterator
         {
             public:
                 using map_it_t = typename matrix_t::iterator;
-                using base = std::iterator<std::bidirectional_iterator_tag, cell_t>;
                 using iterator = m_iterator;
 
                 m_iterator(map_it_t& it) : it_(it) {}
 
-                typename base::reference operator*()
+                reference operator*()
                 {
                     return it_->second;
                 }
