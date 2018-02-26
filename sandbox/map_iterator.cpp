@@ -121,7 +121,7 @@ template<typename T, size_t D>
 class Matrix
 {
     public:
-        using coords_t = std::array<int, D>;
+        using coords_t = int;
         using value_t = typename std::conditional<D == 1, T, Matrix<T, D-1>>::type;
 
         using map_t = std::map<coords_t, value_t>;
@@ -129,7 +129,14 @@ class Matrix
 
         map_t m_;
 
-        operator std::tuple<int, int, int> () const {
+        template<typename ...Args>
+        operator std::tuple<Args...> () const {
+            TRACE();
+            return std::make_tuple(7, 8, 9);
+        }
+
+        template<typename ...Args>
+        std::tuple<Args...> to_tuple() const {
             TRACE();
             return std::make_tuple(1, 2, 3);
         }
@@ -177,7 +184,12 @@ class Matrix
 
         value_t& operator[](int i) {
             TRACE();
-            coords_t c { {i} };
+            std::cout << "idx = " << i << "\n";
+            coords_t c { i };
+//            auto it = m_.find(c);
+//            if (it == m_.end()) {
+//                m_.insert();
+//            }
             return m_[c];
         }
 
@@ -233,13 +245,16 @@ void two_dimension()
     matrix_t m;
 
     std::cout << "Assign\n";
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            print_type(std::cout, m[i], m[i][j]);
+    for (int i = 0; i < 1; ++i) {
+        print_type(std::cout, m[i]) << "\n";
+        for (int j = 0; j < 1; ++j) {
+            print_type(std::cout, m[i][j]) << "\n";
             m[i][j] = i+j;
         }
+        std::cout << "\n";
     }
 
+#if 0
     std::cout << "\nRead using iterator\n";
     for (auto it = m.begin(); it != m.end(); ++it) {
         print_type(std::cout, it);
@@ -265,9 +280,13 @@ void two_dimension()
         int y = -1;
         int v = -1;
 //        std::tie(x, y, v) = c;
-        v = c;
+        std::tie(x, y, v) = c.operator std::tuple<int, int, int>();
+        std::cout << x << " : " << y << " : " << v << "\n";
+        std::tie(x, y, v) = c.to_tuple<int, int, int>();
+//        v = c;
         std::cout << x << " : " << y << " : " << v << "\n";
     }
+#endif
     std::cout << "\n";
 }
 
