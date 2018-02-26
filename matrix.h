@@ -97,9 +97,11 @@ class Matrix
         {
             public:
                 using map_it_t = typename matrix_t::iterator;
+                using const_map_it_t = typename matrix_t::const_iterator;
                 using iterator = m_iterator;
+                using reference = cell_t&;
 
-                m_iterator(map_it_t& it) : it_(it) {}
+                m_iterator(const_map_it_t& it) : it_(it) {}
 
                 reference operator*()
                 {
@@ -142,7 +144,7 @@ class Matrix
                     return !(*this == b);
                 }
 
-                void set_it(map_it_t& it)
+                void set_it(const_map_it_t& it)
                 {
                     it_ = it;
                 }
@@ -152,6 +154,7 @@ class Matrix
         };
 
         using iterator = m_iterator;
+        using const_iterator = const iterator;
 
         Matrix() {}
         ~Matrix() {}
@@ -202,8 +205,8 @@ class Matrix
             return it;
         }
 
-        iterator end() noexcept {
-            iterator it(matrix_.end());
+        const_iterator end() noexcept {
+            const_iterator it(matrix_.end());
             return it;
         }
 

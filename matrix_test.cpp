@@ -107,12 +107,14 @@ BOOST_AUTO_TEST_CASE(matrix_example)
     m.set(314, 100, 100);
     BOOST_CHECK_EQUAL(314, m.get(100, 100));
     BOOST_CHECK_EQUAL(1, m.size());
-    for(auto c : m)
-    {
-        int x;
-        int y;
-        int v;
-        std::tie(x, y, v) = c;
-        std::cout << x << y << v << std::endl;
-    }
+    Matrix<int, 2, -1>::iterator it = m.begin();
+    std::cout << (*it).get_value() << "\n";
+//    for(auto c : m)
+//    {
+//        int x;
+//        int y;
+//        int v;
+//        std::tie(x, y, v) = c;
+//        std::cout << x << y << v << std::endl;
+//    }
 }
