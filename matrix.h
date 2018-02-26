@@ -59,7 +59,7 @@ class Cell
         typename std::enable_if_t<Dimension == sizeof...(Args), void>
         set_coordinates(Args&&... args)
         {
-            coords_t coords { static_cast<int>(args)... };
+            coords_t coords { { static_cast<int>(args)... } };
             coordinates_.swap(coords);
         }
 
