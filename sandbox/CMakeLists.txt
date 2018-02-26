@@ -1,7 +1,4 @@
-add_executable(test_list test_list.cpp)
+add_executable(map_iterator map_iterator.cpp)
 
-add_executable(log_allocator log_allocator.cpp)
+target_compile_options(map_iterator PRIVATE -Wpedantic -Wall -Wextra -I${CMAKE_SOURCE_DIR})
 
-add_executable(min_allocator min_allocator.cpp)
-
-target_compile_options(log_allocator PRIVATE -Wpedantic -Wall -Wextra -I${CMAKE_SOURCE_DIR})
