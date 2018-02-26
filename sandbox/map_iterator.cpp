@@ -129,6 +129,17 @@ class Matrix
 
         map_t m_;
 
+        operator std::tuple<int, int, int> () const {
+            TRACE();
+            return std::make_tuple(1, 2, 3);
+        }
+
+        operator int () const {
+            TRACE();
+            return 3;
+        }
+
+
         class m_iterator
         {
             public:
@@ -136,22 +147,26 @@ class Matrix
 
                 value_t operator*()
                 {
+                    TRACE();
                     return it_->second;
                 }
 
                 //! pre-increment
                 m_iterator& operator++()
                 {
+                    TRACE();
                     it_++; return *this;
                 }
 
                 bool operator==(const m_iterator& b) const
                 {
+                    TRACE();
                     return it_->first == b.it_->first;
                 }
 
                 bool operator!=(const m_iterator& b) const
                 {
+                    TRACE();
                     return !(*this == b);
                 }
 
@@ -161,16 +176,19 @@ class Matrix
         using iterator = m_iterator;
 
         value_t& operator[](int i) {
+            TRACE();
             coords_t c { {i} };
             return m_[c];
         }
 
         iterator begin() noexcept {
+            TRACE();
             iterator it(m_.begin());
             return it;
         }
 
         iterator end() noexcept {
+            TRACE();
             iterator it(m_.end());
             return it;
         }
@@ -235,21 +253,27 @@ void two_dimension()
 
     std::cout << "\nRead using index\n";
     for (int i = 0; i < 3; ++i) {
-        print_type(std::cout, m[i]) << " ";
+        print_type(std::cout, m[i]) << "\n";
 //        std::cout << m[i] << "\n";
     }
 
     std::cout << "\nRead using range for\n";
     for (auto c : m) {
-        print_type(std::cout, c) << " ";
+        print_type(std::cout, c) << "\n";
 //        std::cout << c << "\n";
+        int x = -1;
+        int y = -1;
+        int v = -1;
+//        std::tie(x, y, v) = c;
+        v = c;
+        std::cout << x << " : " << y << " : " << v << "\n";
     }
     std::cout << "\n";
 }
 
 int main(int, char**)
 {
-    single_dimension();
+//    single_dimension();
     two_dimension();
 
     return 0;
