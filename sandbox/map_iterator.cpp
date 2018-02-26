@@ -1,7 +1,29 @@
 #include <map>
 #include <iostream>
+#include <typeinfo>
+#include <cxxabi.h>
 
 #define TRACE()  std::cout << __PRETTY_FUNCTION__ << "\n"
+
+template<typename T>
+std::ostream& print_type(std::ostream& out, T& t)
+{
+    int     status;
+    char   *realname;
+    realname = abi::__cxa_demangle(typeid(t).name(), 0, 0, &status);
+    out << "\"" << realname << "\"";
+    return out;
+}
+
+template<typename T, typename... Args>
+std::ostream& print_type(std::ostream& out, T& t, Args... args)
+{
+    print_type(out, t);
+    out << ", ";
+    print_type(out, args...);
+    out << "\n";
+    return out;
+}
 
 template<typename T>
 class Cell
@@ -94,13 +116,13 @@ std::istream& operator>>(std::istream& is, Cell<T>& obj)
     return is;
 }
 
-// 1-dimensional matrix
+// D-dimensional matrix
 template<typename T, size_t D>
 class Matrix
 {
     public:
         using coords_t = std::array<int, D>;
-        using value_t = typename std::conditional<D == 1, T, Matrix<T, D-1>>;
+        using value_t = typename std::conditional<D == 1, T, Matrix<T, D-1>>::type;
 
         using map_t = std::map<coords_t, value_t>;
         using map_it_t = typename map_t::iterator;
@@ -154,29 +176,81 @@ class Matrix
         }
 };
 
-int main(int, char**)
+void single_dimension()
 {
+    TRACE();
     using matrix_t = Matrix<int, 1>;
     matrix_t m;
-    for (int i = 0; i < 3; ++i)
-    {
+
+    std::cout << "Assign\n";
+    for (int i = 0; i < 3; ++i) {
+        print_type(std::cout, m[i]);
         m[i] = i*2;
     }
 
-//    for (auto it = m.begin(); it != m.end(); ++it)
-//    {
-//        std::cout << it->first << " = " << it->second << "\n";
-//    }
-
-    for (int i = 0; i < 3; ++i)
-    {
-        std::cout << m[i] << "\n";
+    std::cout << "\nRead using iterator\n";
+    for (auto it = m.begin(); it != m.end(); ++it) {
+        print_type(std::cout, it);
+        std::cout << *it << " = " << *it << "\n";
     }
 
-    for (auto c : m)
-    {
-        std::cout << c << "\n";
+    std::cout << "\nRead using index\n";
+    for (int i = 0; i < 3; ++i) {
+        print_type(std::cout, m[i]);
+        std::cout << " " << m[i] << "\n";
     }
+
+    std::cout << "\nRead using range for\n";
+    for (auto c : m) {
+        print_type(std::cout, c);
+        std::cout << " " << c << "\n";
+    }
+    std::cout << "\n";
+}
+
+void two_dimension()
+{
+    TRACE();
+    using matrix_t = Matrix<int, 2>;
+    matrix_t m;
+
+    std::cout << "Assign\n";
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            print_type(std::cout, m[i], m[i][j]);
+            m[i][j] = i+j;
+        }
+    }
+
+    std::cout << "\nRead using iterator\n";
+    for (auto it = m.begin(); it != m.end(); ++it) {
+        print_type(std::cout, it);
+        for (auto jt = (*it).begin(); jt != (*it).end(); ++jt) {
+            auto n = *jt;
+            print_type(std::cout, jt, n);
+            std::cout << n << ", ";
+        }
+        std::cout << "\n";
+    }
+
+    std::cout << "\nRead using index\n";
+    for (int i = 0; i < 3; ++i) {
+        print_type(std::cout, m[i]) << " ";
+//        std::cout << m[i] << "\n";
+    }
+
+    std::cout << "\nRead using range for\n";
+    for (auto c : m) {
+        print_type(std::cout, c) << " ";
+//        std::cout << c << "\n";
+    }
+    std::cout << "\n";
+}
+
+int main(int, char**)
+{
+    single_dimension();
+    two_dimension();
 
     return 0;
 }
