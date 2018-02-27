@@ -141,10 +141,10 @@ class Matrix
             return std::make_tuple(1, 2, 3);
         }
 
-        operator int () const {
-            TRACE();
-            return 3;
-        }
+//        operator int () const {
+//            TRACE();
+//            return 3;
+//        }
 
 
         class m_iterator
@@ -182,20 +182,25 @@ class Matrix
 
         using iterator = m_iterator;
 
+        size_t size() const { return m_.size(); }
+
         value_t& operator[](int i) {
             TRACE();
             std::cout << "idx = " << i << "\n";
             coords_t c { i };
-//            auto it = m_.find(c);
-//            if (it == m_.end()) {
-//                m_.insert();
-//            }
+            auto it = m_.find(c);
+            if (it == m_.end()) {
+                std::cout << i << " not found\n";
+            }
+            else {
+                std::cout << "found " << i << "\n";
+            }
             return m_[c];
         }
 
         value_t& operator[](int i) const {
             TRACE();
-            std::cout << "idx = " << i << "\n";
+            std::cout << "const idx = " << i << "\n";
             coords_t c { i };
 //            auto it = m_.find(c);
 //            if (it == m_.end()) {
@@ -265,11 +270,17 @@ void two_dimension()
         std::cout << "\n";
     }
 
+    std::cout << "\n Size = " << m.size() << "\n";
+
     std::cout << "\nRead using index\n";
     for (int i = 0; i < 3; ++i) {
         print_type(std::cout, m[i]) << "\n";
-        std::cout << m[i] << "\n";
+        for (int j = 0; j < 3; ++j) {
+            std::cout << m[i][j] << "\n";
+        }
     }
+
+    std::cout << "\n Size = " << m.size() << "\n";
 
 #if 0
     std::cout << "\nRead using iterator\n";
