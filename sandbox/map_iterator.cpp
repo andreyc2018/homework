@@ -8,8 +8,8 @@
 template<typename T>
 std::ostream& print_type(std::ostream& out, T& t)
 {
-    int     status;
-    char   *realname;
+    int status;
+    char *realname;
     realname = abi::__cxa_demangle(typeid(t).name(), 0, 0, &status);
     out << "\"" << realname << "\"";
     return out;
