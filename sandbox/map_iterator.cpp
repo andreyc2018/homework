@@ -193,6 +193,17 @@ class Matrix
             return m_[c];
         }
 
+        value_t& operator[](int i) const {
+            TRACE();
+            std::cout << "idx = " << i << "\n";
+            coords_t c { i };
+//            auto it = m_.find(c);
+//            if (it == m_.end()) {
+//                m_.insert();
+//            }
+            return m_[c];
+        }
+
         iterator begin() noexcept {
             TRACE();
             iterator it(m_.begin());
@@ -254,6 +265,12 @@ void two_dimension()
         std::cout << "\n";
     }
 
+    std::cout << "\nRead using index\n";
+    for (int i = 0; i < 3; ++i) {
+        print_type(std::cout, m[i]) << "\n";
+        std::cout << m[i] << "\n";
+    }
+
 #if 0
     std::cout << "\nRead using iterator\n";
     for (auto it = m.begin(); it != m.end(); ++it) {
@@ -264,12 +281,6 @@ void two_dimension()
             std::cout << n << ", ";
         }
         std::cout << "\n";
-    }
-
-    std::cout << "\nRead using index\n";
-    for (int i = 0; i < 3; ++i) {
-        print_type(std::cout, m[i]) << "\n";
-//        std::cout << m[i] << "\n";
     }
 
     std::cout << "\nRead using range for\n";
