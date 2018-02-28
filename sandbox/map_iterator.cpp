@@ -98,6 +98,10 @@ class Cell
         bool operator>=(const Cell& x, const Cell& y) {
             return !(x < y);
         }
+
+//        value_t& operator[](int i) {
+//            return v_[i];
+//        }
 };
 
 template<typename T>
@@ -140,12 +144,6 @@ class Matrix
             TRACE();
             return std::make_tuple(1, 2, 3);
         }
-
-//        operator int () const {
-//            TRACE();
-//            return 3;
-//        }
-
 
         class m_iterator
         {
