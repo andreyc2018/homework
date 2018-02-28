@@ -21,13 +21,13 @@ int main(int, char const**)
 
         std::cout << m.size() << "\n";
 
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
-                if (m(i, j) != m.default_value()) {
-                    std::cout << "[" << i << "]" << "[" << j << "] = "
-                              << m(i, j) << "\n";
-                }
-            }
+        for(auto c : m)
+        {
+            int x;
+            int y;
+            int v;
+            std::tie(x, y, v) = c;
+            std::cout << "[" << x << "][" << y << "] = " << v << std::endl;
         }
     }
     catch(const std::exception &e) {
