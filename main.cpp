@@ -8,25 +8,24 @@ int main(int, char const**)
         matrix_t m;
         int size = 10;
         for (int i = 0; i < size; ++i) {
-            m.get(i, i) = i;
+            m(i, i) = i;
             int j = size - i - 1;
-            m.get(i, j) = j;
+            m(i, j) = j;
         }
-        std::cout << m.get(1, 2).get_value() << "\n";
         for (int i = 1; i < size - 1; ++i) {
             for (int j = 1; j < size - 1; ++j) {
-                std::cout << m.get(i, j).get_value() << " ";
+                std::cout << m(i, j) << " ";
             }
             std::cout << "\n";
         }
 
         std::cout << m.size() << "\n";
 
-        for (int i = 1; i < size - 1; ++i) {
-            for (int j = 1; j < size - 1; ++j) {
-                if (m.get(i, j).get_value() != m.default_value()) {
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                if (m(i, j) != m.default_value()) {
                     std::cout << "[" << i << "]" << "[" << j << "] = "
-                              << m.get(i, j).get_value() << "\n";
+                              << m(i, j) << "\n";
                 }
             }
         }
