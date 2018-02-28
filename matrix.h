@@ -66,12 +66,22 @@ class Matrix
                     coordinates_.swap(coords);
                 }
 
-                Cell& operator=(T v) { TRACE();
-                                       for (auto x : coordinates_) {
-                                           std::cout << x << " ";
-                                       }
-                                       std::cout << "\n";
-                                       value_ = v; return *this; }
+                Cell& operator=(T v) {
+                    TRACE();
+                    for (auto x : coordinates_) {
+                        std::cout << x << " ";
+                    }
+                    std::cout << "Default = " << Default
+                              << " matrix = " << matrix_ << "\n";
+                    value_ = v;
+                    if (v == Default && matrix_) {
+                        matrix_->erase(coordinates_);
+                    }
+                    else if (!matrix_->find(coordinates_)) {
+                        matrix_->insert(*this);
+                    }
+                    return *this;
+                }
                 operator T() const { TRACE(); return value_; }
 
                 template<typename... Args,
@@ -86,6 +96,10 @@ class Matrix
 
                 bool operator< (const Cell& other) const {
                     return coordinates_ < other.coordinates_;
+                }
+
+                coords_t coordinates() const {
+                    return coordinates_;
                 }
 
             private:
@@ -134,15 +148,15 @@ class Matrix
         T default_value() const { return Default; }
 
         template<typename... Args>
-        typename std::enable_if_t<Dimension == sizeof...(Args), cell_t&>
+        typename std::enable_if_t<Dimension == sizeof...(Args), cell_t>
         get(Args&&... args)
         {
             coords_t coords = { { static_cast<int>(args)... } };
             auto it = matrix_.find(coords);
             if (it == matrix_.end()) {
-                cell_t c(*this, std::forward<Args>(args)...);
-                matrix_.insert(std::make_pair(coords, c));
-                return matrix_[coords];
+                cell_t c(this, std::forward<Args>(args)...);
+//                matrix_.insert(std::make_pair(coords, c));
+                return c;
             }
             return it->second;
         }
@@ -165,7 +179,7 @@ class Matrix
             if (value == Default) {
                 return;
             }
-            cell_t c(*this, std::forward<Args>(args)...);
+            cell_t c(this, std::forward<Args>(args)...);
             c.set_value(value);
             matrix_.insert(std::make_pair(coords, c));
         }
@@ -175,4 +189,23 @@ class Matrix
 
     private:
         map_t matrix_;
+
+        void insert(cell_t& cell) {
+            matrix_.insert(std::make_pair(cell.coordinates(), cell));
+        }
+
+        bool find(const coords_t& c) {
+            auto it = matrix_.find(c);
+            return it != matrix_.end();
+        }
+
+        void erase(const coords_t& c) {
+            std::cout << "Erasing: ";
+            for (auto x : c) {
+                std::cout << x << " ";
+            }
+            std::cout << matrix_.size() << "\n";
+            matrix_.erase(c);
+            std::cout << matrix_.size() << "\n";
+        }
 };

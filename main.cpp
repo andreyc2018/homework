@@ -8,11 +8,10 @@ int main(int, char const**)
         matrix_t m;
         int size = 10;
         for (int i = 0; i < size; ++i) {
-            m.set(i, i, i);
+            m.get(i, i) = i;
             int j = size - i - 1;
-            m.set(j, i, j);
+            m.get(i, j) = j;
         }
-        m.get(1, 2) = 10;
         std::cout << m.get(1, 2).get_value() << "\n";
         for (int i = 1; i < size - 1; ++i) {
             for (int j = 1; j < size - 1; ++j) {
@@ -31,7 +30,6 @@ int main(int, char const**)
                 }
             }
         }
-        m.get(0, 1) = 10;
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;
