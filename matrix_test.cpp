@@ -4,15 +4,15 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
-using matrix::Cell;
-using matrix::Matrix;
+//using matrix::Cell;
+//using matrix::Matrix;
 
 BOOST_AUTO_TEST_CASE(init)
 {
-    Cell<int> c1(1, 1);
+    Matrix<int, 2, 0>::Cell c1(nullptr, 1, 1);
     c1.set_value(10);
 
-    Cell<int> c2(1, 1);
+    Matrix<int, 2, 0>::Cell c2(nullptr, 1, 1);
     c2.set_value(10);
 
 // error: no matching function for call to ‘matrix::Cell<int, 3>::set(int, int, int)’
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(init)
 
     BOOST_CHECK(!(c1 < c2));
 
-    Cell<int> c4(0, 0);
+    Matrix<int, 2, 0>::Cell c4(nullptr, 0, 0);
     c4.set_value(12);
     BOOST_CHECK(c4 < c1);
 }
