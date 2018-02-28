@@ -43,3 +43,27 @@ BOOST_AUTO_TEST_CASE(matrix_example)
         std::cout << "[" << x << "][" << y << "] = " << v << std::endl;
     }
 }
+
+BOOST_AUTO_TEST_CASE(matrix_example_four_dim)
+{
+    Matrix<int, 4, -1> m;
+    BOOST_CHECK_EQUAL(0, m.size());
+    auto a = m(0, 0, 0, 0);
+    BOOST_CHECK_EQUAL(-1, a);
+    BOOST_CHECK_EQUAL(0, m.size());
+    m(100, 100, 200, 300) = 314;
+    BOOST_CHECK_EQUAL(314, m(100, 100, 200, 300));
+    BOOST_CHECK_EQUAL(1, m.size());
+    Matrix<int, 4, -1>::iterator it = m.begin();
+    std::cout << (*it) << "\n";
+    for(auto c : m)
+    {
+        int w;
+        int x;
+        int y;
+        int z;
+        int v;
+        std::tie(w, x, y, z, v) = c;
+        std::cout << "[" << w << "][" << x << "]" << "[" << y << "][" << z << "] = " << v << std::endl;
+    }
+}
