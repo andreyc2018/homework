@@ -6,7 +6,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
 
 set(EXECUTABLE_NAME matrix)
-set(LIBRARY_NAME matrix_tool)
+#set(LIBRARY_NAME matrix_tool)
 set(TEST_NAME matrix_test)
 
 if ($ENV{TRAVIS_BUILD_NUMBER})
@@ -33,12 +33,12 @@ set(HEADER_FILES matrix.h)
 add_executable(${EXECUTABLE_NAME} main.cpp docs/hw_assignment.md
     ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_library(${LIBRARY_NAME} matrix.cpp ${HEADER_FILES})
+#add_library(${LIBRARY_NAME} matrix.cpp ${HEADER_FILES})
 
 add_executable(${TEST_NAME} matrix_test.cpp ${HEADER_FILES})
 
 target_compile_options(${EXECUTABLE_NAME} PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(${LIBRARY_NAME} PRIVATE -Wpedantic -Wall -Wextra)
+#target_compile_options(${LIBRARY_NAME} PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(${TEST_NAME} PRIVATE -Wpedantic -Wall -Wextra)
 
 set_target_properties(${TEST_NAME} PROPERTIES
@@ -46,9 +46,10 @@ set_target_properties(${TEST_NAME} PROPERTIES
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(${EXECUTABLE_NAME} ${LIBRARY_NAME})
+#target_link_libraries(${EXECUTABLE_NAME} ${LIBRARY_NAME})
 
-target_link_libraries(${TEST_NAME} ${Boost_LIBRARIES} ${LIBRARY_NAME})
+#target_link_libraries(${TEST_NAME} ${Boost_LIBRARIES} ${LIBRARY_NAME})
+target_link_libraries(${TEST_NAME} ${Boost_LIBRARIES})
 
 install(TARGETS ${EXECUTABLE_NAME} RUNTIME DESTINATION bin)
 
