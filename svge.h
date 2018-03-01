@@ -22,15 +22,14 @@ class Svge
 
         void create_document()
         {
-            TRACE();
-            // There is no checking if the document contains any modifications.
-            // std::make_unique() is not available on Travis
-            doc_.reset(new Document);
+            doc_ = std::make_unique<Document>();
         }
 
         void export_document(const std::string& filename)
         {
-            storage_.export_document(filename, doc_);
+            if (doc_->modified()) {
+                storage_.export_document(filename, doc_);
+            }
         }
 
         void import_document(const std::string& filename)
@@ -43,10 +42,15 @@ class Svge
             return doc_->create_item(type);
         }
 
-//        void delete_item(item_id_t id)
-//        {
-//            doc_->delete_item(id);
-//        }
+        void delete_item(shape_id_t id)
+        {
+            doc_->delete_item(id);
+        }
+
+        void request_document()
+        {
+            doc_->collect_items();
+        }
 
     private:
         DocumentUPtr doc_;

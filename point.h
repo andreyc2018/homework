@@ -12,15 +12,9 @@ class Point : public Shape
     public:
         using base = Shape;
 
-        Point() : base(shape_type_t::Point), x_(0), y_(0)
-        {
-            TRACE();
-        }
+        Point() : base(shape_type_t::Point), x_(0), y_(0) {}
 
-        ~Point()
-        {
-            TRACE();
-        }
+        ~Point() {}
 
         ssize_t x() const { return x_; }
         void setX(const ssize_t& x) { x_ = x; }
@@ -28,25 +22,32 @@ class Point : public Shape
         ssize_t y() const { return y_; }
         void setY(const ssize_t& y) { y_ = y; }
 
-        std::ostream& write(std::ostream& out) override
+        std::ostream& write(std::ostream& out) const override
         {
-            TRACE();
-            base::write(out);
-            out << x_ << y_;
+            base::write(out);            
+            write_stream(out, x_, "x");
+            write_stream(out, y_, "y");
             return out;
         }
 
         std::istream& read(std::istream& in) override
         {
-            TRACE();
             base::read(in);
-            in >> x_ >> y_;
+            read_stream(in, x_, "x");
+            read_stream(in, y_, "y");
             return in;
+        }
+
+        void get_info() const override
+        {
+            gLogger->info("Point: id = {}, x = {}, y = {}", id_, x_, y_);
         }
 
     protected:
         ssize_t x_;
         ssize_t y_;
 };
+
+using PointUPtr = std::unique_ptr<Point>;
 
 }

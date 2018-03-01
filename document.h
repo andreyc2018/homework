@@ -22,13 +22,13 @@ class Document
 {
     public:
 
-        Document() : next_id_(1) { TRACE(); }
-        ~Document() { TRACE(); }
+        Document() : next_id_(1), modified_(false) {}
+        ~Document() {}
 
         std::ostream& write(std::ostream& out)
         {
-            TRACE();
-            out << shapes_.size();
+            shape_container_t::size_type size = shapes_.size();
+            write_stream(out, size, "size");
             for (const auto& shape : shapes_) {
                 shape.second->write(out);
             }
@@ -37,12 +37,11 @@ class Document
 
         std::istream& read(std::istream& in)
         {
-            TRACE();
-            size_t shapes_size = 0;
-            in >> shapes_size;
-            for (size_t i = 0; i < shapes_size; ++i) {
+            shape_container_t::size_type size = 0;
+            read_stream(in, size, "size");
+            for (size_t i = 0; i < size; ++i) {
                 shape_type_t type;
-                in >> type;
+                read_stream(in, type, "type");
                 ShapeUPtr item = make_item(type);
                 item->read(in);
                 shapes_[item->id()] = std::move(item);
@@ -55,6 +54,7 @@ class Document
             ShapeUPtr item = make_item(type);
             shape_id_t id = item->id();
             shapes_[id] = std::move(item);
+            modified_ = true;
             return id;
         }
 
@@ -63,10 +63,10 @@ class Document
             ShapeUPtr item;
             switch(type) {
                 case shape_type_t::Point:
-                    item.reset(new Point);
+                    item = std::make_unique<Point>();
                     break;
                 case shape_type_t::Vector:
-                    item.reset(new Vector);
+                    item = std::make_unique<Vector>();
                     break;
                 default:
                     break;
@@ -76,9 +76,25 @@ class Document
             return item;
         }
 
+        void delete_item(shape_id_t id)
+        {
+            modified_ = shapes_.erase(id) > 0;
+        }
+
+        void collect_items()
+        {
+            gLogger->info("Document contains {} shapes", shapes_.size());
+            for (const auto& shape : shapes_) {
+                shape.second->get_info();
+            }
+        }
+
+        bool modified() const { return modified_; }
+
     private:
         shape_id_t next_id_;
         shape_container_t shapes_;
+        bool modified_;
 
         shape_id_t next_id() { return next_id_++; }
         void reset_id() { next_id_ = 1; }

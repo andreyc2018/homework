@@ -14,18 +14,17 @@ class Storage
 
         void export_document(const std::string& filename, const DocumentUPtr& doc)
         {
-            TRACE();
             std::ofstream file(filename, std::ios::binary);
             doc->write(file);
+            file.close();
         }
 
         DocumentUPtr import_document(const std::string& filename)
         {
-            TRACE();
-            // std::make_unique() is not available on Travis
-            DocumentUPtr doc(new Document);
+            auto doc = std::make_unique<Document>();
             std::ifstream file(filename, std::ios::binary);
             doc->read(file);
+            file.close();
             return doc;
         }
 };
