@@ -9,12 +9,11 @@
 using svge::shape_type_t;
 using svge::Point;
 
-LoggerPtr gLogger = spdlog::stdout_logger_mt("console", true);
+LoggerPtr gLogger = spdlog::stdout_logger_st("console");
 
 BOOST_AUTO_TEST_CASE(gs_type)
 {
     gLogger->set_level(spdlog::level::trace);
-    TRACE();
     gLogger->info("Set type to Point and write to stringstream");
 
     shape_type_t t = shape_type_t::Point;

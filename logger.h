@@ -8,5 +8,5 @@ using LoggerPtr = std::shared_ptr<spdlog::logger>;
 
 extern LoggerPtr gLogger;
 
-#define TRACE()  SPDLOG_TRACE(gLogger, "{}", __PRETTY_FUNCTION__)
+//#define TRACE()  SPDLOG_TRACE(gLogger, "{}", __PRETTY_FUNCTION__)
 
