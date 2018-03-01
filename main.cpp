@@ -54,7 +54,6 @@ class GuiApp
         {
             std::cout << ":: Adding " << shape_type_string(type) << "\n";
             shape_id_t id = controller_.create_item(type);
-            std::cout << ":: Added " << shape_type_string(type) << " id = " << id << "\n";
             update_view();
             return id;
         }

@@ -4,9 +4,7 @@
  *
  */
 
-#include "shape.h"
-#include "point.h"
-#include "vector.h"
+#include "shapefactory.h"
 #include <vector>
 #include <iostream>
 
@@ -41,38 +39,24 @@ class Document
             for (size_t i = 0; i < size; ++i) {
                 shape_type_t type;
                 read_stream(in, type);
-                ShapeUPtr item = make_item(type);
+                ShapeUPtr item = ShapeFactory::create(type);
                 item->read(in);
                 shapes_[item->id()] = std::move(item);
             }
             return in;
         }
 
-        shape_id_t create_item(shape_type_t type)
+        shape_id_t create_shape(shape_type_t type)
         {
-            ShapeUPtr item = make_item(type);
-            shape_id_t id = item->id();
-            shapes_[id] = std::move(item);
-            modified_ = true;
-            return id;
-        }
-
-        ShapeUPtr make_item(shape_type_t type)
-        {
-            ShapeUPtr item;
-            switch(type) {
-                case shape_type_t::Point:
-                    item = std::make_unique<Point>();
-                    break;
-                case shape_type_t::Vector:
-                    item = std::make_unique<Vector>();
-                    break;
-                default:
-                    break;
-            }
-            if (item)
+            ShapeUPtr item = ShapeFactory::create(type);
+            shape_id_t id = 0;
+            if (item) {
                 item->setId(next_id());
-            return item;
+                id = item->id();
+                shapes_[id] = std::move(item);
+                modified_ = true;
+            }
+            return id;
         }
 
         void delete_item(shape_id_t id)
@@ -96,7 +80,6 @@ class Document
         bool modified_;
 
         shape_id_t next_id() { return next_id_++; }
-        void reset_id() { next_id_ = 1; }
 };
 
 using DocumentUPtr = std::unique_ptr<Document>;

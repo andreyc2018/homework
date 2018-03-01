@@ -28,4 +28,5 @@ class Storage
         }
 };
 
+using StorageUPtr = std::unique_ptr<Storage>;
 }

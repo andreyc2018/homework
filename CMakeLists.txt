@@ -27,7 +27,7 @@ configure_file(version.h.in version.h)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(HEADER_FILES shape.h document.h svge.h storage.h
-        point.h vector.h)
+        point.h vector.h shapefactory.h)
 
 add_executable(svge main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)

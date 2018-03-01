@@ -31,7 +31,7 @@ const char* shape_type_string(shape_type_t type)
 /**
  * @brief operator <<(shape_type_t)
  *
- * BOOST_TEST requires that variables in _CHECK, etc function were printable
+ * BOOST_TEST requires that variables in _CHECK, etc function are printable
  */
 std::ostream& operator<< (std::ostream& out, shape_type_t val)
 {
