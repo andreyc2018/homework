@@ -1,7 +1,6 @@
 #pragma once
 
 #include "document.h"
-#include "logger.h"
 #include <fstream>
 
 namespace svge {

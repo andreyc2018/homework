@@ -5,7 +5,6 @@
 
 #include "document.h"
 #include "storage.h"
-#include "logger.h"
 
 namespace svge {
 

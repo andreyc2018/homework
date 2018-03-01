@@ -7,7 +7,6 @@
 #include "shape.h"
 #include "point.h"
 #include "vector.h"
-#include "logger.h"
 #include <vector>
 #include <iostream>
 
@@ -28,7 +27,7 @@ class Document
         std::ostream& write(std::ostream& out)
         {
             shape_container_t::size_type size = shapes_.size();
-            write_stream(out, size, "size");
+            write_stream(out, size);
             for (const auto& shape : shapes_) {
                 shape.second->write(out);
             }
@@ -38,10 +37,10 @@ class Document
         std::istream& read(std::istream& in)
         {
             shape_container_t::size_type size = 0;
-            read_stream(in, size, "size");
+            read_stream(in, size);
             for (size_t i = 0; i < size; ++i) {
                 shape_type_t type;
-                read_stream(in, type, "type");
+                read_stream(in, type);
                 ShapeUPtr item = make_item(type);
                 item->read(in);
                 shapes_[item->id()] = std::move(item);
@@ -83,7 +82,7 @@ class Document
 
         void collect_items()
         {
-            gLogger->info("Document contains {} shapes", shapes_.size());
+            std::cout << "  Document contains " << shapes_.size() << " shapes\n";
             for (const auto& shape : shapes_) {
                 shape.second->get_info();
             }

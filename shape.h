@@ -1,7 +1,7 @@
 #pragma once
 
-#include "logger.h"
 #include <map>
+#include <memory>
 #include <iostream>
 
 namespace svge {
@@ -28,18 +28,11 @@ const char* shape_type_string(shape_type_t type)
     return "unknown";
 }
 
-//std::istream& operator>> (std::istream& in, shape_type_t& val)
-//{
-//    uint8_t t;
-//    uint8_t min = static_cast<uint8_t>(shape_type_t::Point);
-//    uint8_t max = static_cast<uint8_t>(shape_type_t::Unknown);
-//    in >> t;
-//    if (t >= min && t < max) {
-//        val = static_cast<shape_type_t>(t);
-//    }
-//    return in;
-//}
-
+/**
+ * @brief operator <<(shape_type_t)
+ *
+ * BOOST_TEST requires that variables in _CHECK, etc function were printable
+ */
 std::ostream& operator<< (std::ostream& out, shape_type_t val)
 {
     out << static_cast<uint8_t>(val);
@@ -47,17 +40,15 @@ std::ostream& operator<< (std::ostream& out, shape_type_t val)
 }
 
 template<typename T>
-std::istream& read_stream(std::istream& in, T& data, const char* type)
+std::istream& read_stream(std::istream& in, T& data)
 {
-    gLogger->debug("reading {} {} bytes", type, sizeof (T));
     in.read(reinterpret_cast<char*>(&data), sizeof (T));
     return in;
 }
 
 template<typename T>
-std::ostream& write_stream(std::ostream& out, const T& data, const char* type)
+std::ostream& write_stream(std::ostream& out, const T& data)
 {
-    gLogger->debug("writing {} {} bytes", type, sizeof (T));
     out.write(reinterpret_cast<const char*>(&data), sizeof (T));
     return out;
 }
@@ -97,14 +88,14 @@ class Shape
 
 std::ostream& Shape::write(std::ostream& out) const
 {
-    write_stream(out, type_, "type");
-    write_stream(out, id_, "id");
+    write_stream(out, type_);
+    write_stream(out, id_);
     return out;
 }
 
 std::istream& Shape::read(std::istream& in)
 {
-    read_stream(in, id_, "id");
+    read_stream(in, id_);
     return in;
 }
 

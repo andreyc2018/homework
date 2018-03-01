@@ -5,7 +5,6 @@
  *  GUI events.
  */
 #include "svge.h"
-#include "logger.h"
 
 #include <iostream>
 #include <string>
@@ -14,8 +13,6 @@ using svge::Svge;
 using svge::shape_id_t;
 using svge::shape_type_t;
 using svge::shape_type_string;
-
-LoggerPtr gLogger = spdlog::stdout_logger_st("console");
 
 /**
  * @brief The GuiApp class
@@ -35,36 +32,36 @@ class GuiApp
          */
         void on_new_document()
         {
-            gLogger->info("Creating new document");
+            std::cout << ":: Creating new document\n";
             controller_.create_document();
             update_view();
         }
 
         void on_export_document(const std::string& filename)
         {
-            gLogger->info("Exporting document to a file {}", filename);
+            std::cout << ":: Exporting document to a file " << filename << "\n";
             controller_.export_document(filename);
         }
 
         void on_import_document(const std::string& filename)
         {
-            gLogger->info("Importing document from a file {}", filename);
+            std::cout << ":: Importing document from a file " << filename << "\n";
             controller_.import_document(filename);
             update_view();
         }
 
         shape_id_t on_create_item(shape_type_t type)
         {
-            gLogger->info("Adding {}", shape_type_string(type));
+            std::cout << ":: Adding " << shape_type_string(type) << "\n";
             shape_id_t id = controller_.create_item(type);
-            gLogger->info("Added {} id = {}", shape_type_string(type), id);
+            std::cout << ":: Added " << shape_type_string(type) << " id = " << id << "\n";
             update_view();
             return id;
         }
 
         void on_delete_item(shape_id_t id)
         {
-            gLogger->info("Deleting shape id = {}", id);
+            std::cout << ":: Deleting shape id = " << id << "\n";
             controller_.delete_item(id);
             update_view();
         }
@@ -97,11 +94,9 @@ class GuiApp
         }
 };
 
-int main(int argc, char const**)
+int main(int, char const**)
 {
     try {
-        if (argc > 1)
-            gLogger->set_level(spdlog::level::trace);
         GuiApp app;
         app.on_new_document();
         app.on_create_item(shape_type_t::Point);
@@ -109,6 +104,7 @@ int main(int argc, char const**)
         app.on_create_item(shape_type_t::Point);
         app.on_export_document("hello.svg");
         app.on_import_document("hello.svg");
+        app.on_delete_item(2);
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;

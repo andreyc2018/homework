@@ -3,7 +3,6 @@
  *  @brief Vector
  */
 #include "point.h"
-#include "logger.h"
 
 namespace svge {
 
@@ -33,17 +32,18 @@ class Vector : public Shape
         {
             base::read(in);
             shape_type_t type;
-            read_stream(in, type, "type");
+            read_stream(in, type);
             start_.read(in);
-            read_stream(in, type, "type");
+            read_stream(in, type);
             end_.read(in);
             return in;
         }
 
         void get_info() const override
         {
-            gLogger->info("Vector: id = {}, start({}, {}), end({}, {})",
-                          id_, start_.x(), start_.y(), end_.x(), end_.y());
+            std::cout << "    Vector: id = " << id_
+                      << " start(" << start_.x() << ", " << start_.y()
+                      << "), end(" << end_.x() << ", " << end_.y() << ")\n";
         }
 
     private:
