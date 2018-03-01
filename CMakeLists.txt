@@ -27,21 +27,15 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-#set(HEADER_FILES shape.h
-#        document.h item.h svge.h
-#        point.h line.h storage.h logger.h itemcreator.h)
 set(HEADER_FILES shape.h document.h svge.h storage.h logger.h
         point.h vector.h)
 
-add_executable(svge main.cpp
+add_executable(svge main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-
-#add_library(homework_tools homework_tools.cpp hw_assignment.md ${HEADER_FILES})
 
 add_executable(test_version test_version.cpp ${HEADER_FILES})
 
 target_compile_options(svge PRIVATE -Wpedantic -Wall -Wextra)
-#target_compile_options(homework_tools PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
 set_target_properties(test_version PROPERTIES
@@ -50,9 +44,7 @@ set_target_properties(test_version PROPERTIES
 )
 
 target_link_libraries(svge Threads::Threads)
-#target_link_libraries(svge homework_tools)
 
-#target_link_libraries(test_version ${Boost_LIBRARIES} homework_tools)
 target_link_libraries(test_version ${Boost_LIBRARIES} Threads::Threads)
 
 install(TARGETS svge RUNTIME DESTINATION bin)
