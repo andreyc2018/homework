@@ -26,7 +26,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(HEADER_FILES bulk.h)
 
-add_executable(bulk main.cpp
+add_executable(bulk main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 add_library(bulk_tools bulk.cpp ${HEADER_FILES})
