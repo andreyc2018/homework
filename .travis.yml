@@ -1,5 +1,17 @@
+matrix:
+  include:
+  - os: linux
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-7
+    env:
+      - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
 language: cpp
 before_script:
+- eval "${MATRIX_EVAL}"
 - sudo apt-get install libboost-test-dev -y
 - sudo apt-get install doxygen -y
 - sudo apt-get install graphviz -y
@@ -8,10 +20,9 @@ before_script:
 - sudo apt-get install libspdlog-dev -y
 script:
 - cmake .
-- cmake --build .
+- cmake --build . -- VERBOSE=1
 - cmake --build . --target test
 - cmake --build . --target package
-- rm -f README.md
 - cmake --build . --target doc_doxygen
 deploy:
 - provider: script
