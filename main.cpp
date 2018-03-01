@@ -15,7 +15,7 @@ using svge::shape_id_t;
 using svge::shape_type_t;
 using svge::shape_type_string;
 
-LoggerPtr gLogger = spdlog::stdout_logger_mt("console", true);
+LoggerPtr gLogger = spdlog::stdout_logger_mt("console");
 
 /**
  * @brief The GuiApp class
