@@ -1,16 +1,9 @@
 #pragma once
 
-class State;
-
-class Parser
+class Interpreter
 {
     public:
-        Parser() {}
-};
+        Interpreter() {}
+        ~Interpreter() {}
 
-class State
-{
-    public:
-        State() {}
-        virtual ~State() {}
 };
