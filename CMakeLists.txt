@@ -24,7 +24,7 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(HEADER_FILES bulk.h)
+set(HEADER_FILES bulk.h observers.h logger.h)
 
 add_executable(bulk main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
