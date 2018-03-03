@@ -1,3 +1,4 @@
+#include "bulk.h"
 #include <iostream>
 #include <string>
 
@@ -10,8 +11,10 @@ int main(int argc, char const** argv)
             exit(1);
         }
         int n = std::stoi(argv[1]);
+        Processor processor;
+        processor.set_block_size(n);
         for (std::string input; std::getline(std::cin, input);) {
-            std::cout << input << "\n";
+            processor.handle(input);
         }
     }
     catch(const std::exception &e) {
