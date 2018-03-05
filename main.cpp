@@ -14,7 +14,7 @@ int main(int argc, char const** argv)
         Processor processor;
         processor.set_block_size(n);
         for (std::string input; std::getline(std::cin, input);) {
-            processor.add_token(input);
+            processor.handle(input);
         }
     }
     catch(const std::exception &e) {

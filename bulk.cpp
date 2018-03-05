@@ -9,11 +9,6 @@ Processor::Processor()
 {
 }
 
-void Processor::add_token(const std::string& input)
-{
-
-}
-
 void Processor::handle(const std::string& input)
 {
     InputContext ctx;
@@ -64,5 +59,10 @@ bool StartingBlock::handle(ExpressionContext* ctx, const std::string&)
 bool CollectingBlock::handle(ExpressionContext* ctx, const std::string& input)
 {
     ctx->add_command(input);
+    return false;
+}
+
+bool Initial::handle(ExpressionContext* ctx, const std::string& input) {
+
     return false;
 }

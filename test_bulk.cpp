@@ -1,4 +1,5 @@
-#include "bulk.h"
+#include "command.h"
+#include "interpreter.h"
 #define BOOST_TEST_MODULE Bulk
 #include <boost/test/unit_test.hpp>
 #include <iostream>
@@ -24,5 +25,8 @@ BOOST_AUTO_TEST_CASE(block)
 BOOST_AUTO_TEST_CASE(intrepreter)
 {
     ExpressionContext ctx(2);
-    StartBlockExpr start_expr;
+    std::vector<Expression> exp;
+    exp.push_back(StartBlockExpr());
+    exp.push_back(CommandExpr());
+    exp.push_back(EndBlockExpr());
 }
