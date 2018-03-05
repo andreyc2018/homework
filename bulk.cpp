@@ -9,6 +9,11 @@ Processor::Processor()
 {
 }
 
+void Processor::add_token(const std::string& input)
+{
+
+}
+
 void Processor::handle(const std::string& input)
 {
     InputContext ctx;
@@ -16,13 +21,15 @@ void Processor::handle(const std::string& input)
     state_->handle(this, ctx);
 }
 
-void Processor::add_command(Context& ctx)
+bool Processor::add_command(Context& ctx)
 {
     commands_.push_back(dynamic_cast<InputContext&>(ctx).input());
     input_counter_++;
     if (input_counter_ == block_size_) {
         state_ = std::make_unique<Processing>();
+        return true;
     }
+    return false;
 }
 
 void Processor::run()
@@ -36,16 +43,26 @@ void Processor::run()
     commands_.clear();
 }
 
-void Collecting::handle(Processor* proc, Context& ctx)
+bool Collecting::handle(Processor* proc, Context& ctx)
 {
-    proc->add_command(ctx);
+    return proc->add_command(ctx);
 }
 
-void Processing::handle(Processor* proc, Context& ctx)
+bool Processing::handle(Processor* proc, Context& ctx)
 {
     proc->run();
+    return true;
 }
 
+bool StartingBlock::handle(ExpressionContext* ctx, const std::string&)
+{
+    ctx->new_block();
+    ctx->set_state(std::make_unique<CollectingBlock>());
+    return true;
+}
 
-
-
+bool CollectingBlock::handle(ExpressionContext* ctx, const std::string& input)
+{
+    ctx->add_command(input);
+    return false;
+}
