@@ -8,16 +8,16 @@ class ExpressionContext;
 class ContextState
 {
     public:
-        ContextState(const char* name) : name_(name) {}
-        ~ContextState() { std::cout << "dtor: " << name_ << "\n"; }
+        ContextState(const std::string& name) : name_(name) {}
+        virtual ~ContextState() { std::cout << "dtor: " << name_ << "\n"; }
 
-        const char* name() const { return name_; }
+        const std::string& name() const { return name_; }
         virtual bool handle(ExpressionContext* ctx, const std::string& input) = 0;
 
 //        virtual BlockUPtr create_block(ExpressionContext*) = 0;
 
     protected:
-        const char* const name_;
+        const std::string name_;
 };
 
 using ContextStateUPtr = std::unique_ptr<ContextState>;
@@ -51,6 +51,5 @@ class DoneBlock : public ContextState
     public:
         DoneBlock() : ContextState("doneblock") {}
 
-        bool handle(ExpressionContext* ctx, const std::string& input) override {
-        }
+        bool handle(ExpressionContext* ctx, const std::string& input) override;
 };

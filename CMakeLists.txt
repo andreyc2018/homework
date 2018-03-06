@@ -31,7 +31,7 @@ add_executable(bulk main.cpp docs/hw_assignment.md
 
 add_library(bulk_tools bulk.cpp ${HEADER_FILES})
 
-add_executable(test_bulk test_bulk.cpp ${HEADER_FILES})
+add_executable(test_bulk test_bulk.cpp state.cpp ${HEADER_FILES})
 
 target_compile_options(bulk PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulk_tools PRIVATE -Wpedantic -Wall -Wextra)

@@ -17,6 +17,10 @@ class ExpressionContext
             return state_->name() == name;
         }
 
+        const std::string& state() const {
+            return state_->name();
+        }
+
         bool can_increase_block() const {
             return (block_.size() + 1) < block_size_;
         }
@@ -57,21 +61,24 @@ class ExpressionContext
 class Expression
 {
     public:
+        Expression(const std::string& name) : name_(name) {}
         virtual bool interpret(ExpressionContext& ctx, std::string input) = 0;
+
+        const std::string& name() const { return name_; }
+    private:
+        const std::string name_;
 };
+
+using ExpressionUPtr = std::unique_ptr<Expression>;
 
 class StartBlockExpr: public Expression
 {
     public:
+        StartBlockExpr() : Expression("StartBlockExpr") {}
+
         bool interpret(ExpressionContext& ctx, std::string input) override
         {
-            if (input == "{" && ctx.level() == 0) {
-                ctx.handle_state(input);
-                return true;
-            }
-            if (input == "{" || input == "}")
-                return false;
-            if (ctx.in_state("initial")) {
+            if (input == "{" || input != "}") {
                 ctx.handle_state(input);
                 return true;
             }
@@ -82,25 +89,26 @@ class StartBlockExpr: public Expression
 class CommandExpr: public Expression
 {
     public:
-        bool interpret(ExpressionContext&, std::string input) override
+        CommandExpr() : Expression("CommandExpr") {}
+
+        bool interpret(ExpressionContext& ctx, std::string input) override
         {
-            if (input == "{" || input == "}")
-                return false;
-            return true;
+            if (input != "{" && input != "}") {
+                ctx.handle_state(input);
+                return true;
+            }
+            return false;
         }
 };
 
 class EndBlockExpr: public Expression
 {
     public:
+        EndBlockExpr() : Expression("EndBlockExpr") {}
+
         bool interpret(ExpressionContext& ctx, std::string input) override
         {
-            if (input == "}" && ctx.level() == 1)
-                return true;
-            if (input == "{" && ctx.level() == 0)
-                return true;
-            if (!ctx.can_increase_block())
-                return true;
-            return false;
+            ctx.handle_state(input);
+            return true;
         }
 };

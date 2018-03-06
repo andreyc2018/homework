@@ -1,6 +1,12 @@
 #include "state.h"
 #include "interpreter.h"
 
+bool Initial::handle(ExpressionContext* ctx, const std::string& input) 
+{
+    ctx->set_state(std::make_unique<StartingBlock>());
+    return false;
+}
+
 bool StartingBlock::handle(ExpressionContext* ctx, const std::string&)
 {
     ctx->new_block();
@@ -14,7 +20,7 @@ bool CollectingBlock::handle(ExpressionContext* ctx, const std::string& input)
     return false;
 }
 
-bool Initial::handle(ExpressionContext* ctx, const std::string& input) {
-
+bool DoneBlock::handle(ExpressionContext* ctx, const std::string& input) 
+{
     return false;
 }

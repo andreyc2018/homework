@@ -22,18 +22,35 @@ BOOST_AUTO_TEST_CASE(block)
     BOOST_CHECK_EQUAL("bulk: c1, c2\n", ss.str());
 }
 
+BOOST_AUTO_TEST_CASE(initial_state)
+{
+    ExpressionContext ctx(2);
+    StartBlockExpr exp;
+
+    std::string data = "cmd1";
+    exp.interpret(ctx, data);
+    std::cout << "input: " << data 
+            << " interpret: " << exp.name()
+            << " state: " << ctx.state() << "\n";
+
+    BOOST_CHECK(ctx.in_state("startingblock"));
+}
+
 BOOST_AUTO_TEST_CASE(intrepreter)
 {
     ExpressionContext ctx(2);
-    std::vector<Expression> exp;
-    exp.push_back(StartBlockExpr());
-    exp.push_back(CommandExpr());
-    exp.push_back(EndBlockExpr());
+    std::vector<ExpressionUPtr> exp;
+    exp.emplace_back(new StartBlockExpr());
+    exp.emplace_back(new CommandExpr());
+    exp.emplace_back(new EndBlockExpr());
 
     std::vector<std::string> code { "cmd1", "cmd2", "cmd3" };
     for (const auto& data : code) {
         for (size_t i = 0; i < exp.size(); ++i) {
-            if (exp[i].interpret(ctx, data));
+            exp[i]->interpret(ctx, data);
+            std::cout << "input: " << data 
+                      << " interpret: " << exp[i]->name()
+                      << " state: " << ctx.state() << "\n";
         }
     }
 }
