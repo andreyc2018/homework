@@ -1,6 +1,7 @@
 #pragma once
 
 #include "observers.h"
+#include "command.h"
 #include <string>
 #include <memory>
 #include <vector>

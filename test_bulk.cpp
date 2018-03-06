@@ -29,4 +29,11 @@ BOOST_AUTO_TEST_CASE(intrepreter)
     exp.push_back(StartBlockExpr());
     exp.push_back(CommandExpr());
     exp.push_back(EndBlockExpr());
+
+    std::vector<std::string> code { "cmd1", "cmd2", "cmd3" };
+    for (const auto& data : code) {
+        for (size_t i = 0; i < exp.size(); ++i) {
+            if (exp[i].interpret(ctx, data));
+        }
+    }
 }
