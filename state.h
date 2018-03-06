@@ -22,14 +22,6 @@ class ContextState
 
 using ContextStateUPtr = std::unique_ptr<ContextState>;
 
-class Initial : public ContextState
-{
-    public:
-        Initial() : ContextState("initial") {}
-
-        bool handle(ExpressionContext* ctx, const std::string& input) override;
-};
-
 class StartingBlock : public ContextState
 {
     public:

@@ -8,7 +8,7 @@ class ExpressionContext
         explicit ExpressionContext(int size)
             : block_size_(size)
             , level_(0)
-            , state_(std::make_unique<Initial>())
+            , state_(std::make_unique<StartingBlock>())
         {}
 
         int level() const { return level_; }

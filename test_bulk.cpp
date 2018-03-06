@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(block)
     BOOST_CHECK_EQUAL("bulk: c1, c2\n", ss.str());
 }
 
-BOOST_AUTO_TEST_CASE(initial_state)
+BOOST_AUTO_TEST_CASE(starting_state)
 {
     ExpressionContext ctx(2);
     StartBlockExpr exp;
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(initial_state)
             << " interpret: " << exp.name()
             << " state: " << ctx.state() << "\n";
 
-    BOOST_CHECK(ctx.in_state("startingblock"));
+    BOOST_CHECK(ctx.in_state("collectingblock"));
 }
 
 BOOST_AUTO_TEST_CASE(intrepreter)
