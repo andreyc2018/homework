@@ -25,6 +25,10 @@ class ExpressionContext
             return (block_.size() + 1) < block_size_;
         }
 
+        bool block_full() const {
+            return level_ == 0 && block_.size() == block_size_;
+        }
+
         void set_state(ContextStateUPtr state) {
             state_.swap(state);
         }
@@ -61,6 +65,8 @@ class ExpressionContext
 class Expression
 {
     public:
+        enum class Type { StartBlock, Command, EndBlock };
+
         Expression(const std::string& name) : name_(name) {}
         virtual bool interpret(ExpressionContext& ctx, std::string input) = 0;
 

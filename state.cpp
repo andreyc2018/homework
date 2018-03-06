@@ -1,20 +1,29 @@
 #include "state.h"
 #include "interpreter.h"
 
-bool StartingBlock::handle(ExpressionContext* ctx, const std::string&)
+bool StartingBlock::handle(ExpressionContext* ctx, Expression::Type type, const std::string&)
 {
-    ctx->new_block();
-    ctx->set_state(std::make_unique<CollectingBlock>());
-    return true;
-}
-
-bool CollectingBlock::handle(ExpressionContext* ctx, const std::string& input)
-{
-    ctx->add_command(input);
+    if (type == Expression::Type::StartBlock) {
+        ctx->new_block();
+        ctx->set_state(std::make_unique<CollectingBlock>());
+        return true;
+    }
     return false;
 }
 
-bool DoneBlock::handle(ExpressionContext* ctx, const std::string& input) 
+bool CollectingBlock::handle(ExpressionContext* ctx, Expression::Type type, const std::string& input)
+{
+    if (type == Expression::Type::Command) {
+        ctx->add_command(input);
+        if (ctx->block_full()) {
+            ctx->set_state(std::make_unique<DoneBlock>());
+            return true;
+        }
+    }
+    return false;
+}
+
+bool DoneBlock::handle(ExpressionContext* ctx, Expression::Type type, const std::string& input) 
 {
     return false;
 }
