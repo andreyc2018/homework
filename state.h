@@ -4,6 +4,9 @@
 #include <memory>
 #include <string>
 
+Parser has a state and calls Expression according the state
+in a state handler.
+
 class ParserContext;
 
 class ContextState
