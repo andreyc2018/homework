@@ -11,7 +11,7 @@ bool run_and_log(ParserContext& ctx, Expression& exp,
     bool rc = exp.interpret(ctx, data);
     std::cout << counter << ". input: " << data
             << " interpret: " << exp.name()
-            << " state: " << ctx.state()
+            << " state: " << ctx.state_name()
             << " rc: " << std::boolalpha << rc << "\n";
     return rc;
 }
@@ -139,7 +139,6 @@ BOOST_AUTO_TEST_CASE(collecting_state_2)
     BOOST_CHECK_EQUAL(2, ctx.block_size());
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(intrepreter)
 {
     ParserContext ctx(2);
@@ -151,14 +150,18 @@ BOOST_AUTO_TEST_CASE(intrepreter)
     std::vector<std::string> code { "cmd1", "cmd2", "cmd3" };
     for (const auto& data : code) {
         for (size_t i = 0; i < exp.size(); ++i) {
+            std::string prev_state = ctx.state_name();
             exp[i]->interpret(ctx, data);
-            std::cout << "input: " << data 
+            std::cout << " :: input: " << data
                       << " interpret: " << exp[i]->name()
-                      << " state: " << ctx.state() << "\n";
+                      << " state: " << prev_state
+                      << " --> "
+                      << ctx.state_name() << "\n";
         }
     }
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(block)
 {
     auto b1 = Block::create();

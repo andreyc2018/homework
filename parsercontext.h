@@ -15,7 +15,7 @@ class ParserContext
             return state_->name() == name;
         }
 
-        const std::string& state() const {
+        const std::string& state_name() const {
             return state_->name();
         }
 

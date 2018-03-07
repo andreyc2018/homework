@@ -10,7 +10,7 @@ class ContextState
 {
     public:
         ContextState(const std::string& name) : name_(name) {}
-        virtual ~ContextState() { std::cout << "dtor: " << name_ << "\n"; }
+        virtual ~ContextState() {}
 
         const std::string& name() const { return name_; }
         virtual bool handle(ParserContext* ctx, Expression::Type type, const std::string& input) = 0;

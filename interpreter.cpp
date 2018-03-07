@@ -6,7 +6,13 @@
 bool StartBlockExpr::interpret(ParserContext& ctx, std::string input)
 {
     TRACE();
-    if (input == "{" || input != "}") {
+    /// Starting with "{"
+    if (input == "{") {
+        return ctx.handle_state(type(), input);
+    }
+    /// Starting with "cmdN"
+    if (!input.empty() && input != "}")
+    {
         return ctx.handle_state(type(), input);
     }
     return false;
