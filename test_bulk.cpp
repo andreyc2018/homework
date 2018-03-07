@@ -128,6 +128,15 @@ BOOST_AUTO_TEST_CASE(collecting_state_2)
     BOOST_CHECK(ctx.in_state("CollectingBlock"));
     BOOST_CHECK_EQUAL(1, ctx.level());
     BOOST_CHECK_EQUAL(2, ctx.block_size());
+
+    EndBlockExpr done_exp;
+    // Block size is one, new command "}" and CommandExpr:
+    // state stay the same, block grows
+    rc = run_and_log(ctx, done_exp, "}", 5);
+    BOOST_CHECK(rc);
+    BOOST_CHECK(ctx.in_state("DoneBlock"));
+    BOOST_CHECK_EQUAL(0, ctx.level());
+    BOOST_CHECK_EQUAL(2, ctx.block_size());
 }
 
 #if 0

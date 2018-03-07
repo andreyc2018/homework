@@ -29,6 +29,12 @@ bool CollectingBlock::handle(ParserContext* ctx, Expression::Type type, const st
             return true;
         }
     }
+    else if (type == Expression::Type::EndBlock) {
+        ctx->decrease_level();
+        ctx->add_command(input);
+        ctx->set_state(std::make_unique<DoneBlock>());
+        return true;
+    }
     return false;
 }
 
