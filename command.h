@@ -7,7 +7,8 @@
 class Command
 {
     public:
-        explicit Command(const std::string& name) : name_(name) {}
+        explicit Command(const std::string& name)
+            : name_(name), valid_(name != "{" && name != "}") {}
 
         static Command create(const std::string& name) {
             return Command(name);
@@ -17,14 +18,13 @@ class Command
             out << name_;
         }
 
-        bool valid(const std::string& cmd) {
-            return (cmd != "{" && cmd != "}");
-        }
+        bool valid() const { return valid_; }
 
         std::string name() const { return name_; }
 
     protected:
         std::string name_;
+        bool valid_;
 };
 
 class Block : public Command
@@ -50,7 +50,7 @@ class Block : public Command
         }
 
         void add_command(Command& cmd) {
-            if (cmd.valid(cmd.name())) {
+            if (cmd.valid()) {
                 commands_.push_back(cmd);
             }
         }

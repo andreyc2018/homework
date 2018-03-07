@@ -1,18 +1,27 @@
 #include "state.h"
 #include "interpreter.h"
+#include "parsercontext.h"
+#include "logger.h"
 
-bool StartingBlock::handle(ExpressionContext* ctx, Expression::Type type, const std::string&)
+bool StartingBlock::handle(ParserContext* ctx,
+                           Expression::Type type,
+                           const std::string& input)
 {
+    TRACE();
     if (type == Expression::Type::StartBlock) {
         ctx->new_block();
+        if (input == "{") {
+            ctx->increase_level();
+        }
         ctx->set_state(std::make_unique<CollectingBlock>());
         return true;
     }
     return false;
 }
 
-bool CollectingBlock::handle(ExpressionContext* ctx, Expression::Type type, const std::string& input)
+bool CollectingBlock::handle(ParserContext* ctx, Expression::Type type, const std::string& input)
 {
+    TRACE();
     if (type == Expression::Type::Command) {
         ctx->add_command(input);
         if (ctx->block_full()) {
@@ -23,7 +32,8 @@ bool CollectingBlock::handle(ExpressionContext* ctx, Expression::Type type, cons
     return false;
 }
 
-bool DoneBlock::handle(ExpressionContext* ctx, Expression::Type type, const std::string& input) 
+bool DoneBlock::handle(ParserContext* ctx, Expression::Type type, const std::string& input) 
 {
+    TRACE();
     return false;
 }

@@ -2,4 +2,5 @@
 
 #include <iostream>
 
-#define TRACE()  std::cout << __PRETTY_FUNCTION__ << "\n"
+//#define TRACE()  std::cout << "TRACE: " << __PRETTY_FUNCTION__ << "\n"
+#define TRACE()

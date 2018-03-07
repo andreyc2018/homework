@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-class ExpressionContext;
+class ParserContext;
 
 class ContextState
 {
@@ -13,9 +13,7 @@ class ContextState
         virtual ~ContextState() { std::cout << "dtor: " << name_ << "\n"; }
 
         const std::string& name() const { return name_; }
-        virtual bool handle(ExpressionContext* ctx, Expression::Type type, const std::string& input) = 0;
-
-//        virtual BlockUPtr create_block(ExpressionContext*) = 0;
+        virtual bool handle(ParserContext* ctx, Expression::Type type, const std::string& input) = 0;
 
     protected:
         const std::string name_;
@@ -26,23 +24,23 @@ using ContextStateUPtr = std::unique_ptr<ContextState>;
 class StartingBlock : public ContextState
 {
     public:
-        StartingBlock() : ContextState("startingblock") {}
+        StartingBlock() : ContextState("StartingBlock") {}
 
-        bool handle(ExpressionContext* ctx, Expression::Type type, const std::string& input) override;
+        bool handle(ParserContext* ctx, Expression::Type type, const std::string& input) override;
 };
 
 class CollectingBlock : public ContextState
 {
     public:
-        CollectingBlock() : ContextState("collectingblock") {}
+        CollectingBlock() : ContextState("CollectingBlock") {}
 
-        bool handle(ExpressionContext* ctx, Expression::Type type, const std::string& input) override;
+        bool handle(ParserContext* ctx, Expression::Type type, const std::string& input) override;
 };
 
 class DoneBlock : public ContextState
 {
     public:
-        DoneBlock() : ContextState("doneblock") {}
+        DoneBlock() : ContextState("DoneBlock") {}
 
-        bool handle(ExpressionContext* ctx, Expression::Type type, const std::string& input) override;
+        bool handle(ParserContext* ctx, Expression::Type type, const std::string& input) override;
 };

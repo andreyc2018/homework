@@ -67,35 +67,3 @@ class InputContext : public Context
     private:
         std::string input_;
 };
-
-class Iterpreter
-{
-    public:
-};
-
-/**
- * @brief The Processor class
- * Reads and process the input commands according to the rules
- * The rules:
- *
- */
-class Processor
-{
-    public:
-        using block_t = std::vector<Command>;
-        Processor();
-
-        void add_token(const std::string& input);
-        void handle(const std::string& input);
-        void set_block_size(size_t block_size) { block_size_ = block_size; }
-
-        bool add_command(Context& ctx);
-        void run();
-
-    private:
-        size_t block_size_;
-        size_t input_counter_;
-        block_t block_;
-        std::vector<std::string> commands_;
-        StateUPtr state_;
-};

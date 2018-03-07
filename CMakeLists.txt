@@ -24,14 +24,18 @@ configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-set(HEADER_FILES bulk.h observers.h logger.h interpreter.h command.h state.h)
+set(HEADER_FILES observers.h logger.h
+        interpreter.h command.h state.h
+        parsercontext.h processor.h)
 
 add_executable(bulk main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_library(bulk_tools bulk.cpp ${HEADER_FILES})
+add_library(bulk_tools parsercontext.cpp state.cpp
+        interpreter.cpp processor.cpp
+        ${HEADER_FILES})
 
-add_executable(test_bulk test_bulk.cpp state.cpp ${HEADER_FILES})
+add_executable(test_bulk test_bulk.cpp ${HEADER_FILES})
 
 target_compile_options(bulk PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulk_tools PRIVATE -Wpedantic -Wall -Wextra)
