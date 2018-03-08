@@ -1,9 +1,9 @@
 #include "interpreter.h"
 #include "state.h"
-#include "parsercontext.h"
+#include "parser.h"
 #include "logger.h"
 
-bool StartBlockExpr::interpret(ParserContext& ctx, std::string input)
+bool StartBlockExpr::interpret(Parser& ctx, std::string input)
 {
     TRACE();
     /// Starting with "{"
@@ -18,7 +18,7 @@ bool StartBlockExpr::interpret(ParserContext& ctx, std::string input)
     return false;
 }
 
-bool CommandExpr::interpret(ParserContext& ctx, std::string input)
+bool CommandExpr::interpret(Parser& ctx, std::string input)
 {
     TRACE();
     if (input != "{" && input != "}") {
@@ -27,7 +27,7 @@ bool CommandExpr::interpret(ParserContext& ctx, std::string input)
     return false;
 }
 
-bool EndBlockExpr::interpret(ParserContext& ctx, std::string input)
+bool EndBlockExpr::interpret(Parser& ctx, std::string input)
 {
     TRACE();
     return ctx.handle_state(type(), input);

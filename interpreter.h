@@ -1,7 +1,8 @@
 #pragma once
-#include "command.h"
+#include <string>
+#include <memory>
 
-class ParserContext;
+class Parser;
 
 /**
  * @brief The expression tree
@@ -19,7 +20,7 @@ class Expression
 
         Expression(const std::string& name, Type type)
             : name_(name), type_(type) {}
-        virtual bool interpret(ParserContext& ctx, std::string input) = 0;
+        virtual bool interpret(Parser& ctx, std::string input) = 0;
 
         const std::string& name() const { return name_; }
         Type type() const { return type_; }
@@ -37,7 +38,7 @@ class StartBlockExpr: public Expression
         StartBlockExpr()
             : Expression("StartBlockExpr", Expression::Type::StartBlock) {}
 
-        bool interpret(ParserContext& ctx, std::string input) override;
+        bool interpret(Parser& ctx, std::string input) override;
 };
 
 class CommandExpr: public Expression
@@ -46,7 +47,7 @@ class CommandExpr: public Expression
         CommandExpr()
             : Expression("CommandExpr", Expression::Type::Command) {}
 
-        bool interpret(ParserContext& ctx, std::string input) override;
+        bool interpret(Parser& ctx, std::string input) override;
 };
 
 class EndBlockExpr: public Expression
@@ -55,5 +56,5 @@ class EndBlockExpr: public Expression
         EndBlockExpr()
             : Expression("EndBlockExpr", Expression::Type::EndBlock) {}
 
-        bool interpret(ParserContext& ctx, std::string input) override;
+        bool interpret(Parser& ctx, std::string input) override;
 };
