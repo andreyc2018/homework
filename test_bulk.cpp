@@ -5,15 +5,38 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
+using term_t = TerminalExpression;
+using expr_t = ExpressionPtr;
+using start_block_t = NonTerminalExpression<expr_t, expr_t>;
+using end_block_t = NonTerminalExpression<expr_t, expr_t, expr_t>;
+
 BOOST_AUTO_TEST_CASE(interpreter_tree)
 {
-    TerminalExpression open_block("\\{");
-    TerminalExpression close_block("\\}");
-    TerminalExpression command("[^{}]+");
+    expr_t open_block = std::make_shared<term_t>("\\{");
+    expr_t close_block = std::make_shared<term_t>("\\}");
+    expr_t command = std::make_shared<term_t>("[^{}]+");
 
-    BOOST_CHECK(open_block.interpret("{"));
-    BOOST_CHECK(close_block.interpret("{"));
-    BOOST_CHECK(command.interpret("{"));
+    BOOST_CHECK(open_block->interpret("{"));
+    BOOST_CHECK(!open_block->interpret("{{"));
+    BOOST_CHECK(!open_block->interpret("}"));
+    BOOST_CHECK(!open_block->interpret("zxcv"));
+    BOOST_CHECK(close_block->interpret("}"));
+    BOOST_CHECK(!close_block->interpret("}}"));
+    BOOST_CHECK(!close_block->interpret("{"));
+    BOOST_CHECK(!close_block->interpret("world"));
+    BOOST_CHECK(!command->interpret("{"));
+    BOOST_CHECK(command->interpret("hello"));
+
+    expr_t start_block = std::make_shared<start_block_t>(open_block, command);
+    BOOST_CHECK(start_block->interpret("{"));
+    BOOST_CHECK(!start_block->interpret("{{"));
+    BOOST_CHECK(!start_block->interpret("}"));
+    BOOST_CHECK(start_block->interpret("qwerty"));
+
+    expr_t end_block = std::make_shared<end_block_t>(open_block, command, close_block);
+    BOOST_CHECK(end_block->interpret("{"));
+    BOOST_CHECK(end_block->interpret("}"));
+    BOOST_CHECK(end_block->interpret("asdfg"));
 }
 
 #if 0

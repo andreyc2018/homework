@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include <regex>
+#include <algorithm>
 
 /**
  * @brief The expression tree
@@ -33,13 +34,12 @@ class Expression
 };
 
 using ExpressionUPtr = std::unique_ptr<Expression>;
+using ExpressionPtr = std::shared_ptr<Expression>;
 
 class TerminalExpression : public Expression
 {
     public:
-        TerminalExpression(const std::string& reg_expr)
-            : Expression (reg_expr, Expression::Type::TerminalExpression)
-            , reg_exp_(reg_expr, std::regex::extended) {}
+        TerminalExpression(const std::string& reg_expr);
 
         bool interpret(const std::string& input) override;
 
@@ -47,20 +47,25 @@ class TerminalExpression : public Expression
         const std::regex reg_exp_;
 };
 
+template<typename T, typename... Args>
 class NonTerminalExpression : public Expression
 {
     public:
-        NonTerminalExpression(ExpressionUPtr& term_left,
-                              ExpressionUPtr& term_right)
+        NonTerminalExpression(T first, Args... other)
             : Expression ("NonTerminalExpression",
                           Expression::Type::NonTerminalExpression)
-            , term_left_(std::move(term_left))
-            , term_right_(std::move(term_right))
+            , terms_ { first, other... }
         {}
 
-        bool interpret(const std::string& input) override;
+
+        bool interpret(const std::string& input) override
+        {
+            return std::any_of(std::begin(terms_), std::end(terms_),
+                               [&input](const T& term) {
+                return term->interpret(input);
+            });
+        }
 
     private:
-        ExpressionUPtr term_left_;
-        ExpressionUPtr term_right_;
+        std::array<T, sizeof... (Args)+1> terms_;
 };
