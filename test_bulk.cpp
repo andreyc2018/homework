@@ -1,10 +1,22 @@
-#include "command.h"
+//#include "command.h"
 #include "interpreter.h"
-#include "parsercontext.h"
+//#include "parsercontext.h"
 #define BOOST_TEST_MODULE Bulk
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
+BOOST_AUTO_TEST_CASE(interpreter_tree)
+{
+    TerminalExpression open_block("\\{");
+    TerminalExpression close_block("\\}");
+    TerminalExpression command("[^{}]+");
+
+    BOOST_CHECK(open_block.interpret("{"));
+    BOOST_CHECK(close_block.interpret("{"));
+    BOOST_CHECK(command.interpret("{"));
+}
+
+#if 0
 bool run_and_log(ParserContext& ctx, Expression& exp,
                  const std::string& data, int counter)
 {
@@ -161,7 +173,6 @@ BOOST_AUTO_TEST_CASE(intrepreter)
     }
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(block)
 {
     auto b1 = Block::create();

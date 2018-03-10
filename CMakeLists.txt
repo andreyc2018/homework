@@ -32,10 +32,14 @@ set(HEADER_FILES observers.h logger.h
 add_executable(bulk main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_library(bulk_tools parsercontext.cpp state.cpp
-        interpreter.cpp processor.cpp parser.cpp
-        parserstate.cpp
+add_library(bulk_tools
+        interpreter.cpp
         ${HEADER_FILES})
+
+#add_library(bulk_tools parsercontext.cpp state.cpp
+#        interpreter.cpp processor.cpp parser.cpp
+#        parserstate.cpp
+#        ${HEADER_FILES})
 
 add_executable(test_bulk test_bulk.cpp ${HEADER_FILES})
 
