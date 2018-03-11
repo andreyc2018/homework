@@ -1,0 +1,12 @@
+@startuml
+
+[*] --> StartingBlock
+StartingBlock : expecting "{" or "cmd"
+StartingBlock --> [*] : closeBlock
+StartingBlock --> CollectingCommands : startBlock
+CollectingCommands : expecting "cmd" or "}" or "{"
+CollectingCommands --> DoneBlock : endBlock
+DoneBlock : notifes processror about command block
+DoneBlock --> [*]
+
+@enduml

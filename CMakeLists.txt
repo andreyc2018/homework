@@ -92,6 +92,10 @@ if (DOXYGEN_FOUND)
             ${CMAKE_CURRENT_BINARY_DIR}/docs/hw_assignment.md COPYONLY)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/_config.yml
             ${CMAKE_CURRENT_BINARY_DIR}/docs/_config.yml COPYONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/parser_state_machine.uml
+            ${CMAKE_CURRENT_BINARY_DIR}/docs/parser_state_machine.uml COPYONLY)
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/docs/parser_state_machine.png
+            ${CMAKE_CURRENT_BINARY_DIR}/docs/html/parser_state_machine.png COPYONLY)
 
     # note the option ALL which allows to build the docs together with the application
     #add_custom_target(doc_doxygen ALL

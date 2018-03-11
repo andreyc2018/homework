@@ -1,3 +1,8 @@
+/**
+ * @file parserstate.h
+ * @image html parser_state_machine.png
+ */
+
 #pragma once
 #include "interpreter.h"
 #include <iostream>
