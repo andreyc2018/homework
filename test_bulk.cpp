@@ -1,6 +1,6 @@
-//#include "command.h"
+#include "command.h"
 #include "interpreter.h"
-//#include "parsercontext.h"
+#include "observers.h"
 #define BOOST_TEST_MODULE Bulk
 #include <boost/test/unit_test.hpp>
 #include <iostream>
@@ -37,6 +37,30 @@ BOOST_AUTO_TEST_CASE(interpreter_tree)
     BOOST_CHECK(end_block->interpret("{"));
     BOOST_CHECK(end_block->interpret("}"));
     BOOST_CHECK(end_block->interpret("asdfg"));
+}
+
+BOOST_AUTO_TEST_CASE(block)
+{
+    auto b1 = Block::create();
+
+    auto c1 = Command::create("c1");
+    b1.add_command(c1);
+
+    auto c2 = Command::create("c2");
+    b1.add_command(c2);
+
+    std::stringstream ss;
+    b1.run(ss);
+
+    std::cout << ss.str();
+
+    BOOST_CHECK_EQUAL("bulk: c1, c2\n", ss.str());
+}
+
+BOOST_AUTO_TEST_CASE(observer)
+{
+    std::vector<Observer*> writers;
+    writers.push_back();
 }
 
 #if 0
@@ -194,24 +218,6 @@ BOOST_AUTO_TEST_CASE(intrepreter)
                       << ctx.state_name() << "\n";
         }
     }
-}
-
-BOOST_AUTO_TEST_CASE(block)
-{
-    auto b1 = Block::create();
-
-    auto c1 = Command::create("c1");
-    b1.add_command(c1);
-
-    auto c2 = Command::create("c2");
-    b1.add_command(c2);
-
-    std::stringstream ss;
-    b1.run(ss);
-
-    std::cout << ss.str();
-
-    BOOST_CHECK_EQUAL("bulk: c1, c2\n", ss.str());
 }
 
 #endif

@@ -1,30 +1,9 @@
 #pragma once
 
 #include "logger.h"
-
-class Observer
-{
-    public:
-        virtual void update() = 0;
-};
-
-class ConsoleOut : public Observer
-{
-    public:
-        void update() override
-        {
-            TRACE();
-        }
-};
-
-class FileOut : public Observer
-{
-    public:
-        void update() override
-        {
-            TRACE();
-        }
-};
+#include <memory>
+#include <mutex>
+#include <fstream>
 
 template <typename T>
 class Singleton
@@ -46,4 +25,60 @@ class Singleton
         Singleton& operator=(Singleton&&) = delete;
 };
 
-using SingleConsole = Singleton<ConsoleOut>;
+class AbstractWriter
+{
+    public:
+        virtual ~AbstractWriter() {}
+
+        virtual void write(const std::string& data) = 0;
+};
+
+class ConsoleWriter : public AbstractWriter
+{
+    public:
+        void write(const std::string& data) override
+        {
+            std::lock_guard<std::mutex> g(m_);
+            std::cout << data;
+        }
+
+    private:
+        std::mutex m_;
+};
+
+class FileWriter : public AbstractWriter
+{
+    public:
+        FileWriter(const std::string& filename)
+            : file_(filename) {}
+
+        ~FileWriter() {
+            file_.close();
+        }
+
+        void write(const std::string& data) override
+        {
+            file_ << data;
+        }
+
+    private:
+        std::ofstream file_;
+};
+
+using GlobalConsoleWriter = Singleton<ConsoleWriter>;
+
+class Observer
+{
+    public:
+        Observer(AbstractWriter& writer) : writer_(writer) {}
+        void update(const std::string& data)
+        {
+            writer_.write(data);
+        }
+
+    private:
+        AbstractWriter writer_;
+};
+
+using ConsoleOut = Observer<ConsoleWriter>;
+using FileOut = Observer<FileWriter>;
