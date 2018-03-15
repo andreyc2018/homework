@@ -70,15 +70,31 @@ using GlobalConsoleWriter = Singleton<ConsoleWriter>;
 class Observer
 {
     public:
-        Observer(AbstractWriter& writer) : writer_(writer) {}
-        void update(const std::string& data)
+//        Observer(AbstractWriter& writer) : writer_(writer) {}
+        virtual void update(const std::string& data) = 0;
+//        {
+//            writer_.write(data);
+//        }
+};
+
+class ConsoleOut : public Observer
+{
+    public:
+        void update(const std::string& data) override
         {
-            writer_.write(data);
+            GlobalConsoleWriter::instance().write(data);
+        }
+};
+
+class FileOut : public Observer
+{
+    public:
+        ~FileOut() {}
+
+        void update(const std::string& data) override
+        {
         }
 
     private:
-        AbstractWriter writer_;
+        FileWriter writer_;
 };
-
-using ConsoleOut = Observer<ConsoleWriter>;
-using FileOut = Observer<FileWriter>;

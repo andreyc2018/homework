@@ -7,8 +7,8 @@
 
 using term_t = TerminalExpression;
 using expr_t = ExpressionPtr;
-using start_block_t = NonTerminalExpression<expr_t, expr_t>;
-using end_block_t = NonTerminalExpression<expr_t, expr_t, expr_t>;
+using start_block_t = OrExpression<expr_t, expr_t>;
+using end_block_t = OrExpression<expr_t, expr_t, expr_t>;
 
 BOOST_AUTO_TEST_CASE(interpreter_tree)
 {

@@ -1,8 +1,10 @@
 #include "parser.h"
 #include "parserstate.h"
 
-Parser::Parser()
-    : state_(new StartingBlock)
+Parser::Parser(int size, Processor* processor)
+    : block_size_(size)
+    , state_(new StartingBlock)
+    , processor_(processor)
 {
 }
 

@@ -34,6 +34,9 @@ add_executable(bulk main.cpp docs/hw_assignment.md
 
 add_library(bulk_tools
         interpreter.cpp
+#        processor.cpp
+#        parser.cpp
+#        parserstate.cpp
         ${HEADER_FILES})
 
 #add_library(bulk_tools parsercontext.cpp state.cpp
@@ -41,20 +44,20 @@ add_library(bulk_tools
 #        parserstate.cpp
 #        ${HEADER_FILES})
 
-add_executable(test_bulk test_bulk.cpp ${HEADER_FILES})
+add_executable(test_version test_bulk.cpp ${HEADER_FILES})
 
 target_compile_options(bulk PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulk_tools PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(test_bulk PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
-set_target_properties(test_bulk PROPERTIES
+set_target_properties(test_version PROPERTIES
     COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
 target_link_libraries(bulk bulk_tools)
 
-target_link_libraries(test_bulk ${Boost_LIBRARIES} bulk_tools)
+target_link_libraries(test_version ${Boost_LIBRARIES} bulk_tools)
 
 install(TARGETS bulk RUNTIME DESTINATION bin)
 
@@ -69,7 +72,7 @@ include(CPack)
 
 enable_testing()
 
-add_test(test_bulk test_bulk)
+add_test(test_version test_version)
 
 if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
     add_subdirectory(sandbox EXCLUDE_FROM_ALL)

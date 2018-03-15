@@ -1,6 +1,7 @@
 #pragma once
 
 #include "command.h"
+#include "parser.h"
 #include <vector>
 #include <string>
 
@@ -20,4 +21,5 @@ class Processor
 
     private:
         size_t block_size_;
+        Parser parser_;
 };

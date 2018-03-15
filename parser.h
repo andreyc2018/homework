@@ -3,18 +3,18 @@
 #include "interpreter.h"
 
 class ParserState;
+class Processor;
 
 class Parser
 {
     public:
-        Parser();
+        Parser(int size, Processor* processor);
         ~Parser();
 
         void handle_token(const std::string& token);
 
     private:
-        StartBlockExpr start_exp_;
-        CommandExpr command_exp_;
-        EndBlockExpr end_exp_;
+        size_t block_size_;
         ParserState* state_;
+        Processor* processor_;
 };

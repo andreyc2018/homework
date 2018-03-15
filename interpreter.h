@@ -1,10 +1,5 @@
-#pragma once
-#include <string>
-#include <memory>
-#include <regex>
-#include <algorithm>
-
 /**
+ * @file interpreter.h
  * @brief The expression tree
  * @details
  *  Expression: StartBlock | Command | EndBlock
@@ -15,11 +10,16 @@
  *  CloseBlock: "}"
  */
 
+#pragma once
+#include <string>
+#include <memory>
+#include <regex>
+#include <algorithm>
+
 class Expression
 {
     public:
-        enum class Type { TerminalExpression,
-                          NonTerminalExpression };
+        enum class Type { TerminalExpression, OrExpression };
 
         Expression(const std::string& name, Type type)
             : name_(name), type_(type) {}
@@ -48,12 +48,12 @@ class TerminalExpression : public Expression
 };
 
 template<typename T, typename... Args>
-class NonTerminalExpression : public Expression
+class OrExpression : public Expression
 {
     public:
-        NonTerminalExpression(T first, Args... other)
-            : Expression ("NonTerminalExpression",
-                          Expression::Type::NonTerminalExpression)
+        OrExpression(T first, Args... other)
+            : Expression ("OrExpression",
+                          Expression::Type::OrExpression)
             , terms_ { first, other... }
         {}
 
