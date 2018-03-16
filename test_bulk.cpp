@@ -71,6 +71,11 @@ BOOST_AUTO_TEST_CASE(observer)
     for (auto& o : writers) {
         delete o;
     }
+
+    std::fstream file("test.txt");
+    std::string result;
+    file >> result;
+    BOOST_CHECK_EQUAL("hello", result);
 }
 
 #if 0

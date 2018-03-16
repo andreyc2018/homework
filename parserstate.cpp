@@ -7,8 +7,6 @@ bool StartingBlock::handle(Parser* ctx,
                            const std::string& input)
 {
     TRACE();
-    if () {
-    }
     return false;
 }
 

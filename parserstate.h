@@ -29,7 +29,7 @@ class ParserState
         static
         ParserState* create(ParserState* state) {
             delete state;
-            return  new T;
+            return new T;
         }
 
     protected:

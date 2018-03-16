@@ -71,11 +71,7 @@ class Observer
 {
     public:
         virtual ~Observer() {}
-//        Observer(AbstractWriter& writer) : writer_(writer) {}
         virtual void update(const std::string& data) = 0;
-//        {
-//            writer_.write(data);
-//        }
 };
 
 class ConsoleOut : public Observer
