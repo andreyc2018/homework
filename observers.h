@@ -70,6 +70,7 @@ using GlobalConsoleWriter = Singleton<ConsoleWriter>;
 class Observer
 {
     public:
+        virtual ~Observer() {}
 //        Observer(AbstractWriter& writer) : writer_(writer) {}
         virtual void update(const std::string& data) = 0;
 //        {
@@ -89,10 +90,13 @@ class ConsoleOut : public Observer
 class FileOut : public Observer
 {
     public:
+        FileOut(const std::string& filename)
+            : writer_(filename) {}
         ~FileOut() {}
 
         void update(const std::string& data) override
         {
+            writer_.write(data);
         }
 
     private:

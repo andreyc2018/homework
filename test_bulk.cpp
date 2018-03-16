@@ -60,7 +60,17 @@ BOOST_AUTO_TEST_CASE(block)
 BOOST_AUTO_TEST_CASE(observer)
 {
     std::vector<Observer*> writers;
-    writers.push_back();
+    Observer* f1 = new FileOut("test.txt");
+    Observer* c1 = new ConsoleOut;
+    writers.push_back(f1);
+    writers.push_back(c1);
+    for (const auto& o : writers) {
+        o->update("hello");
+    }
+
+    for (auto& o : writers) {
+        delete o;
+    }
 }
 
 #if 0
