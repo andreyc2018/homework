@@ -1,6 +1,9 @@
 #include "command.h"
 #include "interpreter.h"
 #include "observers.h"
+#include "processor.h"
+#include "parser.h"
+//#include "hippomocks/HippoMocks/hippomocks.h"
 #define BOOST_TEST_MODULE Bulk
 #include <boost/test/unit_test.hpp>
 #include <iostream>
@@ -75,9 +78,23 @@ BOOST_AUTO_TEST_CASE(observer)
     unlink("test.txt");
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(parser)
 {
+    bool exceptionCaught = false;
+    try {
+        MockRepository mocks;
+        Processor* proc = mocks.Mock<Processor>();
+        mocks.ExpectCall(proc, Processor::add_command);
+        proc->add_command("cmd1");
+    }
+    catch (HippoMocks::BaseException &e) {
+        exceptionCaught = true;
+        std::cout << "\n" << e.what() << "\n";
+    }
+    BOOST_CHECK(exceptionCaught);
 }
+#endif
 
 #if 0
 bool run_and_log(ParserContext& ctx, Expression& exp,
