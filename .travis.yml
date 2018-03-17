@@ -12,7 +12,6 @@ matrix:
 language: cpp
 before_script:
 - eval "${MATRIX_EVAL}"
-- sudo apt-get install libboost-test-dev -y
 - sudo apt-get install doxygen -y
 - sudo apt-get install graphviz -y
 - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list

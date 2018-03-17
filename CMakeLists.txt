@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.2)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -pedantic -Wextra")
 
 if ($ENV{TRAVIS_BUILD_NUMBER})
     set(BUILD_NUM $ENV{TRAVIS_BUILD_NUMBER})
@@ -17,8 +16,6 @@ set(homework_VERSION_BUILD ${BUILD_NUM})
 
 project(bulk VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
-
-find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
 configure_file(version.h.in version.h)
 
@@ -39,18 +36,11 @@ add_library(bulk_tools
         parserstate.cpp
         ${HEADER_FILES})
 
-#add_library(bulk_tools parsercontext.cpp state.cpp
-#        interpreter.cpp processor.cpp parser.cpp
-#        parserstate.cpp
-#        ${HEADER_FILES})
-
-add_executable(btest_version btest_bulk.cpp ${HEADER_FILES})
 add_executable(intergrate_gtest_gmock intergrate_gtest_gmock.cpp)
 add_executable(test_version test_bulk.cpp ${HEADER_FILES})
 
 target_compile_options(bulk PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulk_tools PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(btest_version PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(intergrate_gtest_gmock PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 target_include_directories(intergrate_gtest_gmock PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include)
@@ -58,13 +48,7 @@ target_include_directories(intergrate_gtest_gmock PRIVATE ${CMAKE_CURRENT_SOURCE
 target_include_directories(test_version PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include)
 target_include_directories(test_version PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock/include)
 
-set_target_properties(btest_version PROPERTIES
-    COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
-    INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
-)
-
 target_link_libraries(bulk bulk_tools)
-target_link_libraries(btest_version ${Boost_LIBRARIES} bulk_tools)
 target_link_libraries(intergrate_gtest_gmock gmock_main)
 target_link_libraries(test_version bulk_tools gmock_main)
 
@@ -81,7 +65,6 @@ include(CPack)
 
 enable_testing()
 
-add_test(btest_version btest_version)
 add_test(NAME intergrate_gtest_gmock COMMAND intergrate_gtest_gmock)
 add_test(NAME test_version COMMAND test_version)
 
