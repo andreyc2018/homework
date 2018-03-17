@@ -45,10 +45,14 @@ add_library(bulk_tools
 #        ${HEADER_FILES})
 
 add_executable(test_version test_bulk.cpp ${HEADER_FILES})
+add_executable(gtest_version gtest_bulk.cpp ${HEADER_FILES})
 
 target_compile_options(bulk PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulk_tools PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(gtest_version PRIVATE -Wpedantic -Wall -Wextra)
+target_include_directories(gtest_version PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include)
+target_include_directories(gtest_version PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock/include)
 
 set_target_properties(test_version PROPERTIES
     COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
@@ -56,8 +60,8 @@ set_target_properties(test_version PROPERTIES
 )
 
 target_link_libraries(bulk bulk_tools)
-
 target_link_libraries(test_version ${Boost_LIBRARIES} bulk_tools)
+target_link_libraries(gtest_version bulk_tools gmock_main)
 
 install(TARGETS bulk RUNTIME DESTINATION bin)
 
@@ -73,9 +77,15 @@ include(CPack)
 enable_testing()
 
 add_test(test_version test_version)
+add_test(NAME gtest_version COMMAND gtest_version)
 
 if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
     add_subdirectory(sandbox EXCLUDE_FROM_ALL)
+endif()
+
+if(EXISTS ${CMAKE_SOURCE_DIR}/googletest/CMakeLists.txt)
+    message(STATUS "Adding Google Test framework.")
+    add_subdirectory(googletest)
 endif()
 
 message(STATUS "Homework version
