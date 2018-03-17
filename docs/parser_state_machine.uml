@@ -2,11 +2,14 @@
 
 [*] --> StartingBlock
 StartingBlock : expecting "{" or "cmd"
-StartingBlock --> [*] : closeBlock
-StartingBlock --> CollectingCommands : startBlock
+StartingBlock --> ExpectingCommands : "{"
+StartingBlock --> CollectingCommands : "cmd"
+ExpectingCommands --> StartingBlock : "}"
+ExpectingCommands : : expecting "cmd"
+ExpectingCommands --> CollectingCommands : "cmd"
 CollectingCommands : expecting "cmd" or "}" or "{"
-CollectingCommands --> DoneBlock : endBlock
+CollectingCommands --> DoneBlock : "{" or "}" or block_complete
 DoneBlock : notifes processror about command block
-DoneBlock --> [*]
+DoneBlock --> StartingBlock
 
 @enduml
