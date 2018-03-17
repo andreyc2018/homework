@@ -4,11 +4,7 @@
 #define BOOST_TEST_MODULE Bulk
 #include <boost/test/unit_test.hpp>
 #include <iostream>
-
-using term_t = TerminalExpression;
-using expr_t = ExpressionPtr;
-using start_block_t = OrExpression<expr_t, expr_t>;
-using end_block_t = OrExpression<expr_t, expr_t, expr_t>;
+#include <unistd.h>
 
 BOOST_AUTO_TEST_CASE(interpreter_tree)
 {
@@ -76,6 +72,11 @@ BOOST_AUTO_TEST_CASE(observer)
     std::string result;
     file >> result;
     BOOST_CHECK_EQUAL("hello", result);
+    unlink("test.txt");
+}
+
+BOOST_AUTO_TEST_CASE(parser)
+{
 }
 
 #if 0

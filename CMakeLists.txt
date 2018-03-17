@@ -34,9 +34,9 @@ add_executable(bulk main.cpp docs/hw_assignment.md
 
 add_library(bulk_tools
         interpreter.cpp
-#        processor.cpp
-#        parser.cpp
-#        parserstate.cpp
+        processor.cpp
+        parser.cpp
+        parserstate.cpp
         ${HEADER_FILES})
 
 #add_library(bulk_tools parsercontext.cpp state.cpp

@@ -52,7 +52,8 @@ class FileWriter : public AbstractWriter
         FileWriter(const std::string& filename)
             : file_(filename) {}
 
-        ~FileWriter() {
+        ~FileWriter()
+        {
             file_.close();
         }
 

@@ -69,3 +69,8 @@ class OrExpression : public Expression
     private:
         std::array<T, sizeof... (Args)+1> terms_;
 };
+
+using term_t = TerminalExpression;
+using expr_t = ExpressionPtr;
+using start_block_t = OrExpression<expr_t, expr_t>;
+using end_block_t = OrExpression<expr_t, expr_t, expr_t>;

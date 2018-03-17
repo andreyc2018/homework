@@ -26,11 +26,7 @@ class ParserState
         virtual bool handle(Parser* ctx, const std::string& input) = 0;
 
         template<typename T>
-        static
-        ParserState* create(ParserState* state) {
-            delete state;
-            return new T;
-        }
+        static ParserState* create() { return new T; }
 
     protected:
         const std::string name_;
@@ -43,10 +39,6 @@ class StartingBlock : public ParserState
     public:
         StartingBlock() : ParserState("StartingBlock") {}
 
-        static ParserState* create(ParserState* state) {
-            return ParserState::create<StartingBlock>(state);
-        }
-
         bool handle(Parser* ctx, const std::string& input) override;
 };
 
@@ -55,10 +47,6 @@ class CollectingBlock : public ParserState
     public:
         CollectingBlock() : ParserState("CollectingBlock") {}
 
-        static ParserState* create(ParserState* state) {
-            return ParserState::create<CollectingBlock>(state);
-        }
-
         bool handle(Parser* ctx, const std::string& input) override;
 };
 
@@ -66,10 +54,6 @@ class DoneBlock : public ParserState
 {
     public:
         DoneBlock() : ParserState("DoneBlock") {}
-
-        static ParserState* create(ParserState* state) {
-            return ParserState::create<DoneBlock>(state);
-        }
 
         bool handle(Parser* ctx, const std::string& input) override;
 };

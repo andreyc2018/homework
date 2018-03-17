@@ -1,4 +1,5 @@
 #include "processor.h"
+#include "logger.h"
 #include <numeric>
 
 Processor::Processor(int size)
@@ -13,4 +14,16 @@ void Processor::add_token(const std::string& input)
 
 void Processor::run()
 {
+    TRACE();
+}
+
+void Processor::add_command(const std::string& input)
+{
+    TRACE();
+    LOG() << "Adding command " << input << "\n";
+}
+
+bool Processor::block_complete() const
+{
+    return true;
 }

@@ -2,6 +2,7 @@
 
 #include "command.h"
 #include "parser.h"
+#include "observers.h"
 #include <vector>
 #include <string>
 
@@ -18,6 +19,9 @@ class Processor
 
         void add_token(const std::string& input);
         void run();
+
+        void add_command(const std::string& input);
+        bool block_complete() const;
 
     private:
         size_t block_size_;
