@@ -19,11 +19,12 @@ class Parser;
 class ParserState
 {
     public:
+        enum class Result : bool { Stop, Continue };
         ParserState(const std::string& name) : name_(name) {}
         virtual ~ParserState() {}
 
         const std::string& name() const { return name_; }
-        virtual bool handle(Parser* ctx, const std::string& input) = 0;
+        virtual Result handle(Parser* ctx, const std::string& input) = 0;
 
         template<typename T>
         static ParserState* create() { return new T; }
@@ -37,17 +38,25 @@ using ParserStateUPtr = std::unique_ptr<ParserState>;
 class StartingBlock : public ParserState
 {
     public:
-        StartingBlock() : ParserState("StartingBlock") {}
+        StartingBlock() : ParserState(__func__) {}
 
-        bool handle(Parser* ctx, const std::string& input) override;
+        Result handle(Parser* ctx, const std::string& input) override;
+};
+
+class ExpectingCommand : public ParserState
+{
+    public:
+        ExpectingCommand() : ParserState(__func__) {}
+
+        Result handle(Parser* ctx, const std::string& input) override;
 };
 
 class CollectingBlock : public ParserState
 {
     public:
-        CollectingBlock() : ParserState("CollectingBlock") {}
+        CollectingBlock() : ParserState(__func__) {}
 
-        bool handle(Parser* ctx, const std::string& input) override;
+        Result handle(Parser* ctx, const std::string& input) override;
 };
 
 class DoneBlock : public ParserState
@@ -55,5 +64,5 @@ class DoneBlock : public ParserState
     public:
         DoneBlock() : ParserState("DoneBlock") {}
 
-        bool handle(Parser* ctx, const std::string& input) override;
+        Result handle(Parser* ctx, const std::string& input) override;
 };

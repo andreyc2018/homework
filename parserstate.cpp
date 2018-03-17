@@ -3,46 +3,62 @@
 #include "parser.h"
 #include "logger.h"
 
-bool StartingBlock::handle(Parser* ctx,
-                           const std::string& input)
+ParserState::Result StartingBlock::handle(Parser* ctx, const std::string& input)
 {
     TRACE();
-    if (ctx->open_block()->interpret(input)) {
-        ctx->increase_level();
+    if (ctx->open_kw()->interpret(input)) {
+        ctx->enable_dynamic_block();
+        ctx->set_state(ParserState::create<ExpectingCommand>());
+        return Result::Stop;
+    }
+    if (ctx->command()->interpret(input)) {
         ctx->set_state(ParserState::create<CollectingBlock>());
+        return Result::Continue;
     }
-    else if (ctx->command()->interpret(input)) {
-        ctx->add_command(input);
-        if (ctx->block_complete()) {
-            ctx->notify_run();
-        }
-        else {
-            ctx->set_state(ParserState::create<CollectingBlock>());
-        }
-    }
-    return false;
+    return Result::Stop;
 }
 
-bool CollectingBlock::handle(Parser* ctx,
-                             const std::string& input)
+ParserState::Result ExpectingCommand::handle(Parser* ctx, const std::string& input)
+{
+    TRACE();
+    if (ctx->command()->interpret(input)) {
+        ctx->set_state(ParserState::create<CollectingBlock>());
+        return Result::Continue;
+    }
+    if (ctx->close_kw()->interpret(input)) {
+        ctx->disable_dynamic_block();
+        ctx->set_state(ParserState::create<StartingBlock>());
+    }
+    return Result::Stop;
+}
+
+ParserState::Result CollectingBlock::handle(Parser* ctx,
+                                            const std::string& input)
 {
     TRACE();
     if (ctx->command()->interpret(input)) {
         ctx->add_command(input);
         if (ctx->block_complete()) {
-            ctx->notify_run();
+            ctx->set_state(ParserState::create<DoneBlock>());
+            return Result::Continue;
         }
     }
-    else if (ctx->end_block()->interpret(input)) {
-        ctx->notify_run();
-        ctx->set_state(ParserState::create<StartingBlock>());
+    else if (ctx->dynamic_block() && ctx->close_kw()->interpret(input)) {
+        ctx->set_state(ParserState::create<DoneBlock>());
+        return Result::Continue;
     }
-    return false;
+    else if (!ctx->dynamic_block() && ctx->open_kw()->interpret(input)) {
+        ctx->set_state(ParserState::create<DoneBlock>());
+        return Result::Continue;
+    }
+    return Result::Stop;
 }
 
-bool DoneBlock::handle(Parser* ctx,
-                       const std::string& input)
+ParserState::Result DoneBlock::handle(Parser* ctx, const std::string&)
 {
     TRACE();
-    return false;
+    ctx->notify_run();
+    ctx->start_block();
+    ctx->set_state(ParserState::create<StartingBlock>());
+    return Result::Stop;
 }

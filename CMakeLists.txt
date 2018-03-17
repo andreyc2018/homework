@@ -65,6 +65,7 @@ set_target_properties(btest_version PROPERTIES
 
 target_link_libraries(bulk bulk_tools)
 target_link_libraries(btest_version ${Boost_LIBRARIES} bulk_tools)
+target_link_libraries(intergrate_gtest_gmock gmock_main)
 target_link_libraries(test_version bulk_tools gmock_main)
 
 install(TARGETS bulk RUNTIME DESTINATION bin)

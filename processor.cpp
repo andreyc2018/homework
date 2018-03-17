@@ -27,3 +27,8 @@ bool Processor::block_complete() const
 {
     return true;
 }
+
+void Processor::start_block()
+{
+
+}

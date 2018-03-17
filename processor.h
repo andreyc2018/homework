@@ -19,9 +19,9 @@ class Processor
 
         void add_token(const std::string& input);
         void run();
-
         void add_command(const std::string& input);
         bool block_complete() const;
+        void start_block();
 
     private:
         size_t block_size_;

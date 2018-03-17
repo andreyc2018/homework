@@ -5,14 +5,14 @@
 
 Parser::Parser(int size, Processor* processor)
     : block_size_(size)
-    , level_(0)
+    , dynamic_block_(false)
     , state_(new StartingBlock)
     , processor_(processor)
-    , open_block_(std::make_shared<term_t>("\\{"))
-    , close_block_(std::make_shared<term_t>("\\}"))
+    , open_kw_(std::make_shared<term_t>("\\{"))
+    , close_kw_(std::make_shared<term_t>("\\}"))
     , command_(std::make_shared<term_t>("[^{}]+"))
-    , start_block_(std::make_shared<start_block_t>(open_block_, command_))
-    , end_block_(std::make_shared<end_block_t>(open_block_, command_, close_block_))
+//    , start_block_(std::make_shared<start_block_t>(open_kw_, command_))
+//    , end_block_(std::make_shared<end_block_t>(open_kw_, command_, close_kw_))
 {
 }
 
@@ -23,7 +23,7 @@ Parser::~Parser()
 
 void Parser::handle_token(const std::string& token)
 {
-    state_->handle(this, token);
+    while(state_->handle(this, token) == ParserState::Result::Continue);
 }
 
 void Parser::set_state(ParserState* state)
@@ -41,10 +41,15 @@ void Parser::add_command(const std::string& token)
 
 bool Parser::block_complete() const
 {
-    if (level_ == 0 && processor_->block_complete()) {
+    if (!dynamic_block() && processor_->block_complete()) {
         return true;
     }
     return false;
+}
+
+void Parser::start_block()
+{
+    processor_->start_block();
 }
 
 void Parser::notify_run()
