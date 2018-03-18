@@ -1,7 +1,6 @@
 @startuml
 
 [*] --> StartingBlock
-StartingBlock : expecting "{" or "cmd"
 StartingBlock --> ExpectingDynamicCommands : "{"
 StartingBlock --> ExpectingStaticCommands : "cmd"
 ExpectingDynamicCommands --> StartingBlock : "}"
@@ -13,7 +12,7 @@ ExpectingStaticCommands --> CollectingStaticBlock : "cmd"
 CollectingStaticBlock --> CollectingStaticBlock : "cmd"
 CollectingStaticBlock --> DoneBlock : block_is_full ||\n"{" ||\nend_of_stream
 
-DoneBlock : notifes processor about command block
+DoneBlock : notifies processor to run a block of command
 DoneBlock --> StartingBlock
 
 @enduml
