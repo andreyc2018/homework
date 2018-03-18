@@ -25,6 +25,7 @@ class ParserState
 
         const std::string& name() const { return name_; }
         virtual Result handle(Parser* ctx, const std::string& input) = 0;
+        virtual Result end_of_stream(Parser*) { return Result::Stop; };
 
         template<typename T>
         static ParserState* create() { return new T; }
@@ -73,6 +74,7 @@ class CollectingStaticBlock : public ParserState
         CollectingStaticBlock() : ParserState(__func__) {}
 
         Result handle(Parser* ctx, const std::string& input) override;
+        Result end_of_stream(Parser* ctx) override;
 };
 
 class DoneBlock : public ParserState

@@ -50,20 +50,17 @@ class FileWriter : public AbstractWriter
 {
     public:
         FileWriter(const std::string& filename)
-            : file_(filename) {}
-
-        ~FileWriter()
-        {
-            file_.close();
-        }
+            : filename_(filename) {}
 
         void write(const std::string& data) override
         {
-            file_ << data;
+            std::ofstream file(filename_);
+            file << data;
+            file.close();
         }
 
     private:
-        std::ofstream file_;
+        std::string filename_;
 };
 
 using GlobalConsoleWriter = Singleton<ConsoleWriter>;

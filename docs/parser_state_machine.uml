@@ -11,7 +11,7 @@ CollectingDynamicBlock --> DoneBlock : "}"
 
 ExpectingStaticCommands --> CollectingStaticBlock : "cmd"
 CollectingStaticBlock --> CollectingStaticBlock : "cmd"
-CollectingStaticBlock --> DoneBlock : block_is_full || "{" || empty_input
+CollectingStaticBlock --> DoneBlock : block_is_full ||\n"{" ||\nend_of_stream
 
 DoneBlock : notifes processor about command block
 DoneBlock --> StartingBlock

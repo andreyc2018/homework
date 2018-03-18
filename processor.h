@@ -21,6 +21,7 @@ class Processor
         ~Processor();
 
         virtual void add_token(const std::string& input);
+        virtual void end_of_stream();
         virtual void run();
         virtual void add_command(const std::string& input);
         virtual bool block_complete() const;

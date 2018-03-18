@@ -24,6 +24,13 @@ void Parser::handle_token(const std::string& token)
     while (state_->handle(this, token) == ParserState::Result::Continue) {}
 }
 
+void Parser::end_of_stream()
+{
+    if (state_->end_of_stream(this) == ParserState::Result::Continue) {
+        while (state_->handle(this, "") == ParserState::Result::Continue) {}
+    }
+}
+
 void Parser::set_state(ParserState* state)
 {
 //    LOG() << "from state: " << state_->name();

@@ -13,6 +13,7 @@ class Parser
         ~Parser();
 
         void handle_token(const std::string& token);
+        void end_of_stream();
 
         const expr_t& open_kw() const { return open_kw_; }
         const expr_t& close_kw() const { return close_kw_; }

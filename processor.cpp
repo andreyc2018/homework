@@ -22,6 +22,11 @@ void Processor::add_token(const std::string& input)
     parser_.handle_token(input);
 }
 
+void Processor::end_of_stream()
+{
+    parser_.end_of_stream();
+}
+
 void Processor::run()
 {
     std::stringstream ss;

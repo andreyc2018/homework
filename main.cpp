@@ -16,7 +16,7 @@ int main(int argc, char const** argv)
         for (std::string input; std::getline(std::cin, input);) {
             processor.add_token(input);
         }
-        processor.add_token("");
+        processor.end_of_stream();
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;

@@ -84,11 +84,13 @@ ParserState::Result CollectingStaticBlock::handle(Parser* ctx,
         ctx->set_state(ParserState::create<DoneBlock>());
         return Result::Continue;
     }
-    if (input.empty()) {
-        ctx->set_state(ParserState::create<DoneBlock>());
-        return Result::Continue;
-    }
     return Result::Stop;
+}
+
+ParserState::Result CollectingStaticBlock::end_of_stream(Parser* ctx)
+{
+    ctx->set_state(ParserState::create<DoneBlock>());
+    return Result::Continue;
 }
 
 ParserState::Result DoneBlock::handle(Parser* ctx,
