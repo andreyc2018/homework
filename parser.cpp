@@ -20,16 +20,16 @@ Parser::~Parser()
 
 void Parser::handle_token(const std::string& token)
 {
-    LOG() << "Processing: " << token << "\n";
+//    LOG() << "Processing: " << token << "\n";
     while (state_->handle(this, token) == ParserState::Result::Continue) {}
 }
 
 void Parser::set_state(ParserState* state)
 {
-    LOG() << "from state: " << state_->name();
+//    LOG() << "from state: " << state_->name();
     delete state_;
     state_ = state;
-    LOG() << " to state: " << state_->name() << "\n";
+//    LOG() << " to state: " << state_->name() << "\n";
 }
 
 void Parser::add_command(const std::string& token)

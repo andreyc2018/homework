@@ -1,6 +1,10 @@
 #include "processor.h"
 #include "logger.h"
 #include <numeric>
+#include <chrono>
+
+using sc = std::chrono::system_clock;
+using seconds = std::chrono::seconds;
 
 Processor::Processor(int size)
     : full_block_size_(size)
@@ -10,9 +14,7 @@ Processor::Processor(int size)
 
 Processor::~Processor()
 {
-    for (auto& o : writers_) {
-        delete o;
-    }
+    destroy_writers();
 }
 
 void Processor::add_token(const std::string& input)
@@ -24,7 +26,6 @@ void Processor::run()
 {
     std::stringstream ss;
     block_.run(ss);
-
     for (const auto& o : writers_) {
         o->update(ss.str());
     }
@@ -44,4 +45,20 @@ bool Processor::block_complete() const
 void Processor::start_block()
 {
     block_ = Block::create();
+    std::string filename = "bulk";
+    auto secs = std::chrono::duration_cast<seconds>(sc::now().time_since_epoch()).count();
+    filename.append(std::to_string(secs));
+    filename.append(".log");
+
+    destroy_writers();
+    writers_.push_back(new FileOut(filename));
+    writers_.push_back(new ConsoleOut);
+}
+
+void Processor::destroy_writers()
+{
+    while (!writers_.empty()) {
+        delete writers_.back();
+        writers_.pop_back();
+    }
 }

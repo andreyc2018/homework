@@ -31,4 +31,6 @@ class Processor
         Parser parser_;
         Block block_;
         writers_t writers_;
+
+        void destroy_writers();
 };

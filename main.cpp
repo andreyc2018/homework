@@ -6,7 +6,8 @@ int main(int argc, char const** argv)
 {
     try {
         if (argc < 2) {
-            std::cout << "usage: " << std::string(argv[0]).substr(std::string(argv[0]).rfind("/")+1)
+            std::cout << "usage: "
+                      << std::string(argv[0]).substr(std::string(argv[0]).rfind("/")+1)
                       << " <N>\nwhere:\n  N - command block size\n";
             exit(1);
         }
