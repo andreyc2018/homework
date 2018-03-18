@@ -262,7 +262,7 @@ TEST(Bulk, BreakStaticBlock)
     Parser p(&proc);
     p.handle_token("cmd1");
     EXPECT_EQ("CollectingStaticBlock", p.state()->name());
-    p.handle_token("");
+    p.end_of_stream();
     EXPECT_EQ("StartingBlock", p.state()->name());
 }
 
@@ -280,7 +280,7 @@ TEST(Bulk, BreakDynamicBlock)
     p.handle_token("cmd1");
     EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
     EXPECT_EQ(1, p.dynamic_level());
-    p.handle_token("");
+    p.end_of_stream();
     EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
     EXPECT_EQ(1, p.dynamic_level());
 }
