@@ -15,15 +15,20 @@
 class Processor
 {
     public:
-        explicit Processor(int size);
+        using writers_t = std::vector<Observer*>;
 
-        void add_token(const std::string& input);
-        void run();
-        void add_command(const std::string& input);
-        bool block_complete() const;
-        void start_block();
+        explicit Processor(int size);
+        ~Processor();
+
+        virtual void add_token(const std::string& input);
+        virtual void run();
+        virtual void add_command(const std::string& input);
+        virtual bool block_complete() const;
+        virtual void start_block();
 
     private:
-        size_t block_size_;
+        size_t full_block_size_;
         Parser parser_;
+        Block block_;
+        writers_t writers_;
 };

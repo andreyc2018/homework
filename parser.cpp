@@ -3,16 +3,13 @@
 #include "processor.h"
 #include "logger.h"
 
-Parser::Parser(int size, Processor* processor)
-    : block_size_(size)
-    , dynamic_block_(false)
+Parser::Parser(Processor* processor)
+    : dynamic_level_(0)
     , state_(new StartingBlock)
     , processor_(processor)
     , open_kw_(std::make_shared<term_t>("\\{"))
     , close_kw_(std::make_shared<term_t>("\\}"))
     , command_(std::make_shared<term_t>("[^{}]+"))
-//    , start_block_(std::make_shared<start_block_t>(open_kw_, command_))
-//    , end_block_(std::make_shared<end_block_t>(open_kw_, command_, close_kw_))
 {
 }
 
@@ -23,7 +20,8 @@ Parser::~Parser()
 
 void Parser::handle_token(const std::string& token)
 {
-    while(state_->handle(this, token) == ParserState::Result::Continue);
+    LOG() << "Processing: " << token << "\n";
+    while (state_->handle(this, token) == ParserState::Result::Continue) {}
 }
 
 void Parser::set_state(ParserState* state)
@@ -31,7 +29,7 @@ void Parser::set_state(ParserState* state)
     LOG() << "from state: " << state_->name();
     delete state_;
     state_ = state;
-    LOG() << "to state: " << state_->name();
+    LOG() << " to state: " << state_->name() << "\n";
 }
 
 void Parser::add_command(const std::string& token)
@@ -41,10 +39,7 @@ void Parser::add_command(const std::string& token)
 
 bool Parser::block_complete() const
 {
-    if (!dynamic_block() && processor_->block_complete()) {
-        return true;
-    }
-    return false;
+    return processor_->block_complete();
 }
 
 void Parser::start_block()

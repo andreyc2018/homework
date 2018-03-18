@@ -3,8 +3,16 @@
 #include <numeric>
 
 Processor::Processor(int size)
-    : parser_(size, this)
+    : full_block_size_(size)
+    , parser_(this)
 {
+}
+
+Processor::~Processor()
+{
+    for (auto& o : writers_) {
+        delete o;
+    }
 }
 
 void Processor::add_token(const std::string& input)
@@ -14,21 +22,26 @@ void Processor::add_token(const std::string& input)
 
 void Processor::run()
 {
-    TRACE();
+    std::stringstream ss;
+    block_.run(ss);
+
+    for (const auto& o : writers_) {
+        o->update(ss.str());
+    }
 }
 
 void Processor::add_command(const std::string& input)
 {
-    TRACE();
-    LOG() << "Adding command " << input << "\n";
+    auto cmd = Command::create(input);
+    block_.add_command(cmd);
 }
 
 bool Processor::block_complete() const
 {
-    return true;
+    return block_.size() == full_block_size_;
 }
 
 void Processor::start_block()
 {
-
+    block_ = Block::create();
 }

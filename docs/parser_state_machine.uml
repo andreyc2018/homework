@@ -2,14 +2,18 @@
 
 [*] --> StartingBlock
 StartingBlock : expecting "{" or "cmd"
-StartingBlock --> ExpectingCommands : "{"
-StartingBlock --> CollectingCommands : "cmd"
-ExpectingCommands --> StartingBlock : "}"
-ExpectingCommands : : expecting "cmd"
-ExpectingCommands --> CollectingCommands : "cmd"
-CollectingCommands : expecting "cmd" or "}" or "{"
-CollectingCommands --> DoneBlock : "{" or "}" or block_complete
-DoneBlock : notifes processror about command block
+StartingBlock --> ExpectingDynamicCommands : "{"
+StartingBlock --> ExpectingStaticCommands : "cmd"
+ExpectingDynamicCommands --> StartingBlock : "}"
+ExpectingDynamicCommands --> CollectingDynamicBlock : "cmd"
+CollectingDynamicBlock --> CollectingDynamicBlock : "cmd"
+CollectingDynamicBlock --> DoneBlock : "}"
+
+ExpectingStaticCommands --> CollectingStaticBlock : "cmd"
+CollectingStaticBlock --> CollectingStaticBlock : "cmd"
+CollectingStaticBlock --> DoneBlock : block_is_full || "{" || empty_input
+
+DoneBlock : notifes processor about command block
 DoneBlock --> StartingBlock
 
 @enduml

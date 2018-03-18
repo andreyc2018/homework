@@ -1,6 +1,7 @@
 #pragma once
 
 #include "interpreter.h"
+#include "logger.h"
 
 class ParserState;
 class Processor;
@@ -8,7 +9,7 @@ class Processor;
 class Parser
 {
     public:
-        Parser(int size, Processor* processor);
+        Parser(Processor* processor);
         ~Parser();
 
         void handle_token(const std::string& token);
@@ -24,15 +25,14 @@ class Parser
 
         void add_command(const std::string& token);
         bool block_complete() const;
-        void enable_dynamic_block() { dynamic_block_ = true; }
-        void disable_dynamic_block() { dynamic_block_ = false; }
-        bool dynamic_block() const { return dynamic_block_; }
+        void increase_level() { ++dynamic_level_; }
+        void decrease_level() { --dynamic_level_; }
+        int dynamic_level() const { return dynamic_level_; }
         void start_block();
         void notify_run();
 
     private:
-        size_t block_size_;
-        bool dynamic_block_;
+        int dynamic_level_;
         ParserState* state_;
         Processor* processor_;
 

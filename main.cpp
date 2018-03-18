@@ -1,4 +1,3 @@
-#include "bulk.h"
 #include "processor.h"
 #include <iostream>
 #include <string>
@@ -16,6 +15,7 @@ int main(int argc, char const** argv)
         for (std::string input; std::getline(std::cin, input);) {
             processor.add_token(input);
         }
+        processor.add_token("");
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;

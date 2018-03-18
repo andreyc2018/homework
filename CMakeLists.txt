@@ -22,12 +22,9 @@ configure_file(version.h.in version.h)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(HEADER_FILES observers.h logger.h
-        interpreter.h command.h state.h
-        parsercontext.h processor.h parser.h
+        interpreter.h command.h
+        processor.h parser.h
         parserstate.h)
-
-add_executable(bulk main.cpp docs/hw_assignment.md
-        ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 add_library(bulk_tools
         interpreter.cpp
@@ -36,6 +33,8 @@ add_library(bulk_tools
         parserstate.cpp
         ${HEADER_FILES})
 
+add_executable(bulk main.cpp docs/hw_assignment.md
+        ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 add_executable(intergrate_gtest_gmock intergrate_gtest_gmock.cpp)
 add_executable(test_version test_bulk.cpp ${HEADER_FILES})
 
@@ -43,6 +42,7 @@ target_compile_options(bulk PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulk_tools PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(intergrate_gtest_gmock PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
+
 target_include_directories(intergrate_gtest_gmock PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include)
 target_include_directories(intergrate_gtest_gmock PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock/include)
 target_include_directories(test_version PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include)

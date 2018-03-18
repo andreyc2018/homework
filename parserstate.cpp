@@ -3,37 +3,73 @@
 #include "parser.h"
 #include "logger.h"
 
-ParserState::Result StartingBlock::handle(Parser* ctx, const std::string& input)
+ParserState::Result StartingBlock::handle(Parser* ctx,
+                                          const std::string& input)
 {
     TRACE();
     if (ctx->open_kw()->interpret(input)) {
-        ctx->enable_dynamic_block();
-        ctx->set_state(ParserState::create<ExpectingCommand>());
+        ctx->set_state(ParserState::create<ExpectingDynamicCommand>());
         return Result::Stop;
     }
     if (ctx->command()->interpret(input)) {
-        ctx->set_state(ParserState::create<CollectingBlock>());
+        ctx->set_state(ParserState::create<ExpectingStaticCommand>());
         return Result::Continue;
     }
     return Result::Stop;
 }
 
-ParserState::Result ExpectingCommand::handle(Parser* ctx, const std::string& input)
+ParserState::Result ExpectingDynamicCommand::handle(Parser* ctx,
+                                             const std::string& input)
 {
     TRACE();
     if (ctx->command()->interpret(input)) {
-        ctx->set_state(ParserState::create<CollectingBlock>());
+        ctx->increase_level();
+        ctx->start_block();
+        ctx->set_state(ParserState::create<CollectingDynamicBlock>());
         return Result::Continue;
     }
     if (ctx->close_kw()->interpret(input)) {
-        ctx->disable_dynamic_block();
         ctx->set_state(ParserState::create<StartingBlock>());
     }
     return Result::Stop;
 }
 
-ParserState::Result CollectingBlock::handle(Parser* ctx,
+ParserState::Result ExpectingStaticCommand::handle(Parser* ctx,
+                                                   const std::string& input)
+{
+    TRACE();
+    if (ctx->command()->interpret(input)) {
+        ctx->start_block();
+        ctx->set_state(ParserState::create<CollectingStaticBlock>());
+        return Result::Continue;
+    }
+    return Result::Stop;
+}
+
+ParserState::Result CollectingDynamicBlock::handle(Parser* ctx,
                                             const std::string& input)
+{
+    TRACE();
+    if (ctx->command()->interpret(input)) {
+        ctx->add_command(input);
+        return Result::Stop;
+    }
+    if (ctx->open_kw()->interpret(input)) {
+        ctx->increase_level();
+        return Result::Stop;
+    }
+    if (ctx->close_kw()->interpret(input)) {
+        ctx->decrease_level();
+        if (ctx->dynamic_level() == 0) {
+            ctx->set_state(ParserState::create<DoneBlock>());
+            return Result::Continue;
+        }
+    }
+    return Result::Stop;
+}
+
+ParserState::Result CollectingStaticBlock::handle(Parser* ctx,
+                                                  const std::string& input)
 {
     TRACE();
     if (ctx->command()->interpret(input)) {
@@ -42,23 +78,27 @@ ParserState::Result CollectingBlock::handle(Parser* ctx,
             ctx->set_state(ParserState::create<DoneBlock>());
             return Result::Continue;
         }
+        return Result::Stop;
     }
-    else if (ctx->dynamic_block() && ctx->close_kw()->interpret(input)) {
+    if (ctx->open_kw()->interpret(input)) {
         ctx->set_state(ParserState::create<DoneBlock>());
         return Result::Continue;
     }
-    else if (!ctx->dynamic_block() && ctx->open_kw()->interpret(input)) {
+    if (input.empty()) {
         ctx->set_state(ParserState::create<DoneBlock>());
         return Result::Continue;
     }
     return Result::Stop;
 }
 
-ParserState::Result DoneBlock::handle(Parser* ctx, const std::string&)
+ParserState::Result DoneBlock::handle(Parser* ctx,
+                                      const std::string& input)
 {
     TRACE();
     ctx->notify_run();
-    ctx->start_block();
     ctx->set_state(ParserState::create<StartingBlock>());
+    if (ctx->open_kw()->interpret(input)) {
+        return Result::Continue;
+    }
     return Result::Stop;
 }

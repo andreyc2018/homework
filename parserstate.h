@@ -43,18 +43,34 @@ class StartingBlock : public ParserState
         Result handle(Parser* ctx, const std::string& input) override;
 };
 
-class ExpectingCommand : public ParserState
+class ExpectingDynamicCommand : public ParserState
 {
     public:
-        ExpectingCommand() : ParserState(__func__) {}
+        ExpectingDynamicCommand() : ParserState(__func__) {}
 
         Result handle(Parser* ctx, const std::string& input) override;
 };
 
-class CollectingBlock : public ParserState
+class ExpectingStaticCommand : public ParserState
 {
     public:
-        CollectingBlock() : ParserState(__func__) {}
+        ExpectingStaticCommand() : ParserState(__func__) {}
+
+        Result handle(Parser* ctx, const std::string& input) override;
+};
+
+class CollectingDynamicBlock : public ParserState
+{
+    public:
+        CollectingDynamicBlock() : ParserState(__func__) {}
+
+        Result handle(Parser* ctx, const std::string& input) override;
+};
+
+class CollectingStaticBlock : public ParserState
+{
+    public:
+        CollectingStaticBlock() : ParserState(__func__) {}
 
         Result handle(Parser* ctx, const std::string& input) override;
 };
