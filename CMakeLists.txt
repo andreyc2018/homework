@@ -73,8 +73,16 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
 endif()
 
 if(EXISTS ${CMAKE_SOURCE_DIR}/googletest/CMakeLists.txt)
+    # Replace install() to do-nothing macro.
+    macro(install)
+    endmacro()
+    # Include subproject (or any other CMake code) with "disabled" install().
     message(STATUS "Adding Google Test framework.")
     add_subdirectory(googletest)
+    # Restore original install() behavior.
+    macro(install)
+        _install(${ARGN})
+    endmacro()
 endif()
 
 message(STATUS "Homework version
