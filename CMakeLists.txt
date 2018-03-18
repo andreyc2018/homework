@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.2)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 if ($ENV{TRAVIS_BUILD_NUMBER})
     set(BUILD_NUM $ENV{TRAVIS_BUILD_NUMBER})
@@ -14,45 +15,43 @@ set(homework_VERSION_MAJOR 7)
 set(homework_VERSION_MINOR 0)
 set(homework_VERSION_BUILD ${BUILD_NUM})
 
-project(bulk VERSION
+project(bulkmt VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
+
+find_package(Threads REQUIRED)
 
 configure_file(version.h.in version.h)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/spdlog/include)
 
 set(HEADER_FILES observers.h logger.h
         interpreter.h command.h
         processor.h parser.h
         parserstate.h)
 
-add_library(bulk_tools
+add_library(bulkmt_tools
         interpreter.cpp
         processor.cpp
         parser.cpp
         parserstate.cpp
+        logger.cpp
         ${HEADER_FILES})
 
-add_executable(bulk main.cpp docs/hw_assignment.md
+add_executable(bulkmt main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(intergrate_gtest_gmock intergrate_gtest_gmock.cpp)
 add_executable(test_version test_bulk.cpp ${HEADER_FILES})
 
-target_compile_options(bulk PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(bulk_tools PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(intergrate_gtest_gmock PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(bulkmt PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(bulkmt_tools PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
-target_include_directories(intergrate_gtest_gmock PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include)
-target_include_directories(intergrate_gtest_gmock PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock/include)
-target_include_directories(test_version PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include)
-target_include_directories(test_version PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock/include)
+target_link_libraries(bulkmt bulkmt_tools Threads::Threads)
+target_link_libraries(test_version bulkmt_tools gmock_main Threads::Threads)
 
-target_link_libraries(bulk bulk_tools)
-target_link_libraries(intergrate_gtest_gmock gmock_main)
-target_link_libraries(test_version bulk_tools gmock_main)
-
-install(TARGETS bulk RUNTIME DESTINATION bin)
+install(TARGETS bulkmt RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
@@ -65,7 +64,6 @@ include(CPack)
 
 enable_testing()
 
-add_test(NAME intergrate_gtest_gmock COMMAND intergrate_gtest_gmock)
 add_test(NAME test_version COMMAND test_version)
 
 if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)

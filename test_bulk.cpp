@@ -3,9 +3,10 @@
 #include "observers.h"
 #include "processor.h"
 #include "parserstate.h"
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include "logger.h"
-#include "gtest/gtest.h"
-#include "gmock/gmock.h"
+#include <spdlog/spdlog.h>
 
 using ::testing::Return;
 using ::testing::AnyNumber;

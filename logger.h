@@ -1,8 +1,11 @@
 #pragma once
 
-#include <iostream>
+#define SPDLOG_TRACE_ON
+#define SPDLOG_DEBUG_ON
+#include <spdlog/spdlog.h>
 
-//#define TRACE()  std::cout << "TRACE: " << __PRETTY_FUNCTION__ << "\n"
-#define TRACE()
+using LoggerPtr = std::shared_ptr<spdlog::logger>;
 
-#define LOG() std::cout
+extern LoggerPtr gLogger;
+
+#define TRACE()  SPDLOG_TRACE(gLogger, "{}", __PRETTY_FUNCTION__)
