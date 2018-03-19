@@ -9,8 +9,6 @@
 /**
  * @brief The Processor class
  * Reads and process the input commands according to the rules
- * The rules:
- *
  */
 class Processor
 {
