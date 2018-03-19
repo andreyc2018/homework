@@ -68,6 +68,8 @@ enable_testing()
 add_test(NAME intergrate_gtest_gmock COMMAND intergrate_gtest_gmock)
 add_test(NAME test_version COMMAND test_version)
 
+add_subdirectory(example)
+
 if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
     add_subdirectory(sandbox EXCLUDE_FROM_ALL)
 endif()
