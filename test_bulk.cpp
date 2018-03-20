@@ -3,10 +3,11 @@
 #include "observers.h"
 #include "processor.h"
 #include "parserstate.h"
+#include "asyncqueue.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "logger.h"
-#include <spdlog/spdlog.h>
+#include "xray.h"
 
 using ::testing::Return;
 using ::testing::AnyNumber;
@@ -101,7 +102,7 @@ class MockProcessor : public Processor
         MOCK_METHOD0(start_block, void());
 };
 
-TEST(Bulk, StartingToCollectingRun)
+TEST(Processor, StartingToCollectingRun)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command(_)).Times(2);
@@ -114,7 +115,7 @@ TEST(Bulk, StartingToCollectingRun)
     EXPECT_EQ(0, p.dynamic_level());
 }
 
-TEST(Bulk, StartingToExpectingToCollecting)
+TEST(Processor, StartingToExpectingToCollecting)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -128,7 +129,7 @@ TEST(Bulk, StartingToExpectingToCollecting)
     EXPECT_EQ(1, p.dynamic_level());
 }
 
-TEST(Bulk, StaticBlockUntilRun)
+TEST(Processor, StaticBlockUntilRun)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -145,7 +146,7 @@ TEST(Bulk, StaticBlockUntilRun)
     EXPECT_EQ("StartingBlock", p.state()->name());
 }
 
-TEST(Bulk, DynamicBlockUntilRun)
+TEST(Processor, DynamicBlockUntilRun)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -168,7 +169,7 @@ TEST(Bulk, DynamicBlockUntilRun)
     EXPECT_EQ(0, p.dynamic_level());
 }
 
-TEST(Bulk, EmptyDynamicBlock)
+TEST(Processor, EmptyDynamicBlock)
 {
     MockProcessor proc;
     Parser p(&proc);
@@ -180,7 +181,7 @@ TEST(Bulk, EmptyDynamicBlock)
     EXPECT_EQ(0, p.dynamic_level());
 }
 
-TEST(Bulk, StaticInterrupted)
+TEST(Processor, StaticInterrupted)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -219,7 +220,7 @@ TEST(Bulk, StaticInterrupted)
     EXPECT_EQ("StartingBlock", p.state()->name());
 }
 
-TEST(Bulk, NestedBlocks)
+TEST(Processor, NestedBlocks)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -252,7 +253,7 @@ TEST(Bulk, NestedBlocks)
     EXPECT_EQ(0, p.dynamic_level());
 }
 
-TEST(Bulk, BreakStaticBlock)
+TEST(Processor, BreakStaticBlock)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -267,7 +268,7 @@ TEST(Bulk, BreakStaticBlock)
     EXPECT_EQ("StartingBlock", p.state()->name());
 }
 
-TEST(Bulk, BreakDynamicBlock)
+TEST(Processor, BreakDynamicBlock)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -284,4 +285,38 @@ TEST(Bulk, BreakDynamicBlock)
     p.end_of_stream();
     EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
     EXPECT_EQ(1, p.dynamic_level());
+}
+
+class Message
+{
+    public:
+        Message(const std::string& msg)
+            : msg_(msg)
+        {
+            TRACE();
+        }
+        ~Message()
+        {
+            TRACE();
+        }
+
+        std::string msg() const { return msg_; }
+        void set_msg(const std::string& msg) { msg_ = msg; }
+
+    private:
+        std::string msg_;
+};
+
+TEST(AsyncQueue, Init)
+{
+    gLogger->set_level(spdlog::level::trace);
+    AsyncQueue<xray> q;
+    EXPECT_TRUE(q.empty());
+
+    xray v;
+    q.push(std::move(v));
+    EXPECT_FALSE(q.empty());
+
+    EXPECT_EQ(v, q.pop());
+    EXPECT_TRUE(q.empty());
 }
