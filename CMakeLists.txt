@@ -27,29 +27,40 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock/include
         ${CMAKE_CURRENT_SOURCE_DIR}/spdlog/include)
 
-set(HEADER_FILES observers.h logger.h
-        interpreter.h command.h
-        processor.h parser.h
-        parserstate.h asyncqueue.h xray.h)
+set(HEADER_FILES
+        asyncqueue.h
+        command.h
+        interpreter.h
+        logger.h
+        observers.h
+        parser.h
+        parserstate.h
+        processor.h
+        singleton.h
+        writers.h
+        xray.h)
 
 add_library(bulkmt_tools
         interpreter.cpp
-        processor.cpp
+        logger.cpp
         parser.cpp
         parserstate.cpp
-        logger.cpp
+        processor.cpp
         ${HEADER_FILES})
 
 add_executable(bulkmt main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 add_executable(test_version test_bulk.cpp ${HEADER_FILES})
+add_executable(test_async test_asyncqueue.cpp ${HEADER_FILES})
 
 target_compile_options(bulkmt PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulkmt_tools PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(test_async PRIVATE -Wpedantic -Wall -Wextra)
 
 target_link_libraries(bulkmt bulkmt_tools Threads::Threads)
 target_link_libraries(test_version bulkmt_tools gmock_main Threads::Threads)
+target_link_libraries(test_async bulkmt_tools gmock_main Threads::Threads)
 
 install(TARGETS bulkmt RUNTIME DESTINATION bin)
 
@@ -65,6 +76,7 @@ include(CPack)
 enable_testing()
 
 add_test(NAME test_version COMMAND test_version)
+add_test(NAME test_async COMMAND test_async)
 
 if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
     add_subdirectory(sandbox EXCLUDE_FROM_ALL)

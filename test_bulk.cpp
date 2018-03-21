@@ -6,8 +6,6 @@
 #include "asyncqueue.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "logger.h"
-#include "xray.h"
 
 using ::testing::Return;
 using ::testing::AnyNumber;
@@ -307,16 +305,3 @@ class Message
         std::string msg_;
 };
 
-TEST(AsyncQueue, Init)
-{
-    gLogger->set_level(spdlog::level::trace);
-    AsyncQueue<xray> q;
-    EXPECT_TRUE(q.empty());
-
-    xray v;
-    q.push(std::move(v));
-    EXPECT_FALSE(q.empty());
-
-    EXPECT_EQ(v, q.pop());
-    EXPECT_TRUE(q.empty());
-}
