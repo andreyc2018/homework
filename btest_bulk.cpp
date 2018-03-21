@@ -1,6 +1,6 @@
 #include "command.h"
 #include "interpreter.h"
-#include "observers.h"
+#include "reporters.h"
 #include "processor.h"
 #include "parser.h"
 //#include "hippomocks/HippoMocks/hippomocks.h"
@@ -59,8 +59,8 @@ BOOST_AUTO_TEST_CASE(block)
 BOOST_AUTO_TEST_CASE(observer)
 {
     std::vector<Observer*> writers;
-    Observer* f1 = new FileOut("test.txt");
-    Observer* c1 = new ConsoleOut;
+    Observer* f1 = new FileReporter("test.txt");
+    Observer* c1 = new ConsoleReporter;
     writers.push_back(f1);
     writers.push_back(c1);
     for (const auto& o : writers) {

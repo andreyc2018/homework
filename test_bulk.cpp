@@ -1,6 +1,6 @@
 #include "command.h"
 #include "interpreter.h"
-#include "observers.h"
+#include "reporters.h"
 #include "processor.h"
 #include "parserstate.h"
 #include "asyncqueue.h"
@@ -61,10 +61,10 @@ TEST(Bulk, Block)
 TEST(Bulk, Observer)
 {
     std::vector<Observer*> writers;
-    Observer* f1 = new FileOut("test1.txt");
-    Observer* f2 = new FileOut("test2.txt");
-    Observer* c1 = new ConsoleOut;
-    Observer* c2 = new ConsoleOut;
+    Observer* f1 = new FileReporter("test1.txt");
+    Observer* f2 = new FileReporter("test2.txt");
+    Observer* c1 = new ConsoleReporter;
+    Observer* c2 = new ConsoleReporter;
     writers.push_back(f1);
     writers.push_back(c1);
     writers.push_back(c2);

@@ -2,7 +2,7 @@
 
 #include "command.h"
 #include "parser.h"
-#include "observers.h"
+#include "reporters.h"
 #include <vector>
 #include <string>
 
@@ -13,7 +13,7 @@
 class Processor
 {
     public:
-        using writers_t = std::vector<Observer*>;
+        using reporters_t = std::vector<Observer*>;
 
         explicit Processor(int size);
         ~Processor();
@@ -29,7 +29,7 @@ class Processor
         size_t full_block_size_;
         Parser parser_;
         Block block_;
-        writers_t writers_;
+        reporters_t writers_;
 
         void destroy_writers();
 };

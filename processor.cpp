@@ -56,8 +56,8 @@ void Processor::start_block()
     filename.append(".log");
 
     destroy_writers();
-    writers_.push_back(new FileOut(filename));
-    writers_.push_back(new ConsoleOut);
+    writers_.push_back(new FileReporter(filename));
+    writers_.push_back(new ConsoleReporter);
 }
 
 void Processor::destroy_writers()

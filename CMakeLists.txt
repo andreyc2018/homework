@@ -32,10 +32,10 @@ set(HEADER_FILES
         command.h
         interpreter.h
         logger.h
-        observers.h
         parser.h
         parserstate.h
         processor.h
+        reporters.h
         singleton.h
         writers.h
         xray.h)

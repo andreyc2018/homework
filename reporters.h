@@ -13,7 +13,7 @@ class Observer
         virtual void update(const std::string& data) = 0;
 };
 
-class ConsoleOut : public Observer
+class ConsoleReporter : public Observer
 {
     public:
         void update(const std::string& data) override
@@ -22,12 +22,12 @@ class ConsoleOut : public Observer
         }
 };
 
-class FileOut : public Observer
+class FileReporter : public Observer
 {
     public:
-        FileOut(const std::string& filename)
+        FileReporter(const std::string& filename)
             : writer_(filename) {}
-        ~FileOut() {}
+        ~FileReporter() {}
 
         void update(const std::string& data) override
         {

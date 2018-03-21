@@ -1,7 +1,9 @@
 #pragma once
 
-#include "observers.h"
 #include "singleton.h"
+#include <iostream>
+#include <mutex>
+#include <fstream>
 
 class AbstractWriter
 {
