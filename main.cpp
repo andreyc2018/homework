@@ -1,4 +1,5 @@
 #include "processor.h"
+#include "writerfactory.h"
 #include <iostream>
 #include <string>
 
@@ -12,7 +13,9 @@ int main(int argc, char const** argv)
             exit(1);
         }
         int n = std::stoi(argv[1]);
-        Processor processor(n);
+
+        Processor processor(n,
+                            std::make_unique<LocalWriterFactory>());
         for (std::string input; std::getline(std::cin, input);) {
             processor.add_token(input);
         }

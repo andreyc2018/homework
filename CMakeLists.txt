@@ -37,6 +37,7 @@ set(HEADER_FILES
         processor.h
         reporters.h
         singleton.h
+        writerfactory.h
         writers.h
         xray.h)
 

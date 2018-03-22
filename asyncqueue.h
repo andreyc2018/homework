@@ -4,6 +4,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <iostream>
+#include <string>
 
 #define xtrace()  std::cout << __PRETTY_FUNCTION__ << "\n"
 
@@ -52,3 +53,5 @@ class AsyncQueue
         std::condition_variable c_;
         queue_t q_;
 };
+
+using MsgQueue = AsyncQueue<std::string>;

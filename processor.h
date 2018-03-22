@@ -2,7 +2,8 @@
 
 #include "command.h"
 #include "parser.h"
-#include "reporters.h"
+#include "asyncqueue.h"
+#include "writerfactory.h"
 #include <vector>
 #include <string>
 
@@ -13,9 +14,10 @@
 class Processor
 {
     public:
-        using reporters_t = std::vector<Observer*>;
+        using reporters_t = std::vector<Reporter*>;
 
-        explicit Processor(int size);
+        explicit Processor(int size,
+                           WriterFactoryUPtr&& factory);
         ~Processor();
 
         virtual void add_token(const std::string& input);
@@ -30,6 +32,7 @@ class Processor
         Parser parser_;
         Block block_;
         reporters_t writers_;
+        WriterFactoryUPtr writer_factory_;
 
         void destroy_writers();
 };

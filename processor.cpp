@@ -1,14 +1,16 @@
 #include "processor.h"
 #include "logger.h"
+#include "writerfactory.h"
 #include <numeric>
 #include <chrono>
 
 using sc = std::chrono::system_clock;
 using seconds = std::chrono::seconds;
 
-Processor::Processor(int size)
+Processor::Processor(int size, WriterFactoryUPtr&& factory)
     : full_block_size_(size)
     , parser_(this)
+    , writer_factory_(std::move(factory))
 {
 }
 
@@ -56,8 +58,12 @@ void Processor::start_block()
     filename.append(".log");
 
     destroy_writers();
-    writers_.push_back(new FileReporter(filename));
-    writers_.push_back(new ConsoleReporter);
+
+    auto file_writer = writer_factory_->create_file_writer(filename);
+    auto console_writer = writer_factory_->create_console_writer();
+
+    writers_.push_back(new Reporter(file_writer));
+    writers_.push_back(new Reporter(console_writer));
 }
 
 void Processor::destroy_writers()

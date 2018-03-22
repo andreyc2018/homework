@@ -1,32 +1,34 @@
 #pragma once
 
-#include "singleton.h"
+#include "asyncqueue.h"
 #include <iostream>
-#include <mutex>
+#include <memory>
 #include <fstream>
 
-class AbstractWriter
+class IWriter
 {
     public:
-        virtual ~AbstractWriter() {}
+        virtual ~IWriter() {}
 
         virtual void write(const std::string& data) = 0;
 };
 
-class ConsoleWriter : public AbstractWriter
+class NonWriter : public IWriter
+{
+    public:
+        void write(const std::string&) override {}
+};
+
+class ConsoleWriter : public IWriter
 {
     public:
         void write(const std::string& data) override
         {
-            std::lock_guard<std::mutex> g(m_);
             std::cout << data;
         }
-
-    private:
-        std::mutex m_;
 };
 
-class FileWriter : public AbstractWriter
+class FileWriter : public IWriter
 {
     public:
         FileWriter(const std::string& filename)
@@ -43,4 +45,35 @@ class FileWriter : public AbstractWriter
         std::string filename_;
 };
 
-using GlobalConsoleWriter = Singleton<ConsoleWriter>;
+class RemoteConsoleWriter : public IWriter
+{
+    public:
+        RemoteConsoleWriter(MsgQueue& q) : q_(q) {}
+
+        void write(const std::string& data) override
+        {
+            q_.push(data);
+        }
+
+    private:
+        MsgQueue& q_;
+};
+
+class RemoteFileWriter : public IWriter
+{
+    public:
+        RemoteFileWriter(MsgQueue& q,
+                            const std::string& filename)
+            : q_(q)
+        {
+            q_.push(filename);
+        }
+        void write(const std::string& data) override
+        {
+            q_.push(data);
+        }
+    private:
+        MsgQueue& q_;
+};
+
+using IWriterUPtr = std::unique_ptr<IWriter>;

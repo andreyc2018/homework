@@ -6,34 +6,16 @@
 #include <fstream>
 #include "writers.h"
 
-class Observer
+class Reporter
 {
     public:
-        virtual ~Observer() {}
-        virtual void update(const std::string& data) = 0;
-};
-
-class ConsoleReporter : public Observer
-{
-    public:
-        void update(const std::string& data) override
+        Reporter(IWriterUPtr& w) : w_(std::move(w)) {}
+        ~Reporter() {}
+        void update(const std::string& data)
         {
-            GlobalConsoleWriter::instance().write(data);
-        }
-};
-
-class FileReporter : public Observer
-{
-    public:
-        FileReporter(const std::string& filename)
-            : writer_(filename) {}
-        ~FileReporter() {}
-
-        void update(const std::string& data) override
-        {
-            writer_.write(data);
+            w_->write(data);
         }
 
     private:
-        FileWriter writer_;
+        IWriterUPtr w_;
 };
