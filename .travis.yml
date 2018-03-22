@@ -16,9 +16,8 @@ before_script:
 - sudo apt-get install graphviz -y
 - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
 - sudo apt-get update -qq
-- sudo apt-get install ninja-build
 script:
-- cmake . -G Ninja
+- cmake .
 - cmake --build .
 - cmake --build . --target test
 - cmake --build . --target package
