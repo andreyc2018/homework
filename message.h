@@ -8,10 +8,15 @@ enum class MessageId : int
     EndOfStream
 };
 
+struct BlockMessage
+{
+    std::string data;
+    uint commands;
+};
+
 struct Message
 {
     MessageId id;
     std::string filename;
-    std::string data;
-    uint commands;
+    BlockMessage block;
 };
