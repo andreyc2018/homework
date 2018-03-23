@@ -6,8 +6,6 @@
 #include <iostream>
 #include <string>
 
-#define xtrace()  std::cout << __PRETTY_FUNCTION__ << "\n"
-
 template<typename T>
 class AsyncQueue
 {
@@ -54,4 +52,4 @@ class AsyncQueue
         queue_t q_;
 };
 
-using MsgQueue = AsyncQueue<std::string>;
+using StringQueue = AsyncQueue<std::string>;

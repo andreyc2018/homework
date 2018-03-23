@@ -21,6 +21,7 @@ Processor::~Processor()
 
 void Processor::add_token(const std::string& input)
 {
+    ++counters_.lines;
     parser_.handle_token(input);
 }
 
@@ -31,6 +32,7 @@ void Processor::end_of_stream()
 
 void Processor::run()
 {
+    ++counters_.blocks;
     std::stringstream ss;
     block_.run(ss);
     for (const auto& o : writers_) {
@@ -40,6 +42,7 @@ void Processor::run()
 
 void Processor::add_command(const std::string& input)
 {
+    ++counters_.commands;
     auto cmd = Command::create(input);
     block_.add_command(cmd);
 }

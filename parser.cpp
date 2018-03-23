@@ -20,7 +20,6 @@ Parser::~Parser()
 
 void Parser::handle_token(const std::string& token)
 {
-//    LOG() << "Processing: " << token << "\n";
     while (state_->handle(this, token) == ParserState::Result::Continue) {}
 }
 
@@ -33,10 +32,12 @@ void Parser::end_of_stream()
 
 void Parser::set_state(ParserState* state)
 {
-//    LOG() << "from state: " << state_->name();
+    std::string from = state_->name();
+
     delete state_;
     state_ = state;
-//    LOG() << " to state: " << state_->name() << "\n";
+
+    gLogger->info("from state {} to state {}", from, state_->name());
 }
 
 void Parser::add_command(const std::string& token)

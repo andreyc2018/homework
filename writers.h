@@ -1,6 +1,6 @@
 #pragma once
 
-#include "asyncqueue.h"
+#include "messagequeue.h"
 #include <iostream>
 #include <memory>
 #include <fstream>
@@ -48,32 +48,34 @@ class FileWriter : public IWriter
 class RemoteConsoleWriter : public IWriter
 {
     public:
-        RemoteConsoleWriter(MsgQueue& q) : q_(q) {}
+        RemoteConsoleWriter(MessageQueue& q) : q_(q) {}
 
         void write(const std::string& data) override
         {
-            q_.push(data);
+            Message msg { MessageId::Data, "", data, 0 };
+            q_.push(msg);
         }
 
     private:
-        MsgQueue& q_;
+        MessageQueue& q_;
 };
 
 class RemoteFileWriter : public IWriter
 {
     public:
-        RemoteFileWriter(MsgQueue& q,
+        RemoteFileWriter(MessageQueue& q,
                             const std::string& filename)
-            : q_(q)
+            : q_(q), filename_(filename)
         {
-            q_.push(filename);
         }
         void write(const std::string& data) override
         {
-            q_.push(data);
+            Message msg { MessageId::Data, filename_, data, 0 };
+            q_.push(msg);
         }
     private:
-        MsgQueue& q_;
+        MessageQueue& q_;
+        std::string filename_;
 };
 
 using IWriterUPtr = std::unique_ptr<IWriter>;

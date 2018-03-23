@@ -4,6 +4,7 @@
 #include "parser.h"
 #include "asyncqueue.h"
 #include "writerfactory.h"
+#include "counters.h"
 #include <vector>
 #include <string>
 
@@ -33,6 +34,7 @@ class Processor
         Block block_;
         reporters_t writers_;
         WriterFactoryUPtr writer_factory_;
+        Counters counters_;
 
         void destroy_writers();
 };

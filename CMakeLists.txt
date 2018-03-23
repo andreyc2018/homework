@@ -30,8 +30,11 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
 set(HEADER_FILES
         asyncqueue.h
         command.h
+        counters.h
         interpreter.h
         logger.h
+        message.h
+        messagequeue.h
         parser.h
         parserstate.h
         processor.h

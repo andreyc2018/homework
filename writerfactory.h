@@ -1,8 +1,8 @@
 #pragma once
 
-#include "asyncqueue.h"
 #include "writers.h"
 #include "reporters.h"
+#include "messagequeue.h"
 
 class IWriterFactory
 {
@@ -40,8 +40,8 @@ class LocalWriterFactory : public IWriterFactory
 class ThreadWriterFactory : public IWriterFactory
 {
     public:
-        ThreadWriterFactory(MsgQueue& console_q,
-                            MsgQueue& file_q)
+        ThreadWriterFactory(MessageQueue& console_q,
+                            MessageQueue& file_q)
             : console_queue_(console_q)
             , file_queue_(file_q) {}
 
@@ -55,8 +55,8 @@ class ThreadWriterFactory : public IWriterFactory
         }
 
     private:
-        MsgQueue& console_queue_;
-        MsgQueue& file_queue_;
+        MessageQueue& console_queue_;
+        MessageQueue& file_queue_;
 };
 
 using WriterFactoryUPtr = std::unique_ptr<IWriterFactory>;
