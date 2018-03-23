@@ -35,8 +35,9 @@ void Processor::run()
     ++counters_.blocks;
     std::stringstream ss;
     block_.run(ss);
+    BlockMessage msg { ss.str(), block_.size() };
     for (const auto& o : writers_) {
-        o->update(ss.str());
+        o->update(msg);
     }
 }
 

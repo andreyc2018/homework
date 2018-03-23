@@ -10,21 +10,21 @@ class IWriter
     public:
         virtual ~IWriter() {}
 
-        virtual void write(const std::string& data) = 0;
+        virtual void write(const BlockMessage& data) = 0;
 };
 
 class NonWriter : public IWriter
 {
     public:
-        void write(const std::string&) override {}
+        void write(const BlockMessage&) override {}
 };
 
 class ConsoleWriter : public IWriter
 {
     public:
-        void write(const std::string& data) override
+        void write(const BlockMessage& data) override
         {
-            std::cout << data;
+            std::cout << data.data;
         }
 };
 
@@ -34,10 +34,10 @@ class FileWriter : public IWriter
         FileWriter(const std::string& filename)
             : filename_(filename) {}
 
-        void write(const std::string& data) override
+        void write(const BlockMessage& data) override
         {
             std::ofstream file(filename_);
-            file << data;
+            file << data.data;
             file.close();
         }
 
@@ -50,9 +50,9 @@ class RemoteConsoleWriter : public IWriter
     public:
         RemoteConsoleWriter(MessageQueue& q) : q_(q) {}
 
-        void write(const std::string& data) override
+        void write(const BlockMessage& data) override
         {
-            Message msg { MessageId::Data, "", data, 0 };
+            Message msg { MessageId::Data, "", data };
             q_.push(msg);
         }
 
@@ -64,13 +64,13 @@ class RemoteFileWriter : public IWriter
 {
     public:
         RemoteFileWriter(MessageQueue& q,
-                            const std::string& filename)
+                         const std::string& filename)
             : q_(q), filename_(filename)
         {
         }
-        void write(const std::string& data) override
+        void write(const BlockMessage& data) override
         {
-            Message msg { MessageId::Data, filename_, data, 0 };
+            Message msg { MessageId::Data, filename_, data };
             q_.push(msg);
         }
     private:

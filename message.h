@@ -11,7 +11,7 @@ enum class MessageId : int
 struct BlockMessage
 {
     std::string data;
-    uint commands;
+    size_t commands;
 };
 
 struct Message

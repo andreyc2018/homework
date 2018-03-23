@@ -284,24 +284,3 @@ TEST(Processor, BreakDynamicBlock)
     EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
     EXPECT_EQ(1, p.dynamic_level());
 }
-
-//class Message
-//{
-//    public:
-//        Message(const std::string& msg)
-//            : msg_(msg)
-//        {
-//            TRACE();
-//        }
-//        ~Message()
-//        {
-//            TRACE();
-//        }
-
-//        std::string msg() const { return msg_; }
-//        void set_msg(const std::string& msg) { msg_ = msg; }
-
-//    private:
-//        std::string msg_;
-//};
-
