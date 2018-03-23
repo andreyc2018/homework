@@ -32,6 +32,7 @@ set(HEADER_FILES
         command.h
         counters.h
         interpreter.h
+        listeners.h
         logger.h
         message.h
         messagequeue.h
