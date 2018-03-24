@@ -28,6 +28,8 @@ class Processor
         virtual bool block_complete() const;
         virtual void start_block();
 
+        void report(std::ostream& out) const;
+
     private:
         size_t full_block_size_;
         Parser parser_;
@@ -35,6 +37,7 @@ class Processor
         reporters_t writers_;
         WriterFactoryUPtr writer_factory_;
         Counters counters_;
+        size_t unique_filename_id_;
 
         void destroy_writers();
 };

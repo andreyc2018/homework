@@ -1,7 +1,8 @@
 #include "asyncqueue.h"
-#include <gtest/gtest.h>
+#include "listeners.h"
 #include "logger.h"
 #include "xray.h"
+#include <gtest/gtest.h>
 #include <thread>
 
 TEST(AsyncQueue, Init)
@@ -76,6 +77,8 @@ void consumer(Q& q)
     while(i >= 0);
 }
 
+/// The test is an example of using non-protected access
+/// to shared Queue. It fails randomly.
 //TEST(AsyncQueue, ProducerConsumerNonConcurent)
 //{
 //    Queue<int> q;
@@ -96,4 +99,44 @@ TEST(AsyncQueue, ProducerConsumer)
 
     c.join();
     p.join();
+}
+
+TEST(Listeners, ConsoleListener)
+{
+    MessageQueue q;
+    ConsoleListener l(q);
+
+    l.run();
+    l.queue().push({ MessageId::Data, "", { "hello, world!\n", 5 } });
+    l.queue().push({ MessageId::EndOfStream, "", { "", 0 } });
+    l.wait();
+
+    std::stringstream ss;
+    l.report(ss);
+
+    EXPECT_EQ("log поток - 1 блок, 5 команд\n", ss.str());
+}
+
+TEST(Listeners, FileListener)
+{
+    MessageQueue q;
+    FileListener l(q, 99);
+
+    l.run();
+    l.queue().push({ MessageId::Data, "test1.txt", { "hello, world!\n", 5 } });
+    l.queue().push({ MessageId::EndOfStream, "", { "", 0 } });
+    l.wait();
+
+    std::stringstream ss;
+    l.report(ss);
+
+    EXPECT_EQ("file 99 поток - 1 блок, 5 команд\n", ss.str());
+
+    std::fstream file1("test1.txt");
+    std::string result;
+    std::getline(file1, result);
+    file1.close();
+    unlink("test1.txt");
+
+    EXPECT_EQ("hello, world!", result);
 }
