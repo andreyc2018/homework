@@ -27,30 +27,44 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock/include
         ${CMAKE_CURRENT_SOURCE_DIR}/spdlog/include)
 
-set(HEADER_FILES observers.h logger.h
-        interpreter.h command.h
-        processor.h parser.h
-        parserstate.h async.h)
+set(HEADER_FILES
+        async.h
+        asyncqueue.h
+        command.h
+        counters.h
+        interpreter.h
+        listeners.h
+        logger.h
+        message.h
+        messagequeue.h
+        parser.h
+        parserstate.h
+        processor.h
+        reporters.h
+        singleton.h
+        writerfactory.h
+        writers.h
+        xray.h)
 
 add_library(async SHARED
+        async.cpp
         interpreter.cpp
-        processor.cpp
+        logger.cpp
         parser.cpp
         parserstate.cpp
-        logger.cpp
-        async.cpp
+        processor.cpp
         ${HEADER_FILES})
 
 add_executable(async_cli main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(test_version test_bulk.cpp ${HEADER_FILES})
+add_executable(test_version test_async.cpp ${HEADER_FILES})
 
 target_compile_options(async_cli PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(async PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
 target_link_libraries(async_cli async Threads::Threads)
-target_link_libraries(test_version bulk_tools gmock_main Threads::Threads)
+target_link_libraries(test_version async gmock_main Threads::Threads)
 
 install(TARGETS async LIBRARY DESTINATION lib)
 
