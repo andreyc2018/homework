@@ -2,22 +2,23 @@
 
 #include "command.h"
 #include "parser.h"
-#include "observers.h"
+#include "asyncqueue.h"
+#include "writerfactory.h"
+#include "counters.h"
 #include <vector>
 #include <string>
 
 /**
  * @brief The Processor class
  * Reads and process the input commands according to the rules
- * The rules:
- *
  */
 class Processor
 {
     public:
-        using writers_t = std::vector<Observer*>;
+        using reporters_t = std::vector<Reporter*>;
 
-        explicit Processor(int size);
+        explicit Processor(int size,
+                           WriterFactoryUPtr&& factory);
         ~Processor();
 
         virtual void add_token(const std::string& input);
@@ -27,11 +28,16 @@ class Processor
         virtual bool block_complete() const;
         virtual void start_block();
 
+        void report(std::ostream& out) const;
+
     private:
         size_t full_block_size_;
         Parser parser_;
         Block block_;
-        writers_t writers_;
+        reporters_t writers_;
+        WriterFactoryUPtr writer_factory_;
+        Counters counters_;
+        size_t unique_filename_id_;
 
         void destroy_writers();
 };

@@ -1,12 +1,10 @@
 #include "parserstate.h"
 #include "interpreter.h"
 #include "parser.h"
-#include "logger.h"
 
 ParserState::Result StartingBlock::handle(Parser* ctx,
                                           const std::string& input)
 {
-    TRACE();
     if (ctx->open_kw()->interpret(input)) {
         ctx->set_state(ParserState::create<ExpectingDynamicCommand>());
         return Result::Stop;
@@ -21,7 +19,6 @@ ParserState::Result StartingBlock::handle(Parser* ctx,
 ParserState::Result ExpectingDynamicCommand::handle(Parser* ctx,
                                              const std::string& input)
 {
-    TRACE();
     if (ctx->command()->interpret(input)) {
         ctx->increase_level();
         ctx->start_block();
@@ -37,7 +34,6 @@ ParserState::Result ExpectingDynamicCommand::handle(Parser* ctx,
 ParserState::Result ExpectingStaticCommand::handle(Parser* ctx,
                                                    const std::string& input)
 {
-    TRACE();
     if (ctx->command()->interpret(input)) {
         ctx->start_block();
         ctx->set_state(ParserState::create<CollectingStaticBlock>());
@@ -49,7 +45,6 @@ ParserState::Result ExpectingStaticCommand::handle(Parser* ctx,
 ParserState::Result CollectingDynamicBlock::handle(Parser* ctx,
                                             const std::string& input)
 {
-    TRACE();
     if (ctx->command()->interpret(input)) {
         ctx->add_command(input);
         return Result::Stop;
@@ -71,7 +66,6 @@ ParserState::Result CollectingDynamicBlock::handle(Parser* ctx,
 ParserState::Result CollectingStaticBlock::handle(Parser* ctx,
                                                   const std::string& input)
 {
-    TRACE();
     if (ctx->command()->interpret(input)) {
         ctx->add_command(input);
         if (ctx->block_complete()) {
@@ -96,7 +90,6 @@ ParserState::Result CollectingStaticBlock::end_of_stream(Parser* ctx)
 ParserState::Result DoneBlock::handle(Parser* ctx,
                                       const std::string& input)
 {
-    TRACE();
     ctx->notify_run();
     ctx->set_state(ParserState::create<StartingBlock>());
     if (ctx->open_kw()->interpret(input)) {
