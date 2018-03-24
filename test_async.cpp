@@ -3,8 +3,8 @@
 #include "processor.h"
 #include "parserstate.h"
 #include "logger.h"
-#include "gtest/gtest.h"
-#include "gmock/gmock.h"
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 using ::testing::Return;
 using ::testing::AnyNumber;
@@ -102,7 +102,7 @@ class MockProcessor : public Processor
         MOCK_METHOD0(start_block, void());
 };
 
-TEST(Bulk, StartingToCollectingRun)
+TEST(Processor, StartingToCollectingRun)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command(_)).Times(2);
@@ -115,7 +115,7 @@ TEST(Bulk, StartingToCollectingRun)
     EXPECT_EQ(0, p.dynamic_level());
 }
 
-TEST(Bulk, StartingToExpectingToCollecting)
+TEST(Processor, StartingToExpectingToCollecting)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -129,7 +129,7 @@ TEST(Bulk, StartingToExpectingToCollecting)
     EXPECT_EQ(1, p.dynamic_level());
 }
 
-TEST(Bulk, StaticBlockUntilRun)
+TEST(Processor, StaticBlockUntilRun)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -146,7 +146,7 @@ TEST(Bulk, StaticBlockUntilRun)
     EXPECT_EQ("StartingBlock", p.state()->name());
 }
 
-TEST(Bulk, DynamicBlockUntilRun)
+TEST(Processor, DynamicBlockUntilRun)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -169,7 +169,7 @@ TEST(Bulk, DynamicBlockUntilRun)
     EXPECT_EQ(0, p.dynamic_level());
 }
 
-TEST(Bulk, EmptyDynamicBlock)
+TEST(Processor, EmptyDynamicBlock)
 {
     MockProcessor proc;
     Parser p(&proc);
@@ -181,7 +181,7 @@ TEST(Bulk, EmptyDynamicBlock)
     EXPECT_EQ(0, p.dynamic_level());
 }
 
-TEST(Bulk, StaticInterrupted)
+TEST(Processor, StaticInterrupted)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -220,7 +220,7 @@ TEST(Bulk, StaticInterrupted)
     EXPECT_EQ("StartingBlock", p.state()->name());
 }
 
-TEST(Bulk, NestedBlocks)
+TEST(Processor, NestedBlocks)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -253,7 +253,7 @@ TEST(Bulk, NestedBlocks)
     EXPECT_EQ(0, p.dynamic_level());
 }
 
-TEST(Bulk, BreakStaticBlock)
+TEST(Processor, BreakStaticBlock)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
@@ -268,7 +268,7 @@ TEST(Bulk, BreakStaticBlock)
     EXPECT_EQ("StartingBlock", p.state()->name());
 }
 
-TEST(Bulk, BreakDynamicBlock)
+TEST(Processor, BreakDynamicBlock)
 {
     MockProcessor proc;
     EXPECT_CALL(proc, add_command("cmd1"));
