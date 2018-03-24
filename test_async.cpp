@@ -1,6 +1,5 @@
 #include "command.h"
 #include "interpreter.h"
-#include "observers.h"
 #include "processor.h"
 #include "parserstate.h"
 #include "logger.h"
@@ -60,17 +59,20 @@ TEST(Bulk, Block)
 
 TEST(Bulk, Observer)
 {
-    std::vector<Observer*> writers;
-    Observer* f1 = new FileOut("test1.txt");
-    Observer* f2 = new FileOut("test2.txt");
-    Observer* c1 = new ConsoleOut;
-    Observer* c2 = new ConsoleOut;
-    writers.push_back(f1);
-    writers.push_back(c1);
-    writers.push_back(c2);
-    writers.push_back(f2);
+    LocalWriterFactory factory;
+    std::vector<Reporter*> writers;
+    auto f1 = factory.create_file_writer("test1.txt");
+    auto f2 = factory.create_file_writer("test2.txt");
+    auto c1 = factory.create_console_writer();
+    auto c2 = factory.create_console_writer();
+    writers.push_back(new Reporter(f1));
+    writers.push_back(new Reporter(c1));
+    writers.push_back(new Reporter(c2));
+    writers.push_back(new Reporter(f2));
+
+    BlockMessage msg { "hello\n", 1 };
     for (const auto& o : writers) {
-        o->update("hello\n");
+        o->update(msg);
     }
 
     for (auto& o : writers) {
@@ -92,7 +94,7 @@ TEST(Bulk, Observer)
 class MockProcessor : public Processor
 {
     public:
-        MockProcessor() : Processor(0) {}
+        MockProcessor() : Processor(0, std::make_unique<NonWriterFactory>()) {}
 
         MOCK_METHOD0(run, void());
         MOCK_METHOD1(add_command, void(const std::string&));
