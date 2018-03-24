@@ -32,7 +32,7 @@ set(HEADER_FILES observers.h logger.h
         processor.h parser.h
         parserstate.h)
 
-add_library(bulk_tools
+add_library(async SHARED
         interpreter.cpp
         processor.cpp
         parser.cpp
@@ -40,18 +40,18 @@ add_library(bulk_tools
         logger.cpp
         ${HEADER_FILES})
 
-add_executable(async main.cpp docs/hw_assignment.md
+add_executable(async_cli main.cpp docs/hw_assignment.md
         ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 add_executable(test_version test_bulk.cpp ${HEADER_FILES})
 
+target_compile_options(async_cli PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(async PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(bulk_tools PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
-target_link_libraries(async bulk_tools Threads::Threads)
+target_link_libraries(async_cli async Threads::Threads)
 target_link_libraries(test_version bulk_tools gmock_main Threads::Threads)
 
-install(TARGETS async RUNTIME DESTINATION bin)
+install(TARGETS async LIBRARY DESTINATION lib)
 
 set(CPACK_GENERATOR DEB)
 

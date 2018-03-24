@@ -5,6 +5,6 @@ set(CMAKE_CXX_STANDARD 14)
 
 add_library(async_example SHARED async.cpp async.h)
 
-add_executable(async_cli main.cpp)
+add_executable(async_example_cli main.cpp)
 
-target_link_libraries(async_cli async_example)
+target_link_libraries(async_example_cli async_example)
