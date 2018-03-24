@@ -58,36 +58,39 @@ TEST(Bulk, Block)
     EXPECT_EQ("bulk: c1, c2\n", ss.str());
 }
 
-//TEST(Bulk, Reporter)
-//{
-//    std::vector<Reporter*> writers;
-//    Reporter* f1 = new FileReporter("test1.txt");
-//    Reporter* f2 = new FileReporter("test2.txt");
-//    Reporter* c1 = new ConsoleReporter;
-//    Reporter* c2 = new ConsoleReporter;
-//    writers.push_back(f1);
-//    writers.push_back(c1);
-//    writers.push_back(c2);
-//    writers.push_back(f2);
-//    for (const auto& o : writers) {
-//        o->update("hello\n");
-//    }
+TEST(Bulk, Observer)
+{
+    LocalWriterFactory factory;
+    std::vector<Reporter*> writers;
+    auto f1 = factory.create_file_writer("test1.txt");
+    auto f2 = factory.create_file_writer("test2.txt");
+    auto c1 = factory.create_console_writer();
+    auto c2 = factory.create_console_writer();
+    writers.push_back(new Reporter(f1));
+    writers.push_back(new Reporter(c1));
+    writers.push_back(new Reporter(c2));
+    writers.push_back(new Reporter(f2));
 
-//    for (auto& o : writers) {
-//        delete o;
-//    }
+    BlockMessage msg { "hello\n", 1 };
+    for (const auto& o : writers) {
+        o->update(msg);
+    }
 
-//    std::fstream file1("test1.txt");
-//    std::string result;
-//    file1 >> result;
-//    EXPECT_EQ("hello", result);
-//    unlink("test1.txt");
+    for (auto& o : writers) {
+        delete o;
+    }
 
-//    std::fstream file2("test1.txt");
-//    file2 >> result;
-//    EXPECT_EQ("hello", result);
-//    unlink("test2.txt");
-//}
+    std::fstream file1("test1.txt");
+    std::string result;
+    file1 >> result;
+    EXPECT_EQ("hello", result);
+    unlink("test1.txt");
+
+    std::fstream file2("test1.txt");
+    file2 >> result;
+    EXPECT_EQ("hello", result);
+    unlink("test2.txt");
+}
 
 class MockProcessor : public Processor
 {
