@@ -37,7 +37,7 @@ class Processor
         reporters_t writers_;
         WriterFactoryUPtr writer_factory_;
         Counters counters_;
-        size_t unique_filename_id_;
+        static size_t unique_filename_id;
 
         void destroy_writers();
 };

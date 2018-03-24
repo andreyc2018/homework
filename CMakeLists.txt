@@ -29,6 +29,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
 
 set(HEADER_FILES
         async.h
+        async_internal.h
         asyncqueue.h
         command.h
         counters.h
@@ -48,6 +49,7 @@ set(HEADER_FILES
 
 add_library(async SHARED
         async.cpp
+        async_internal.cpp
         interpreter.cpp
         logger.cpp
         parser.cpp
