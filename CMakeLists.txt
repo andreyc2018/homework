@@ -30,7 +30,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
 set(HEADER_FILES observers.h logger.h
         interpreter.h command.h
         processor.h parser.h
-        parserstate.h)
+        parserstate.h async.h)
 
 add_library(async SHARED
         interpreter.cpp
@@ -38,6 +38,7 @@ add_library(async SHARED
         parser.cpp
         parserstate.cpp
         logger.cpp
+        async.cpp
         ${HEADER_FILES})
 
 add_executable(async_cli main.cpp docs/hw_assignment.md
