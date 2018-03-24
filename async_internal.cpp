@@ -3,26 +3,50 @@
 using namespace async;
 using namespace async::details;
 
+std::atomic<handle_t> AsyncLibrary::next_id_ { 0 };
+
 AsyncLibrary::AsyncLibrary()
-    : console_q()
-    , console(console_q)
-    , file_q()
-    , file_1(file_q, 1)
-    , file_2(file_q, 2)
+    : console_q_()
+    , console_(console_q_)
+    , file_q_()
+    , file_1_(file_q_, 1)
+    , file_2_(file_q_, 2)
 {
-    console.run();
-    file_1.run();
-    file_2.run();
+    console_.run();
+    file_1_.run();
+    file_2_.run();
 }
 
 AsyncLibrary::~AsyncLibrary()
 {
     Message msg { MessageId::EndOfStream, "", { "", 0 } };
-    console.queue().push(msg);
-    file_1.queue().push(msg);
-    file_2.queue().push(msg);
+    console_.queue().push(msg);
+    file_1_.queue().push(msg);
+    file_2_.queue().push(msg);
 
-    console.wait();
-    file_1.wait();
-    file_2.wait();
+    console_.wait();
+    file_1_.wait();
+    file_2_.wait();
+
+    console_.report(std::cout);
+    file_1_.report(std::cout);
+    file_2_.report(std::cout);
+}
+
+handle_t AsyncLibrary::add_processor(size_t bulk)
+{
+    next_id_.fetch_add(1, std::memory_order_relaxed);
+    handle_t id = next_id_;
+
+    auto p = std::make_unique<Processor>(bulk, std::make_unique<ThreadWriterFactory>(console_q_, file_q_));
+    processors_.emplace(id, std::move(p));
+    return id;
+}
+
+void AsyncLibrary::process_input(handle_t id, const std::string& token)
+{
+    auto it = processors_.find(id);
+    if (it != processors_.end()) {
+        processors_[id]->add_string(token);
+    }
 }

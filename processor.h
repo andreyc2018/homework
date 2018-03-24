@@ -7,6 +7,8 @@
 #include "counters.h"
 #include <vector>
 #include <string>
+#include <atomic>
+#include <memory>
 
 /**
  * @brief The Processor class
@@ -17,10 +19,10 @@ class Processor
     public:
         using reporters_t = std::vector<Reporter*>;
 
-        explicit Processor(int size,
-                           WriterFactoryUPtr&& factory);
+        Processor(int size, WriterFactoryUPtr&& factory);
         ~Processor();
 
+        virtual void add_string(const std::string& input);
         virtual void add_token(const std::string& input);
         virtual void end_of_stream();
         virtual void run();
@@ -37,7 +39,9 @@ class Processor
         reporters_t writers_;
         WriterFactoryUPtr writer_factory_;
         Counters counters_;
-        static size_t unique_filename_id;
+        static std::atomic_size_t next_id_;
 
         void destroy_writers();
 };
+
+using ProcessorUPtr = std::unique_ptr<Processor>;

@@ -56,8 +56,6 @@ class ConsoleListener : public IListener
             do
             {
                 msg = q_.pop();
-                gLogger->debug("{}: data = {}, commands = {}",
-                               __func__, msg.block.data, msg.block.commands);
                 if (msg.id == MessageId::Data) {
                     std::cout << msg.block.data;
                     update_counters(msg);
@@ -85,8 +83,6 @@ class FileListener : public IListener
             {
                 msg = q_.pop();
                 if (msg.id == MessageId::Data) {
-                    gLogger->debug("{}:{}: filename = {}, data = {}",
-                                  __func__, __LINE__, msg.filename, msg.block.data);
                     std::ofstream file(msg.filename);
                     file << msg.block.data;
                     file.close();

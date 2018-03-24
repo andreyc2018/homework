@@ -36,8 +36,6 @@ void Parser::set_state(ParserState* state)
 
     delete state_;
     state_ = state;
-
-    gLogger->debug("from state {} to state {}", from, state_->name());
 }
 
 void Parser::add_command(const std::string& token)
