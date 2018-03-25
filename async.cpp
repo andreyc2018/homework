@@ -8,17 +8,14 @@ details::AsyncLibrary library;
 
 handle_t connect(std::size_t bulk)
 {
-    gLogger->debug("{}: size = {}", __func__, bulk);
     if (bulk < 1) {
         return InvalidHandle;
     }
-    return library.add_processor(bulk);
+    return library.open_processor(bulk);
 }
 
 void receive(handle_t handle, const char *data, std::size_t size)
 {
-    gLogger->debug("{}: handle = {}, data = {}, size = {}",
-                   __func__, handle, data, size);
     if (handle == InvalidHandle || data == nullptr || size == 0) {
         return;
     }
@@ -28,7 +25,10 @@ void receive(handle_t handle, const char *data, std::size_t size)
 
 void disconnect(handle_t handle)
 {
-    gLogger->debug("{}: handle = {}", __func__, handle);
+    if (handle == InvalidHandle) {
+        return;
+    }
+    library.close_processor(handle);
 }
 
 }

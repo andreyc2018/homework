@@ -15,9 +15,10 @@ class AsyncLibrary
         AsyncLibrary();
         ~AsyncLibrary();
 
-        handle_t add_processor(size_t bulk);
+        handle_t open_processor(size_t bulk);
         void process_input(handle_t id,
                            const std::string& token);
+        void close_processor(handle_t id);
 
         MessageQueue& console_q() { return console_q_; }
         MessageQueue& file_q() { return file_q_; }

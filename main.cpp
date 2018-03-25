@@ -18,7 +18,7 @@ int main(int argc, char const** argv)
         }
 
         std::size_t bulk = std::stoul(argv[1]);
-        auto h = async::connect(bulk);
+        auto h = async::connect(bulk+4);
         auto h2 = async::connect(bulk);
         async::receive(h, "1", 1);
         async::receive(h2, "1\n", 2);

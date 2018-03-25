@@ -33,7 +33,7 @@ AsyncLibrary::~AsyncLibrary()
     file_2_.report(std::cout);
 }
 
-handle_t AsyncLibrary::add_processor(size_t bulk)
+handle_t AsyncLibrary::open_processor(size_t bulk)
 {
     next_id_.fetch_add(1, std::memory_order_relaxed);
     handle_t id = next_id_;
@@ -48,5 +48,15 @@ void AsyncLibrary::process_input(handle_t id, const std::string& token)
     auto it = processors_.find(id);
     if (it != processors_.end()) {
         processors_[id]->add_string(token);
+    }
+}
+
+void AsyncLibrary::close_processor(handle_t id)
+{
+    auto it = processors_.find(id);
+    if (it != processors_.end()) {
+        processors_[id]->end_of_stream();
+        processors_[id]->report(std::cout);
+        processors_.erase(it);
     }
 }
