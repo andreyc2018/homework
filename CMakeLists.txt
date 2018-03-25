@@ -83,6 +83,8 @@ enable_testing()
 add_test(NAME test_version COMMAND test_version)
 add_test(NAME test_async COMMAND test_async)
 
+add_subdirectory(threads)
+
 if(EXISTS ${CMAKE_SOURCE_DIR}/sandbox/CMakeLists.txt)
     add_subdirectory(sandbox EXCLUDE_FROM_ALL)
 endif()
