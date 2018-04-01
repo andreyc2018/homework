@@ -10,7 +10,7 @@ using seconds = std::chrono::seconds;
 
 Processor::Processor(int size, WriterFactoryUPtr&& factory)
     : full_block_size_(size)
-    , parser_(this)
+    , parser_(*this)
     , writer_factory_(std::move(factory))
     , unique_filename_id_(1)
 {
@@ -72,8 +72,8 @@ void Processor::start_block()
     auto file_writer = writer_factory_->create_file_writer(filename);
     auto console_writer = writer_factory_->create_console_writer();
 
-    writers_.push_back(new Reporter(file_writer));
-    writers_.push_back(new Reporter(console_writer));
+    writers_.push_back(std::make_unique<Reporter>(file_writer));
+    writers_.push_back(std::make_unique<Reporter>(console_writer));
 }
 
 void Processor::report(std::ostream& out) const
@@ -86,8 +86,5 @@ void Processor::report(std::ostream& out) const
 
 void Processor::destroy_writers()
 {
-    while (!writers_.empty()) {
-        delete writers_.back();
-        writers_.pop_back();
-    }
+    writers_.clear();
 }

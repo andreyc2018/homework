@@ -1,15 +1,15 @@
 #pragma once
 
 #include "interpreter.h"
+#include "parserstate.h"
 #include "logger.h"
 
-class ParserState;
 class Processor;
 
 class Parser
 {
     public:
-        Parser(Processor* processor);
+        Parser(Processor& processor);
         ~Parser();
 
         void handle_token(const std::string& token);
@@ -18,11 +18,9 @@ class Parser
         const expr_t& open_kw() const { return open_kw_; }
         const expr_t& close_kw() const { return close_kw_; }
         const expr_t& command() const { return command_; }
-//        const expr_t& start_block() const { return start_block_; }
-//        const expr_t& end_block() const { return end_block_; }
 
-        void set_state(ParserState* state);
-        ParserState* state() const { return state_; }
+        void set_state(ParserStateUPtr&& state);
+        const ParserState& state() const { return *state_.get(); }
 
         void add_command(const std::string& token);
         bool block_complete() const;
@@ -34,12 +32,10 @@ class Parser
 
     private:
         int dynamic_level_;
-        ParserState* state_;
-        Processor* processor_;
+        ParserStateUPtr state_;
+        Processor& processor_;
 
         const expr_t open_kw_;
         const expr_t close_kw_;
         const expr_t command_;
-//        const expr_t start_block_;
-//        const expr_t end_block_;
 };
