@@ -58,7 +58,7 @@ add_library(async SHARED
         ${HEADER_FILES})
 
 add_executable(async_cli main.cpp docs/hw_assignment.md
-        ${HEADER_FILES} ${CMAKE_CURRENT_BINARY_DIR}/version.h)
+        async.h ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 add_executable(test_version test_async.cpp ${HEADER_FILES})
 
 target_compile_options(async_cli PRIVATE -Wpedantic -Wall -Wextra)
