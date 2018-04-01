@@ -15,7 +15,7 @@ TEST(Bulk, Interpreter)
 {
     expr_t open_kw = std::make_shared<term_t>("\\{");
     expr_t close_kw = std::make_shared<term_t>("\\}");
-    expr_t command = std::make_shared<term_t>("[^{}]+");
+    expr_t command = std::make_shared<term_t>("^$|[^{}]+");
 
     EXPECT_TRUE(open_kw->interpret("{"));
     EXPECT_TRUE(!open_kw->interpret("{{"));
@@ -27,6 +27,7 @@ TEST(Bulk, Interpreter)
     EXPECT_TRUE(!close_kw->interpret("world"));
     EXPECT_TRUE(!command->interpret("{"));
     EXPECT_TRUE(command->interpret("hello"));
+    EXPECT_TRUE(command->interpret(""));
 
     expr_t start_block = std::make_shared<start_block_t>(open_kw, command);
     EXPECT_TRUE(start_block->interpret("{"));
@@ -60,21 +61,17 @@ TEST(Bulk, Block)
 
 TEST(Bulk, Observer)
 {
-    std::vector<Observer*> writers;
-    Observer* f1 = new FileOut("test1.txt");
-    Observer* f2 = new FileOut("test2.txt");
-    Observer* c1 = new ConsoleOut;
-    Observer* c2 = new ConsoleOut;
-    writers.push_back(f1);
-    writers.push_back(c1);
-    writers.push_back(c2);
-    writers.push_back(f2);
+    std::vector<ObserverUPtr> writers;
+    ObserverUPtr f1 = std::make_unique<FileOut>("test1.txt");
+    ObserverUPtr f2 = std::make_unique<FileOut>("test2.txt");
+    ObserverUPtr c1 = std::make_unique<ConsoleOut>();
+    ObserverUPtr c2 = std::make_unique<ConsoleOut>();
+    writers.push_back(std::move(f1));
+    writers.push_back(std::move(c1));
+    writers.push_back(std::move(c2));
+    writers.push_back(std::move(f2));
     for (const auto& o : writers) {
         o->update("hello\n");
-    }
-
-    for (auto& o : writers) {
-        delete o;
     }
 
     std::fstream file1("test1.txt");
@@ -106,10 +103,10 @@ TEST(Bulk, StartingToCollectingRun)
     EXPECT_CALL(proc, add_command(_)).Times(2);
     EXPECT_CALL(proc, block_complete()).WillRepeatedly(Return(false));
     EXPECT_CALL(proc, start_block());
-    Parser p(&proc);
+    Parser p(proc);
     p.handle_token("cmd1");
     p.handle_token("cmd2");
-    EXPECT_EQ("CollectingStaticBlock", p.state()->name());
+    EXPECT_EQ("CollectingStaticBlock", p.state().name());
     EXPECT_EQ(0, p.dynamic_level());
 }
 
@@ -119,11 +116,11 @@ TEST(Bulk, StartingToExpectingToCollecting)
     EXPECT_CALL(proc, add_command("cmd1"));
     EXPECT_CALL(proc, block_complete()).WillRepeatedly(Return(false));
     EXPECT_CALL(proc, start_block());
-    Parser p(&proc);
+    Parser p(proc);
     p.handle_token("{");
-    EXPECT_EQ("ExpectingDynamicCommand", p.state()->name());
+    EXPECT_EQ("ExpectingDynamicCommand", p.state().name());
     p.handle_token("cmd1");
-    EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
+    EXPECT_EQ("CollectingDynamicBlock", p.state().name());
     EXPECT_EQ(1, p.dynamic_level());
 }
 
@@ -137,11 +134,11 @@ TEST(Bulk, StaticBlockUntilRun)
     EXPECT_CALL(proc, add_command("cmd2"));
     EXPECT_CALL(proc, run());
     EXPECT_CALL(proc, start_block());
-    Parser p(&proc);
+    Parser p(proc);
     p.handle_token("cmd1");
-    EXPECT_EQ("CollectingStaticBlock", p.state()->name());
+    EXPECT_EQ("CollectingStaticBlock", p.state().name());
     p.handle_token("cmd2");
-    EXPECT_EQ("StartingBlock", p.state()->name());
+    EXPECT_EQ("StartingBlock", p.state().name());
 }
 
 TEST(Bulk, DynamicBlockUntilRun)
@@ -153,29 +150,29 @@ TEST(Bulk, DynamicBlockUntilRun)
     EXPECT_CALL(proc, add_command("cmd2"));
     EXPECT_CALL(proc, run());
     EXPECT_CALL(proc, start_block());
-    Parser p(&proc);
+    Parser p(proc);
     p.handle_token("{");
-    EXPECT_EQ("ExpectingDynamicCommand", p.state()->name());
+    EXPECT_EQ("ExpectingDynamicCommand", p.state().name());
     EXPECT_EQ(0, p.dynamic_level());
     p.handle_token("cmd1");
-    EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
+    EXPECT_EQ("CollectingDynamicBlock", p.state().name());
     EXPECT_EQ(1, p.dynamic_level());
     p.handle_token("cmd2");
-    EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
+    EXPECT_EQ("CollectingDynamicBlock", p.state().name());
     p.handle_token("}");
-    EXPECT_EQ("StartingBlock", p.state()->name());
+    EXPECT_EQ("StartingBlock", p.state().name());
     EXPECT_EQ(0, p.dynamic_level());
 }
 
 TEST(Bulk, EmptyDynamicBlock)
 {
     MockProcessor proc;
-    Parser p(&proc);
+    Parser p(proc);
     p.handle_token("{");
-    EXPECT_EQ("ExpectingDynamicCommand", p.state()->name());
+    EXPECT_EQ("ExpectingDynamicCommand", p.state().name());
     EXPECT_EQ(0, p.dynamic_level());
     p.handle_token("}");
-    EXPECT_EQ("StartingBlock", p.state()->name());
+    EXPECT_EQ("StartingBlock", p.state().name());
     EXPECT_EQ(0, p.dynamic_level());
 }
 
@@ -196,26 +193,26 @@ TEST(Bulk, StaticInterrupted)
     EXPECT_CALL(proc, add_command("cmd6"));
     EXPECT_CALL(proc, run()).Times(3);
     EXPECT_CALL(proc, start_block()).Times(3);
-    Parser p(&proc);
+    Parser p(proc);
     p.handle_token("cmd1");
-    EXPECT_EQ("CollectingStaticBlock", p.state()->name());
+    EXPECT_EQ("CollectingStaticBlock", p.state().name());
     p.handle_token("cmd2");
     EXPECT_EQ(0, p.dynamic_level());
-    EXPECT_EQ("CollectingStaticBlock", p.state()->name());
+    EXPECT_EQ("CollectingStaticBlock", p.state().name());
     p.handle_token("{");
-    EXPECT_EQ("ExpectingDynamicCommand", p.state()->name());
+    EXPECT_EQ("ExpectingDynamicCommand", p.state().name());
     p.handle_token("cmd3");
     EXPECT_EQ(1, p.dynamic_level());
     p.handle_token("}");
-    EXPECT_EQ("StartingBlock", p.state()->name());
+    EXPECT_EQ("StartingBlock", p.state().name());
     EXPECT_EQ(0, p.dynamic_level());
     p.handle_token("cmd4");
-    EXPECT_EQ("CollectingStaticBlock", p.state()->name());
+    EXPECT_EQ("CollectingStaticBlock", p.state().name());
     p.handle_token("cmd5");
-    EXPECT_EQ("CollectingStaticBlock", p.state()->name());
+    EXPECT_EQ("CollectingStaticBlock", p.state().name());
     EXPECT_EQ(0, p.dynamic_level());
     p.handle_token("cmd6");
-    EXPECT_EQ("StartingBlock", p.state()->name());
+    EXPECT_EQ("StartingBlock", p.state().name());
 }
 
 TEST(Bulk, NestedBlocks)
@@ -230,15 +227,15 @@ TEST(Bulk, NestedBlocks)
     EXPECT_CALL(proc, add_command("cmd5"));
     EXPECT_CALL(proc, run());
     EXPECT_CALL(proc, start_block());
-    Parser p(&proc);
+    Parser p(proc);
     p.handle_token("{");
     EXPECT_EQ(0, p.dynamic_level());
-    EXPECT_EQ("ExpectingDynamicCommand", p.state()->name());
+    EXPECT_EQ("ExpectingDynamicCommand", p.state().name());
     p.handle_token("cmd1");
     EXPECT_EQ(1, p.dynamic_level());
-    EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
+    EXPECT_EQ("CollectingDynamicBlock", p.state().name());
     p.handle_token("cmd2");
-    EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
+    EXPECT_EQ("CollectingDynamicBlock", p.state().name());
     p.handle_token("{");
     EXPECT_EQ(2, p.dynamic_level());
     p.handle_token("cmd3");
@@ -247,7 +244,7 @@ TEST(Bulk, NestedBlocks)
     EXPECT_EQ(1, p.dynamic_level());
     p.handle_token("cmd5");
     p.handle_token("}");
-    EXPECT_EQ("StartingBlock", p.state()->name());
+    EXPECT_EQ("StartingBlock", p.state().name());
     EXPECT_EQ(0, p.dynamic_level());
 }
 
@@ -259,11 +256,11 @@ TEST(Bulk, BreakStaticBlock)
             .WillOnce(Return(false));
     EXPECT_CALL(proc, run());
     EXPECT_CALL(proc, start_block());
-    Parser p(&proc);
+    Parser p(proc);
     p.handle_token("cmd1");
-    EXPECT_EQ("CollectingStaticBlock", p.state()->name());
+    EXPECT_EQ("CollectingStaticBlock", p.state().name());
     p.end_of_stream();
-    EXPECT_EQ("StartingBlock", p.state()->name());
+    EXPECT_EQ("StartingBlock", p.state().name());
 }
 
 TEST(Bulk, BreakDynamicBlock)
@@ -273,14 +270,14 @@ TEST(Bulk, BreakDynamicBlock)
     EXPECT_CALL(proc, block_complete())
             .WillRepeatedly(Return(false));
     EXPECT_CALL(proc, start_block());
-    Parser p(&proc);
+    Parser p(proc);
     p.handle_token("{");
-    EXPECT_EQ("ExpectingDynamicCommand", p.state()->name());
+    EXPECT_EQ("ExpectingDynamicCommand", p.state().name());
     EXPECT_EQ(0, p.dynamic_level());
     p.handle_token("cmd1");
-    EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
+    EXPECT_EQ("CollectingDynamicBlock", p.state().name());
     EXPECT_EQ(1, p.dynamic_level());
     p.end_of_stream();
-    EXPECT_EQ("CollectingDynamicBlock", p.state()->name());
+    EXPECT_EQ("CollectingDynamicBlock", p.state().name());
     EXPECT_EQ(1, p.dynamic_level());
 }

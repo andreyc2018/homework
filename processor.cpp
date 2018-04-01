@@ -8,7 +8,7 @@ using seconds = std::chrono::seconds;
 
 Processor::Processor(int size)
     : full_block_size_(size)
-    , parser_(this)
+    , parser_(*this)
 {
 }
 
@@ -56,14 +56,11 @@ void Processor::start_block()
     filename.append(".log");
 
     destroy_writers();
-    writers_.push_back(new FileOut(filename));
-    writers_.push_back(new ConsoleOut);
+    writers_.push_back(std::make_unique<FileOut>(filename));
+    writers_.push_back(std::make_unique<ConsoleOut>());
 }
 
 void Processor::destroy_writers()
 {
-    while (!writers_.empty()) {
-        delete writers_.back();
-        writers_.pop_back();
-    }
+    writers_.clear();
 }

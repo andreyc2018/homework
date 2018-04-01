@@ -15,7 +15,7 @@
 class Processor
 {
     public:
-        using writers_t = std::vector<Observer*>;
+        using writers_t = std::vector<ObserverUPtr>;
 
         explicit Processor(int size);
         ~Processor();

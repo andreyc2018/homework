@@ -72,6 +72,8 @@ class Observer
         virtual void update(const std::string& data) = 0;
 };
 
+using ObserverUPtr = std::unique_ptr<Observer>;
+
 class ConsoleOut : public Observer
 {
     public:
