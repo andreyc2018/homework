@@ -9,7 +9,7 @@ Parser::Parser(Processor* processor)
     , processor_(processor)
     , open_kw_(std::make_shared<term_t>("\\{"))
     , close_kw_(std::make_shared<term_t>("\\}"))
-    , command_(std::make_shared<term_t>("[^{}]+"))
+    , command_(std::make_shared<term_t>("^$|[^{}]+"))
 {
 }
 
