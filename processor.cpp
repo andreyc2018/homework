@@ -2,14 +2,17 @@
 #include "logger.h"
 #include "writerfactory.h"
 #include "spdlog/fmt/fmt.h"
-#include <boost/tokenizer.hpp>
 #include <numeric>
 #include <chrono>
+#include <regex>
 #include <cstring>
 
 using sc = std::chrono::system_clock;
 using seconds = std::chrono::seconds;
-using tokenizer = boost::tokenizer<boost::char_separator<char>>;
+
+namespace {
+std::regex eol_re("\n");
+}
 
 std::atomic_size_t Processor::next_id_ { 0 };
 
@@ -27,9 +30,9 @@ Processor::~Processor()
 
 void Processor::add_string(const std::string& input)
 {
-    tokenizer tok(input);
-    for (const auto& token : tok) {
-        add_token(token);
+    for (auto it = std::sregex_token_iterator(input.begin(), input.end(), eol_re, -1);
+         it != std::sregex_token_iterator(); ++it) {
+        add_token(*it);
     }
 }
 
