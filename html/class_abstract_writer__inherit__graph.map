@@ -1,0 +1,4 @@
+<map id="AbstractWriter" name="AbstractWriter">
+<area shape="rect" id="node2" href="$class_console_writer.html" title="{ConsoleWriter\n||+ write()\l}" alt="" coords="5,155,109,232"/>
+<area shape="rect" id="node3" href="$class_file_writer.html" title="{FileWriter\n||+ FileWriter()\l+ write()\l}" alt="" coords="135,147,233,239"/>
+</map>

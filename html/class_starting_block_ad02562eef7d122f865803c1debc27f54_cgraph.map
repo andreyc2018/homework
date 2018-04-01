@@ -1,0 +1,6 @@
+<map id="StartingBlock::handle" name="StartingBlock::handle">
+<area shape="rect" id="node2" href="$class_parser.html#af729ae7cc985c5f8ab0e3c066a29e390" title="Parser::open_kw" alt="" coords="203,5,323,32"/>
+<area shape="rect" id="node3" href="$class_parser.html#ae360b42d0b240bef4027a1d7e9b8ebda" title="Parser::set_state" alt="" coords="201,56,324,83"/>
+<area shape="rect" id="node5" href="$class_parser.html#a4a56ee42a07d0d4eb5f65f4cff4509b1" title="Parser::command" alt="" coords="200,107,325,133"/>
+<area shape="rect" id="node4" href="$class_parser.html#a1f7ec65e9c2ee547dd21f5bb7ca1d013" title="Parser::state" alt="" coords="374,56,471,83"/>
+</map>

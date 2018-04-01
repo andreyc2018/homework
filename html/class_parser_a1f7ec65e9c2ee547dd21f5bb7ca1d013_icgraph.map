@@ -1,0 +1,11 @@
+<map id="Parser::state" name="Parser::state">
+<area shape="rect" id="node2" href="$class_parser.html#ae360b42d0b240bef4027a1d7e9b8ebda" title="Parser::set_state" alt="" coords="152,195,275,221"/>
+<area shape="rect" id="node10" href="$test__bulk_8cpp.html#ae2449c5fac824a37e2de2fd552489499" title="TEST" alt="" coords="185,245,241,272"/>
+<area shape="rect" id="node3" href="$class_starting_block.html#ad02562eef7d122f865803c1debc27f54" title="StartingBlock::handle" alt="" coords="345,5,492,32"/>
+<area shape="rect" id="node4" href="$class_expecting_dynamic_command.html#a1fcc00b7b10beb5c15c9cba4eac21567" title="ExpectingDynamicCommand\l::handle" alt="" coords="323,57,515,98"/>
+<area shape="rect" id="node5" href="$class_expecting_static_command.html#a4f05dcc686fe20c89b21e9e2110ddf8a" title="ExpectingStaticCommand\l::handle" alt="" coords="331,122,506,163"/>
+<area shape="rect" id="node6" href="$class_collecting_dynamic_block.html#a1b24141d8337e1b097f1114f6285396d" title="CollectingDynamicBlock\l::handle" alt="" coords="336,187,501,229"/>
+<area shape="rect" id="node7" href="$class_collecting_static_block.html#ae3b1cc7db819dafaff6e5964e0b0ccbe" title="CollectingStaticBlock\l::handle" alt="" coords="345,253,492,294"/>
+<area shape="rect" id="node8" href="$class_collecting_static_block.html#ac801d05c4c30c7c8ae25983542bab09c" title="CollectingStaticBlock\l::end_of_stream" alt="" coords="345,318,492,359"/>
+<area shape="rect" id="node9" href="$class_done_block.html#adf86a0c75d4471ca64fad4977fb7837f" title="DoneBlock::handle" alt="" coords="353,384,485,411"/>
+</map>

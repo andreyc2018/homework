@@ -1,0 +1,6 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="node2" href="$class_block.html#a28f1bb418f67d7d1498a00363f282ba4" title="Block::create" alt="" coords="124,5,223,32"/>
+<area shape="rect" id="node4" href="$class_command.html#aedae20bfe7d6f8146df9b1bf1bf16b3c" title="Command::create" alt="" coords="110,56,237,83"/>
+<area shape="rect" id="node3" href="$class_block.html#a37658a946bf5067ad01d68d9ff086adc" title="Block::Block" alt="" coords="313,5,409,32"/>
+<area shape="rect" id="node5" href="$class_command.html#aa7aaca4540b4b31dee517d352f7f0950" title="Command::Command" alt="" coords="286,56,437,83"/>
+</map>

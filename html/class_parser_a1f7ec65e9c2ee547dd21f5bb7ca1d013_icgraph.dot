@@ -1,0 +1,26 @@
+digraph "Parser::state"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Parser::state",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Parser::set_state",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_parser.html#ae360b42d0b240bef4027a1d7e9b8ebda"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="StartingBlock::handle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_starting_block.html#ad02562eef7d122f865803c1debc27f54"];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="ExpectingDynamicCommand\l::handle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_expecting_dynamic_command.html#a1fcc00b7b10beb5c15c9cba4eac21567"];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="ExpectingStaticCommand\l::handle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_expecting_static_command.html#a4f05dcc686fe20c89b21e9e2110ddf8a"];
+  Node2 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="CollectingDynamicBlock\l::handle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_collecting_dynamic_block.html#a1b24141d8337e1b097f1114f6285396d"];
+  Node2 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="CollectingStaticBlock\l::handle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_collecting_static_block.html#ae3b1cc7db819dafaff6e5964e0b0ccbe"];
+  Node2 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="CollectingStaticBlock\l::end_of_stream",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_collecting_static_block.html#ac801d05c4c30c7c8ae25983542bab09c"];
+  Node2 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="DoneBlock::handle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_done_block.html#adf86a0c75d4471ca64fad4977fb7837f"];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="TEST",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$test__bulk_8cpp.html#ae2449c5fac824a37e2de2fd552489499"];
+}

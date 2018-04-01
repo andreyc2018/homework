@@ -1,0 +1,5 @@
+<map id="Block::size" name="Block::size">
+<area shape="rect" id="node2" href="$class_processor.html#aad1910156d59b83f3f22a1381b2ba629" title="Processor::block_complete" alt="" coords="142,12,322,39"/>
+<area shape="rect" id="node3" href="$class_parser.html#a28ac7a33c7b7f22723f6b7b3b1c81f39" title="Parser::block_complete" alt="" coords="371,12,530,39"/>
+<area shape="rect" id="node4" href="$class_collecting_static_block.html#ae3b1cc7db819dafaff6e5964e0b0ccbe" title="CollectingStaticBlock\l::handle" alt="" coords="579,5,725,46"/>
+</map>

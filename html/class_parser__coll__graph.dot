@@ -1,0 +1,7 @@
+digraph "Parser"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{Parser\n||+ add_command()\l+ block_complete()\l+ close_kw()\l+ command()\l+ decrease_level()\l+ dynamic_level()\l+ end_of_stream()\l+ handle_token()\l+ increase_level()\l+ notify_run()\l+ open_kw()\l+ Parser()\l+ set_state()\l+ start_block()\l+ state()\l+ ~Parser()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+}

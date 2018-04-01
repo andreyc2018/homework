@@ -1,0 +1,9 @@
+digraph "Processor"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{Processor\n||+ add_command()\l+ add_token()\l+ block_complete()\l+ end_of_stream()\l+ Processor()\l+ run()\l+ start_block()\l+ ~Processor()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{MockProcessor\n||+ MOCK_CONST_METHOD0()\l+ MOCK_METHOD0()\l+ MOCK_METHOD0()\l+ MOCK_METHOD1()\l+ MockProcessor()\l}",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+}

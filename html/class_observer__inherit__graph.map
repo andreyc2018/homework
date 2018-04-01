@@ -1,0 +1,4 @@
+<map id="Observer" name="Observer">
+<area shape="rect" id="node2" href="$class_console_out.html" title="{ConsoleOut\n||+ update()\l}" alt="" coords="5,161,96,239"/>
+<area shape="rect" id="node3" href="$class_file_out.html" title="{FileOut\n||+ FileOut()\l+ update()\l+ ~FileOut()\l}" alt="" coords="121,147,212,253"/>
+</map>

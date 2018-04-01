@@ -1,0 +1,22 @@
+digraph "ExpectingStaticCommand::handle"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="ExpectingStaticCommand\l::handle",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Parser::command",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_parser.html#a4a56ee42a07d0d4eb5f65f4cff4509b1"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Parser::start_block",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_parser.html#a424c76da56189900b2c67129db9f0903"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Processor::start_block",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_processor.html#a4e49ea52df0168e27ebdde3abd22f875"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Block::create",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_block.html#a28f1bb418f67d7d1498a00363f282ba4"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Block::Block",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_block.html#a37658a946bf5067ad01d68d9ff086adc"];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Parser::set_state",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_parser.html#ae360b42d0b240bef4027a1d7e9b8ebda"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="Parser::state",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_parser.html#a1f7ec65e9c2ee547dd21f5bb7ca1d013"];
+}

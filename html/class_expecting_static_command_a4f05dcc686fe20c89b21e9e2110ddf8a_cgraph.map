@@ -1,0 +1,9 @@
+<map id="ExpectingStaticCommand::handle" name="ExpectingStaticCommand::handle">
+<area shape="rect" id="node2" href="$class_parser.html#a4a56ee42a07d0d4eb5f65f4cff4509b1" title="Parser::command" alt="" coords="233,5,359,32"/>
+<area shape="rect" id="node3" href="$class_parser.html#a424c76da56189900b2c67129db9f0903" title="Parser::start_block" alt="" coords="230,56,362,83"/>
+<area shape="rect" id="node7" href="$class_parser.html#ae360b42d0b240bef4027a1d7e9b8ebda" title="Parser::set_state" alt="" coords="235,107,357,133"/>
+<area shape="rect" id="node4" href="$class_processor.html#a4e49ea52df0168e27ebdde3abd22f875" title="Processor::start_block" alt="" coords="411,56,565,83"/>
+<area shape="rect" id="node5" href="$class_block.html#a28f1bb418f67d7d1498a00363f282ba4" title="Block::create" alt="" coords="613,56,712,83"/>
+<area shape="rect" id="node6" href="$class_block.html#a37658a946bf5067ad01d68d9ff086adc" title="Block::Block" alt="" coords="760,56,856,83"/>
+<area shape="rect" id="node8" href="$class_parser.html#a1f7ec65e9c2ee547dd21f5bb7ca1d013" title="Parser::state" alt="" coords="439,107,537,133"/>
+</map>

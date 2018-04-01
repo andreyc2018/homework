@@ -1,0 +1,6 @@
+<map id="TEST" name="TEST">
+<area shape="rect" id="node2" href="$class_parser.html#a2a43c312ed39de25423bc4b91224005d" title="Parser::handle_token" alt="" coords="114,5,259,32"/>
+<area shape="rect" id="node3" href="$class_parser.html#a1f7ec65e9c2ee547dd21f5bb7ca1d013" title="Parser::state" alt="" coords="138,56,235,83"/>
+<area shape="rect" id="node4" href="$class_parser_state.html#a09d7c27ce5e8b3142cfa31d9153a3ba4" title="ParserState::name" alt="" coords="121,107,252,133"/>
+<area shape="rect" id="node5" href="$class_parser.html#a479c91b345921f92d116e2949f9101ec" title="Parser::end_of_stream" alt="" coords="109,157,264,184"/>
+</map>

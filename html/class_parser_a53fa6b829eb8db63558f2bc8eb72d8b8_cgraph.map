@@ -1,0 +1,7 @@
+<map id="Parser::add_command" name="Parser::add_command">
+<area shape="rect" id="node2" href="$class_processor.html#a5d227b8ae9c27341afa6bfc373e951fb" title="Processor::add_command" alt="" coords="209,31,383,57"/>
+<area shape="rect" id="node3" href="$class_command.html#aedae20bfe7d6f8146df9b1bf1bf16b3c" title="Command::create" alt="" coords="443,5,570,32"/>
+<area shape="rect" id="node5" href="$class_block.html#ac22f0eb78641fc6ec32e4979007f27a5" title="Block::add_command" alt="" coords="433,56,581,83"/>
+<area shape="rect" id="node4" href="$class_command.html#aa7aaca4540b4b31dee517d352f7f0950" title="Command::Command" alt="" coords="630,5,781,32"/>
+<area shape="rect" id="node6" href="$class_command.html#a03fca257d85fc74bef2fa3ac7baf16dc" title="Command::valid" alt="" coords="647,56,764,83"/>
+</map>

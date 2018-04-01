@@ -1,0 +1,5 @@
+<map id="Block::run" name="Block::run">
+<area shape="rect" id="node2" href="$class_processor.html#a073f5e9ea6a3557c217d67ab392e5852" title="Processor::run" alt="" coords="136,5,243,32"/>
+<area shape="rect" id="node3" href="$class_parser.html#ad3fcf6804000298025631012987f39ff" title="Parser::notify_run" alt="" coords="291,5,416,32"/>
+<area shape="rect" id="node4" href="$class_done_block.html#adf86a0c75d4471ca64fad4977fb7837f" title="DoneBlock::handle" alt="" coords="465,5,597,32"/>
+</map>

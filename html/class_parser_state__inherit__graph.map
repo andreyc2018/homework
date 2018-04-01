@@ -1,0 +1,8 @@
+<map id="ParserState" name="ParserState">
+<area shape="rect" id="node2" href="$class_collecting_dynamic_block.html" title="{CollectingDynamicBlock\n||+ CollectingDynamicBlock()\l+ handle()\l}" alt="" coords="5,197,189,289"/>
+<area shape="rect" id="node3" href="$class_collecting_static_block.html" title="{CollectingStaticBlock\n||+ CollectingStaticBlock()\l+ end_of_stream()\l+ handle()\l}" alt="" coords="214,189,380,296"/>
+<area shape="rect" id="node4" href="$class_done_block.html" title="{DoneBlock\n||+ DoneBlock()\l+ handle()\l}" alt="" coords="405,197,512,289"/>
+<area shape="rect" id="node5" href="$class_expecting_dynamic_command.html" title="{ExpectingDynamicCommand\n||+ ExpectingDynamicCommand()\l+ handle()\l}" alt="" coords="537,197,748,289"/>
+<area shape="rect" id="node6" href="$class_expecting_static_command.html" title="{ExpectingStaticCommand\n||+ ExpectingStaticCommand()\l+ handle()\l}" alt="" coords="773,197,968,289"/>
+<area shape="rect" id="node7" href="$class_starting_block.html" title="{StartingBlock\n||+ handle()\l+ StartingBlock()\l}" alt="" coords="992,197,1112,289"/>
+</map>

@@ -1,0 +1,20 @@
+digraph "Command::Command"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Command::Command",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Command::create",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_command.html#aedae20bfe7d6f8146df9b1bf1bf16b3c"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Processor::add_command",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_processor.html#a5d227b8ae9c27341afa6bfc373e951fb"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Parser::add_command",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_parser.html#a53fa6b829eb8db63558f2bc8eb72d8b8"];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="CollectingDynamicBlock\l::handle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_collecting_dynamic_block.html#a1b24141d8337e1b097f1114f6285396d"];
+  Node4 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="CollectingStaticBlock\l::handle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_collecting_static_block.html#ae3b1cc7db819dafaff6e5964e0b0ccbe"];
+  Node2 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="TEST",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$test__bulk_8cpp.html#a3e37dc3f8adea80b9de7324d13f906fc"];
+}

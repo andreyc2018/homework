@@ -1,0 +1,7 @@
+<map id="Parser::command" name="Parser::command">
+<area shape="rect" id="node2" href="$class_starting_block.html#ad02562eef7d122f865803c1debc27f54" title="StartingBlock::handle" alt="" coords="201,5,348,32"/>
+<area shape="rect" id="node3" href="$class_expecting_dynamic_command.html#a1fcc00b7b10beb5c15c9cba4eac21567" title="ExpectingDynamicCommand\l::handle" alt="" coords="179,57,371,98"/>
+<area shape="rect" id="node4" href="$class_expecting_static_command.html#a4f05dcc686fe20c89b21e9e2110ddf8a" title="ExpectingStaticCommand\l::handle" alt="" coords="187,122,362,163"/>
+<area shape="rect" id="node5" href="$class_collecting_dynamic_block.html#a1b24141d8337e1b097f1114f6285396d" title="CollectingDynamicBlock\l::handle" alt="" coords="192,187,357,229"/>
+<area shape="rect" id="node6" href="$class_collecting_static_block.html#ae3b1cc7db819dafaff6e5964e0b0ccbe" title="CollectingStaticBlock\l::handle" alt="" coords="201,253,348,294"/>
+</map>

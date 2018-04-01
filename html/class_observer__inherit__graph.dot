@@ -1,0 +1,11 @@
+digraph "Observer"
+{
+ // INTERACTIVE_SVG=YES
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="{Observer\n||+ update()\l+ ~Observer()\l}",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled" fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node2 [label="{ConsoleOut\n||+ update()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_console_out.html"];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",arrowtail="onormal",fontname="Helvetica"];
+  Node3 [label="{FileOut\n||+ FileOut()\l+ update()\l+ ~FileOut()\l}",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_file_out.html"];
+}

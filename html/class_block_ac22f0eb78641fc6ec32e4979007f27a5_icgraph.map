@@ -1,0 +1,6 @@
+<map id="Block::add_command" name="Block::add_command">
+<area shape="rect" id="node2" href="$class_processor.html#a5d227b8ae9c27341afa6bfc373e951fb" title="Processor::add_command" alt="" coords="203,45,378,72"/>
+<area shape="rect" id="node3" href="$class_parser.html#a53fa6b829eb8db63558f2bc8eb72d8b8" title="Parser::add_command" alt="" coords="427,45,581,72"/>
+<area shape="rect" id="node4" href="$class_collecting_dynamic_block.html#a1b24141d8337e1b097f1114f6285396d" title="CollectingDynamicBlock\l::handle" alt="" coords="629,5,795,46"/>
+<area shape="rect" id="node5" href="$class_collecting_static_block.html#ae3b1cc7db819dafaff6e5964e0b0ccbe" title="CollectingStaticBlock\l::handle" alt="" coords="639,70,785,111"/>
+</map>

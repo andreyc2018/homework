@@ -1,0 +1,5 @@
+<map id="Processor::start_block" name="Processor::start_block">
+<area shape="rect" id="node2" href="$class_parser.html#a424c76da56189900b2c67129db9f0903" title="Parser::start_block" alt="" coords="209,45,341,72"/>
+<area shape="rect" id="node3" href="$class_expecting_dynamic_command.html#a1fcc00b7b10beb5c15c9cba4eac21567" title="ExpectingDynamicCommand\l::handle" alt="" coords="389,5,581,46"/>
+<area shape="rect" id="node4" href="$class_expecting_static_command.html#a4f05dcc686fe20c89b21e9e2110ddf8a" title="ExpectingStaticCommand\l::handle" alt="" coords="398,70,573,111"/>
+</map>

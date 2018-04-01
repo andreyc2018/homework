@@ -1,0 +1,6 @@
+<map id="main" name="main">
+<area shape="rect" id="node2" href="$class_processor.html#ae91cab2598720a55045f555e720c4e7e" title="Processor::add_token" alt="" coords="117,5,267,32"/>
+<area shape="rect" id="node4" href="$class_processor.html#af005f4ed31649b820c2d004a08d35a28" title="Processor::end_of_stream" alt="" coords="105,56,279,83"/>
+<area shape="rect" id="node3" href="$class_parser.html#a2a43c312ed39de25423bc4b91224005d" title="Parser::handle_token" alt="" coords="333,5,478,32"/>
+<area shape="rect" id="node5" href="$class_parser.html#a479c91b345921f92d116e2949f9101ec" title="Parser::end_of_stream" alt="" coords="328,56,483,83"/>
+</map>
