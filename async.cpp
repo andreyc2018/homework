@@ -9,7 +9,7 @@ details::AsyncLibraryUPtr library;
 handle_t connect(std::size_t bulk)
 {
     if (bulk < 1) {
-        return InvalidHandle;
+        return details::InvalidHandle;
     }
     if (!library) {
         library = std::make_unique<details::AsyncLibrary>();
@@ -20,7 +20,7 @@ handle_t connect(std::size_t bulk)
 
 void receive(handle_t handle, const char *data, std::size_t size)
 {
-    if (!library || handle == InvalidHandle || data == nullptr || size == 0) {
+    if (!library || handle == details::InvalidHandle || data == nullptr || size == 0) {
         return;
     }
     std::string token(data, size);
@@ -29,7 +29,7 @@ void receive(handle_t handle, const char *data, std::size_t size)
 
 void disconnect(handle_t handle)
 {
-    if (!library || handle == InvalidHandle) {
+    if (!library || handle == details::InvalidHandle) {
         return;
     }
     library->close_processor(handle);

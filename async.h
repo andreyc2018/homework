@@ -1,12 +1,10 @@
 #pragma once
 
 #include <cstddef>
-#include <cstdint>
+
 namespace async {
 
-using handle_t = uint32_t;
-
-const handle_t InvalidHandle = 0;
+using handle_t = void *;
 
 handle_t connect(std::size_t bulk);
 void receive(handle_t handle, const char *data, std::size_t size);

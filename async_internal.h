@@ -10,6 +10,9 @@
 
 namespace async {
 namespace details {
+
+const handle_t InvalidHandle = 0;
+
 class AsyncLibrary
 {
     public:
