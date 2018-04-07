@@ -12,6 +12,9 @@ AsyncLibrary::AsyncLibrary()
     , file_1_(file_q_, 1)
     , file_2_(file_q_, 2)
 {
+    gLogger->info("next_id = {}", next_id_);
+    next_id_.fetch_add(1, std::memory_order_relaxed);
+    gLogger->info("next_id = {}", next_id_);
     console_.run();
     file_1_.run();
     file_2_.run();
@@ -35,8 +38,10 @@ AsyncLibrary::~AsyncLibrary()
 
 handle_t AsyncLibrary::open_processor(size_t bulk)
 {
-    next_id_.fetch_add(1, std::memory_order_relaxed);
-    handle_t id = next_id_;
+    gLogger->info("next_id = {}", next_id_);
+    handle_t id = next_id_.fetch_add(1, std::memory_order_relaxed);
+
+    gLogger->info("id = {}", id);
 
     auto p = std::make_unique<Processor>(bulk, std::make_unique<ThreadWriterFactory>(console_q_, file_q_));
     processors_.emplace(id, std::move(p));

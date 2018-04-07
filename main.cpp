@@ -7,6 +7,7 @@
 void full_session(int size)
 {
     auto h = async::connect(size);
+    gLogger->info("h = {}", h);
     async::receive(h, "1", 1);
     async::receive(h, "1\n", 2);
     async::receive(h, "\n2\n3\n4\n5\n6\n{\na\n", 15);

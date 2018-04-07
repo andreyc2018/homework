@@ -20,6 +20,7 @@ handle_t connect(std::size_t bulk)
 
 void receive(handle_t handle, const char *data, std::size_t size)
 {
+    gLogger->info("h = {}, invalid = {}", handle, details::InvalidHandle);
     if (!library || handle == details::InvalidHandle || data == nullptr || size == 0) {
         return;
     }
