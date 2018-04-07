@@ -24,11 +24,8 @@ class ParserState
         virtual ~ParserState() {}
 
         const std::string& name() const { return name_; }
-        virtual Result handle(Parser* ctx, const std::string& input) = 0;
-        virtual Result end_of_stream(Parser*) { return Result::Stop; };
-
-        template<typename T>
-        static ParserState* create() { return new T; }
+        virtual Result handle(Parser& ctx, const std::string& input) = 0;
+        virtual Result end_of_stream(Parser&) { return Result::Stop; };
 
     protected:
         const std::string name_;
@@ -41,7 +38,7 @@ class StartingBlock : public ParserState
     public:
         StartingBlock() : ParserState(__func__) {}
 
-        Result handle(Parser* ctx, const std::string& input) override;
+        Result handle(Parser& ctx, const std::string& input) override;
 };
 
 class ExpectingDynamicCommand : public ParserState
@@ -49,7 +46,7 @@ class ExpectingDynamicCommand : public ParserState
     public:
         ExpectingDynamicCommand() : ParserState(__func__) {}
 
-        Result handle(Parser* ctx, const std::string& input) override;
+        Result handle(Parser& ctx, const std::string& input) override;
 };
 
 class ExpectingStaticCommand : public ParserState
@@ -57,7 +54,7 @@ class ExpectingStaticCommand : public ParserState
     public:
         ExpectingStaticCommand() : ParserState(__func__) {}
 
-        Result handle(Parser* ctx, const std::string& input) override;
+        Result handle(Parser& ctx, const std::string& input) override;
 };
 
 class CollectingDynamicBlock : public ParserState
@@ -65,7 +62,7 @@ class CollectingDynamicBlock : public ParserState
     public:
         CollectingDynamicBlock() : ParserState(__func__) {}
 
-        Result handle(Parser* ctx, const std::string& input) override;
+        Result handle(Parser& ctx, const std::string& input) override;
 };
 
 class CollectingStaticBlock : public ParserState
@@ -73,8 +70,8 @@ class CollectingStaticBlock : public ParserState
     public:
         CollectingStaticBlock() : ParserState(__func__) {}
 
-        Result handle(Parser* ctx, const std::string& input) override;
-        Result end_of_stream(Parser* ctx) override;
+        Result handle(Parser& ctx, const std::string& input) override;
+        Result end_of_stream(Parser& ctx) override;
 };
 
 class DoneBlock : public ParserState
@@ -82,5 +79,5 @@ class DoneBlock : public ParserState
     public:
         DoneBlock() : ParserState("DoneBlock") {}
 
-        Result handle(Parser* ctx, const std::string& input) override;
+        Result handle(Parser& ctx, const std::string& input) override;
 };

@@ -20,3 +20,5 @@ class Reporter
     private:
         IWriterUPtr w_;
 };
+
+using ReporterUPtr = std::unique_ptr<Reporter>;

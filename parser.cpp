@@ -3,7 +3,7 @@
 #include "processor.h"
 #include "logger.h"
 
-Parser::Parser(Processor* processor)
+Parser::Parser(Processor& processor)
     : dynamic_level_(0)
     , state_(new StartingBlock)
     , processor_(processor)
@@ -15,45 +15,45 @@ Parser::Parser(Processor* processor)
 
 Parser::~Parser()
 {
-    delete state_;
 }
 
 void Parser::handle_token(const std::string& token)
 {
-    while (state_->handle(this, token) == ParserState::Result::Continue) {}
+    while (state_->handle(*this, token) == ParserState::Result::Continue) {}
 }
 
 void Parser::end_of_stream()
 {
-    if (state_->end_of_stream(this) == ParserState::Result::Continue) {
-        while (state_->handle(this, "") == ParserState::Result::Continue) {}
+    if (state_->end_of_stream(*this) == ParserState::Result::Continue) {
+        while (state_->handle(*this, "") == ParserState::Result::Continue) {}
     }
 }
 
-void Parser::set_state(ParserState* state)
+void Parser::set_state(ParserStateUPtr&& state)
 {
     std::string from = state_->name();
 
-    delete state_;
-    state_ = state;
+    state_.swap(state);
+
+    gLogger->debug("from state {} to state {}", from, state_->name());
 }
 
 void Parser::add_command(const std::string& token)
 {
-    processor_->add_command(token);
+    processor_.add_command(token);
 }
 
 bool Parser::block_complete() const
 {
-    return processor_->block_complete();
+    return processor_.block_complete();
 }
 
 void Parser::start_block()
 {
-    processor_->start_block();
+    processor_.start_block();
 }
 
 void Parser::notify_run()
 {
-    processor_->run();
+    processor_.run();
 }

@@ -17,7 +17,7 @@
 class Processor
 {
     public:
-        using reporters_t = std::vector<Reporter*>;
+        using reporters_t = std::vector<ReporterUPtr>;
 
         Processor(int size, WriterFactoryUPtr&& factory);
         ~Processor();

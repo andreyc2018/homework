@@ -7,10 +7,11 @@
 #include <memory>
 #include <fstream>
 
+template<typename Q>
 class IListener
 {
     public:
-        IListener(MessageQueue& q) : q_(q) {}
+        IListener(Q& q) : q_(q) {}
         virtual ~IListener()
         {
             wait();
@@ -31,10 +32,10 @@ class IListener
             }
         }
 
-        MessageQueue& queue() { return q_; }
+        Q& queue() { return q_; }
 
     protected:
-        MessageQueue& q_;
+        Q& q_;
         Counters counters_;
         std::unique_ptr<std::thread> thread_;
 
@@ -45,7 +46,7 @@ class IListener
         }
 };
 
-class ConsoleListener : public IListener
+class ConsoleListener : public IListener<MessageQueue>
 {
     public:
         ConsoleListener(MessageQueue& q) : IListener(q) {}
@@ -71,7 +72,7 @@ class ConsoleListener : public IListener
         }
 };
 
-class FileListener : public IListener
+class FileListener : public IListener<MessageQueue>
 {
     public:
         FileListener(MessageQueue& q, int id) : IListener(q), id_(id) {}

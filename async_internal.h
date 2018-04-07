@@ -6,6 +6,7 @@
 #include "logger.h"
 #include <atomic>
 #include <map>
+#include <memory>
 
 namespace async {
 namespace details {
@@ -32,5 +33,7 @@ class AsyncLibrary
         FileListener file_1_;
         FileListener file_2_;
 };
+
+using AsyncLibraryUPtr = std::unique_ptr<AsyncLibrary>;
 
 }}
