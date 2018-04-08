@@ -65,8 +65,7 @@ void AsyncLibrary::close_processor(handle_t id)
 
 void AsyncLibrary::report(std::ostream& out) const
 {
-    out << "processors - " << async_counters_.procesors
-        << "\n";
+//    out << "processors - " << async_counters_.procesors << "\n";
     out << "main поток - "
         << counters_.lines << " строк, "
         << counters_.commands << " команд, "
