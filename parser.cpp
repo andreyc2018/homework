@@ -5,7 +5,7 @@
 
 Parser::Parser(Processor& processor)
     : dynamic_level_(0)
-    , state_(new StartingBlock)
+    , state_(std::make_unique<StartingBlock>())
     , processor_(processor)
     , open_kw_(std::make_shared<term_t>("\\{"))
     , close_kw_(std::make_shared<term_t>("\\}"))
