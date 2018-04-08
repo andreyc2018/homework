@@ -31,6 +31,7 @@ class Processor
         virtual void start_block();
 
         void report(std::ostream& out) const;
+        void report(Counters& counters) const;
 
     private:
         size_t full_block_size_;

@@ -1,39 +1,38 @@
 #include "async.h"
 #include "async_internal.h"
 #include "logger.h"
+#include <mutex>
 
 namespace async {
 
-details::AsyncLibraryUPtr library;
+std::mutex mutex;
 
 handle_t connect(std::size_t bulk)
 {
     if (bulk < 1) {
         return details::InvalidHandle;
     }
-    if (!library) {
-        library = std::make_unique<details::AsyncLibrary>();
-    }
 
-    return library->open_processor(bulk);
+    std::lock_guard<std::mutex> g(mutex);
+    return details::Async::instance().open_processor(bulk);
 }
 
 void receive(handle_t handle, const char *data, std::size_t size)
 {
-    gLogger->info("h = {}, invalid = {}", handle, details::InvalidHandle);
-    if (!library || handle == details::InvalidHandle || data == nullptr || size == 0) {
+    if (handle == details::InvalidHandle || data == nullptr || size == 0) {
         return;
     }
     std::string token(data, size);
-    library->process_input(handle, token);
+    details::Async::instance().process_input(handle, token);
 }
 
 void disconnect(handle_t handle)
 {
-    if (!library || handle == details::InvalidHandle) {
+    if (handle == details::InvalidHandle) {
         return;
     }
-    library->close_processor(handle);
+    std::lock_guard<std::mutex> g(mutex);
+    details::Async::instance().close_processor(handle);
 }
 
 }

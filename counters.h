@@ -10,4 +10,12 @@ struct Counters
     {
         lines = blocks = commands = 0;
     }
+
+    Counters& operator+=(const Counters& rhl)
+    {
+        lines += rhl.lines;
+        blocks += rhl.blocks;
+        commands += rhl.commands;
+        return *this;
+    }
 };

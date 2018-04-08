@@ -7,7 +7,6 @@
 void full_session(int size)
 {
     auto h = async::connect(size);
-    gLogger->info("h = {}", h);
     async::receive(h, "1", 1);
     async::receive(h, "1\n", 2);
     async::receive(h, "\n2\n3\n4\n5\n6\n{\na\n", 15);
@@ -32,14 +31,14 @@ int main(int argc, char const** argv)
         std::size_t bulk = std::stoul(argv[1]);
         std::thread t1(full_session, bulk);
         std::thread t2(full_session, bulk+3);
-//        auto h = async::connect(bulk+4);
-//        auto h2 = async::connect(bulk);
-//        async::receive(h, "1", 1);
-//        async::receive(h2, "1\n", 2);
-//        async::receive(h, "\n2\n3\n4\n5\n6\n{\na\n", 15);
-//        async::receive(h, "b\nc\nd\n}\n89\n", 11);
-//        async::disconnect(h);
-//        async::disconnect(h2);
+        auto h = async::connect(bulk+4);
+        auto h2 = async::connect(bulk);
+        async::receive(h, "1", 1);
+        async::receive(h2, "1\n", 2);
+        async::receive(h, "\n2\n3\n4\n5\n6\n{\na\n", 15);
+        async::receive(h, "b\nc\nd\n}\n89\n", 11);
+        async::disconnect(h);
+        async::disconnect(h2);
         t2.join();
         t1.join();
     }

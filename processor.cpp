@@ -99,6 +99,11 @@ void Processor::report(std::ostream& out) const
         << counters_.blocks << " блок\n";
 }
 
+void Processor::report(Counters& counters) const
+{
+    counters += counters_;
+}
+
 void Processor::destroy_writers()
 {
     writers_.clear();
