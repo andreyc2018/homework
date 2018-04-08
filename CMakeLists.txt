@@ -11,11 +11,11 @@ else()
     set(BUILD_NUM 99)
 endif()
 
-set(homework_VERSION_MAJOR 11)
+set(homework_VERSION_MAJOR 12)
 set(homework_VERSION_MINOR 0)
 set(homework_VERSION_BUILD ${BUILD_NUM})
 
-project(async VERSION
+project(bulk_server VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
 
 find_package(Threads REQUIRED)
@@ -47,7 +47,7 @@ set(HEADER_FILES
         writers.h
         xray.h)
 
-add_library(async SHARED
+add_library(bulk_server SHARED
         async.cpp
         async_internal.cpp
         interpreter.cpp
@@ -57,18 +57,18 @@ add_library(async SHARED
         processor.cpp
         ${HEADER_FILES})
 
-add_executable(async_cli main.cpp docs/hw_assignment.md
+add_executable(bulk_server_cli main.cpp docs/hw_assignment.md
         async.h ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(test_version test_async.cpp ${HEADER_FILES})
+add_executable(test_version test_bulk_server.cpp ${HEADER_FILES})
 
-target_compile_options(async_cli PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(async PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(bulk_server_cli PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(bulk_server PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
-target_link_libraries(async_cli async Threads::Threads)
-target_link_libraries(test_version async gmock_main Threads::Threads)
+target_link_libraries(bulk_server_cli bulk_server Threads::Threads)
+target_link_libraries(test_version bulk_server gmock_main Threads::Threads)
 
-install(TARGETS async LIBRARY DESTINATION lib)
+install(TARGETS bulk_server RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 

@@ -4,8 +4,8 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "Homework: Command Processor"
-PROJECT_NUMBER         = 5
+PROJECT_NAME           = "Homework: Bulk Server"
+PROJECT_NUMBER         = 12
 PROJECT_BRIEF          = 
 PROJECT_LOGO           = 
 OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/docs
