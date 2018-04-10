@@ -23,50 +23,57 @@ find_package(Threads REQUIRED)
 configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googletest/include
         ${CMAKE_CURRENT_SOURCE_DIR}/googletest/googlemock/include
         ${CMAKE_CURRENT_SOURCE_DIR}/spdlog/include)
 
 set(HEADER_FILES
-        async.h
-        async_internal.h
-        asyncqueue.h
-        command.h
-        counters.h
-        interpreter.h
-        listeners.h
-        logger.h
-        message.h
-        messagequeue.h
-        parser.h
-        parserstate.h
-        processor.h
-        reporters.h
-        singleton.h
-        writerfactory.h
-        writers.h
-        xray.h)
+        include/async.h
+        include/async_internal.h
+        include/asyncqueue.h
+        include/command.h
+        include/counters.h
+        include/interpreter.h
+        include/listeners.h
+        include/logger.h
+        include/message.h
+        include/messagequeue.h
+        include/parser.h
+        include/parserstate.h
+        include/processor.h
+        include/reporters.h
+        include/singleton.h
+        include/writerfactory.h
+        include/writers.h
+        include/xray.h)
 
-add_library(bulk_server SHARED
-        async.cpp
-        async_internal.cpp
-        interpreter.cpp
-        logger.cpp
-        parser.cpp
-        parserstate.cpp
-        processor.cpp
+add_library(server SHARED
+        src/async.cpp
+        src/async_internal.cpp
+        src/interpreter.cpp
+        src/logger.cpp
+        src/parser.cpp
+        src/parserstate.cpp
+        src/processor.cpp
         ${HEADER_FILES})
 
-add_executable(bulk_server_cli main.cpp docs/hw_assignment.md
-        async.h ${CMAKE_CURRENT_BINARY_DIR}/version.h)
-add_executable(test_version test_bulk_server.cpp ${HEADER_FILES})
+add_executable(bulk_server
+    src/main.cpp
+    include/async.h
+    docs/hw_assignment.md
+    ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-target_compile_options(bulk_server_cli PRIVATE -Wpedantic -Wall -Wextra)
+add_executable(test_version
+    src/test_async.cpp
+    ${HEADER_FILES})
+
+target_compile_options(server PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulk_server PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
-target_link_libraries(bulk_server_cli bulk_server Threads::Threads)
-target_link_libraries(test_version bulk_server gmock_main Threads::Threads)
+target_link_libraries(bulk_server server Threads::Threads)
+target_link_libraries(test_version server gmock_main Threads::Threads)
 
 install(TARGETS bulk_server RUNTIME DESTINATION bin)
 
