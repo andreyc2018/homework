@@ -19,7 +19,7 @@ before_script:
 - sudo apt-get install libboost-dev libboost-system-dev -y
 script:
 - cmake .
-- cmake --build .
+- cmake --build . -- VERBOSE=1
 - cmake --build . --target test
 - cmake --build . --target package
 - cmake --build . --target doc_doxygen
