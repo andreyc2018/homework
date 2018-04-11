@@ -76,9 +76,9 @@ add_executable(test_version
     src/test_async.cpp
     ${HEADER_FILES})
 
-target_compile_options(server PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(bulk_server PRIVATE -Wpedantic -Wall -Wextra)
-target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
+target_compile_options(server PRIVATE -Wpedantic -Wall -Wextra -D_GLIBCXX_USE_CXX11_ABI=0)
+target_compile_options(bulk_server PRIVATE -Wpedantic -Wall -Wextra -D_GLIBCXX_USE_CXX11_ABI=0)
+target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra -D_GLIBCXX_USE_CXX11_ABI=0)
 
 target_link_libraries(bulk_server server
         Threads::Threads
