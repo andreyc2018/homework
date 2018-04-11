@@ -19,6 +19,14 @@ project(bulk_server VERSION
         ${homework_VERSION_MAJOR}.${homework_VERSION_MINOR}.${homework_VERSION_BUILD})
 
 find_package(Threads REQUIRED)
+find_package(Boost COMPONENTS system REQUIRED)
+
+if(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+  link_directories(${Boost_LIBRARY_DIRS})
+endif(Boost_FOUND)
+
+set(USED_LIBS ${Boost_SYSTEM_LIBRARY})
 
 configure_file(version.h.in version.h)
 
@@ -72,8 +80,12 @@ target_compile_options(server PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulk_server PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(test_version PRIVATE -Wpedantic -Wall -Wextra)
 
-target_link_libraries(bulk_server server Threads::Threads)
-target_link_libraries(test_version server gmock_main Threads::Threads)
+target_link_libraries(bulk_server server
+        Threads::Threads
+        Boost::system)
+target_link_libraries(test_version server gmock_main
+        Threads::Threads
+        Boost::system)
 
 install(TARGETS bulk_server RUNTIME DESTINATION bin)
 
