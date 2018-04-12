@@ -41,6 +41,7 @@ set(HEADER_FILES
         include/messagequeue.h
         include/parser.h
         include/parserstate.h
+        include/preprocessor.h
         include/processor.h
         include/reporters.h
         include/singleton.h
@@ -55,6 +56,7 @@ add_library(server SHARED
         src/logger.cpp
         src/parser.cpp
         src/parserstate.cpp
+        src/preprocessor.cpp
         src/processor.cpp
         ${HEADER_FILES})
 

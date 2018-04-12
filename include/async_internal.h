@@ -2,6 +2,7 @@
 
 #include "async.h"
 #include "processor.h"
+#include "preprocessor.h"
 #include "listeners.h"
 #include "logger.h"
 #include "singleton.h"
@@ -36,6 +37,7 @@ class AsyncLibrary
     private:
         static std::atomic<handle_t> next_id_;
         std::map<handle_t, ProcessorUPtr> processors_;
+        Preprocessor preprocessor_;
         MessageQueue console_q_;
         ConsoleListener console_;
         MessageQueue file_q_;
