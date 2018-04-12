@@ -1,12 +1,12 @@
 #include "async.h"
 #include "logger.h"
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
 #include <iostream>
 #include <string>
 #include <thread>
 
-using boost::asio::ip::tcp;
+using asio::ip::tcp;
 
 class session
     : public std::enable_shared_from_this<session>
@@ -26,8 +26,8 @@ class session
         void do_read()
         {
             auto self(shared_from_this());
-            socket_.async_read_some(boost::asio::buffer(data_, max_length),
-                                    [this, self](boost::system::error_code ec, std::size_t length)
+            socket_.async_read_some(asio::buffer(data_, max_length),
+                                    [this, self](std::error_code ec, std::size_t length)
             {
                 if (!ec) {
                     std::cout << std::this_thread::get_id() << " " << (void*)this << " " << length << "\n";
@@ -39,8 +39,8 @@ class session
         void do_write(std::size_t length)
         {
             auto self(shared_from_this());
-            boost::asio::async_write(socket_, boost::asio::buffer(data_, length),
-                                     [this, self](boost::system::error_code ec, std::size_t /*length*/)
+            asio::async_write(socket_, asio::buffer(data_, length),
+                                     [this, self](std::error_code ec, std::size_t /*length*/)
             {
                 if (!ec) {
                     do_read();
@@ -57,7 +57,7 @@ class session
 class server
 {
     public:
-        server(boost::asio::io_service& io_service, short port)
+        server(asio::io_service& io_service, short port)
             : acceptor_(io_service, tcp::endpoint(tcp::v4(), port))
             , socket_(io_service)
         {
@@ -68,7 +68,7 @@ class server
         void do_accept()
         {
             acceptor_.async_accept(socket_,
-                                   [this](boost::system::error_code ec)
+                                   [this](std::error_code ec)
             {
                 if (!ec) {
                     std::make_shared<session>(std::move(socket_))->start();
@@ -99,7 +99,7 @@ int main(int argc, char const** argv)
             gLogger->set_level(spdlog::level::debug);
         }
 
-        boost::asio::io_service io_service;
+        asio::io_service io_service;
 
         server s(io_service, std::atoi(argv[1]));
 
