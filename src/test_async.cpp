@@ -286,13 +286,13 @@ TEST(Processor, BreakDynamicBlock)
     EXPECT_EQ(1, p.dynamic_level());
 }
 
-TEST(Preprocessor, ParseInput)
-{
-    Preprocessor p;
-    p.parse_input("1\n2\n3\n4");
-    p.parse_input("1\n{\n2\n3\n}\n4");
-    p.parse_input("1\n{\n2\n{\n\n3\n}\n4\n}\n5");
-}
+//TEST(Preprocessor, ParseInput)
+//{
+//    Preprocessor p;
+//    p.parse_input("1\n2\n3\n4");
+//    p.parse_input("1\n{\n2\n3\n}\n4");
+//    p.parse_input("1\n{\n2\n{\n\n3\n}\n4\n}\n5");
+//}
 
 TEST(Async, NextHandle)
 {

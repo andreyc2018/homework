@@ -22,8 +22,8 @@ void receive(handle_t handle, const char *data, std::size_t size)
     if (handle == details::InvalidHandle || data == nullptr || size == 0) {
         return;
     }
-    std::string token(data, size);
-    details::Async::instance().process_input(handle, token);
+    std::string data_str(data, size);
+    details::Async::instance().process_input(handle, data_str);
 }
 
 void disconnect(handle_t handle)

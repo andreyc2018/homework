@@ -57,23 +57,42 @@ handle_t AsyncLibrary::open_processor(size_t bulk)
     return id;
 }
 
-void AsyncLibrary::process_input(handle_t id, const std::string& token)
+void AsyncLibrary::process_input(handle_t id, const std::string& data)
 {
-    preprocessor_.parse_input(token);
-    auto it = processors_.find(id);
-    if (it != processors_.end()) {
-        processors_[id]->add_string(token);
-    }
+    preprocessor_.parse_input(data, id, *this);
+//    auto it = processors_.find(id);
+//    if (it != processors_.end()) {
+//        processors_[id]->add_string(data);
+//    }
 }
 
 void AsyncLibrary::close_processor(handle_t id)
 {
     auto it = processors_.find(id);
     if (it != processors_.end()) {
-        processors_[id]->end_of_stream();
-        processors_[id]->report(counters_);
-//        processors_[id]->report(std::cout);
-        processors_.erase(it);
+        if (processors_[id]) {
+            processors_[id]->end_of_stream();
+            processors_[id]->report(counters_);
+            //        processors_[id]->report(std::cout);
+            processors_.erase(it);
+        }
+    }
+}
+
+void AsyncLibrary::create_processor(handle_t id)
+{
+    if (!processors_[id]) {
+        auto p = std::make_unique<Processor>(bulk_,
+                                             std::make_unique<ThreadWriterFactory>(console_q_,
+                                                                                   file_q_));
+        processors_[id] = std::move(p);
+    }
+}
+
+void AsyncLibrary::process_token(handle_t id, const std::string& token)
+{
+    if (processors_[id]) {
+        processors_[id]->add_token(token);
     }
 }
 
