@@ -14,6 +14,7 @@ namespace async {
 namespace details {
 
 const handle_t InvalidHandle = 0;
+const handle_t CommonProcessor = 0;
 
 struct AsyncCounters
 {
@@ -34,6 +35,8 @@ class AsyncLibrary
         MessageQueue& console_q() { return console_q_; }
         MessageQueue& file_q() { return file_q_; }
 
+        void set_bulk(std::size_t bulk);
+
     private:
         static std::atomic<handle_t> next_id_;
         std::map<handle_t, ProcessorUPtr> processors_;
@@ -45,6 +48,7 @@ class AsyncLibrary
         FileListener file_2_;
         Counters counters_;
         AsyncCounters async_counters_;
+        std::size_t bulk_;
 
         void report(std::ostream& out) const;
 };

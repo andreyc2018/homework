@@ -3,6 +3,7 @@
 #include "processor.h"
 #include "parserstate.h"
 #include "preprocessor.h"
+#include "async.h"
 #include "logger.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -291,4 +292,13 @@ TEST(Preprocessor, ParseInput)
     p.parse_input("1\n2\n3\n4");
     p.parse_input("1\n{\n2\n3\n}\n4");
     p.parse_input("1\n{\n2\n{\n\n3\n}\n4\n}\n5");
+}
+
+TEST(Async, NextHandle)
+{
+    std::atomic<async::handle_t> next_id { reinterpret_cast<async::handle_t>(1) };
+    async::handle_t id = next_id.fetch_add(1, std::memory_order_relaxed);
+    std::cout << "id = " << id << "\n";
+    async::handle_t expected = (async::handle_t)1;
+    EXPECT_EQ(expected, id);
 }
