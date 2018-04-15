@@ -46,7 +46,7 @@ class AsyncLibrary
     private:
         static std::atomic<handle_t> next_id_;
         processors_t processors_;
-        Preprocessor preprocessor_;
+        Preprocessor<AsyncLibrary, CommonProcessor> preprocessor_;
         MessageQueue console_q_;
         ConsoleListener console_;
         MessageQueue file_q_;

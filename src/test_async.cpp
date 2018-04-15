@@ -4,6 +4,7 @@
 #include "parserstate.h"
 #include "preprocessor.h"
 #include "async.h"
+#include "async_internal.h"
 #include "logger.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
@@ -286,13 +287,23 @@ TEST(Processor, BreakDynamicBlock)
     EXPECT_EQ(1, p.dynamic_level());
 }
 
-//TEST(Preprocessor, ParseInput)
-//{
-//    Preprocessor p;
-//    p.parse_input("1\n2\n3\n4");
-//    p.parse_input("1\n{\n2\n3\n}\n4");
-//    p.parse_input("1\n{\n2\n{\n\n3\n}\n4\n}\n5");
-//}
+class MockLibrary
+{
+    public:
+        void create_processor(async::handle_t) {}
+        void process_token(async::handle_t,
+                           const std::string&) {}
+};
+
+TEST(Preprocessor, ParseInput)
+{
+    MockLibrary lib;
+    async::handle_t h = reinterpret_cast<async::handle_t>(1);
+    Preprocessor<MockLibrary, async::details::CommonProcessor> p;
+    p.parse_input("1\n2\n3\n4", h, lib);
+    p.parse_input("1\n{\n2\n3\n}\n4", h, lib);
+    p.parse_input("1\n{\n2\n{\n\n3\n}\n4\n}\n5", h, lib);
+}
 
 TEST(Async, NextHandle)
 {
