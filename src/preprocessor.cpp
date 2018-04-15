@@ -23,7 +23,6 @@ void Preprocessor::parse_input(const std::string& data,
     for (auto it = std::sregex_token_iterator(data.begin(), data.end(), eol_re, -1);
          it != std::sregex_token_iterator(); ++it) {
         const auto& token = *it;
-        std::cout << "*it = " << token << "\n";
         if (token == "{") {
             library.create_processor(handle);
             library.process_token(handle, token);
@@ -31,7 +30,6 @@ void Preprocessor::parse_input(const std::string& data,
         }
         else {
             library.process_token(async::details::CommonProcessor, token);
-            std::cout << "token = " << token << "\n";
         }
     }
 }
@@ -45,9 +43,6 @@ void parse_block(std::sregex_token_iterator& it,
     for (++it; it != std::sregex_token_iterator(); ++it) {
         const auto& token = *it;
         library.process_token(handle, token);
-
-        std::cout << "block:*it = " << token
-                  << " level = " << level << "\n";
         if (token == "{") {
             ++level;
             continue;
@@ -59,7 +54,6 @@ void parse_block(std::sregex_token_iterator& it,
             }
             continue;
         }
-        std::cout << "block:token = " << token << "\n";
     }
 }
 }
