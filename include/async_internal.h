@@ -14,7 +14,7 @@ namespace async {
 namespace details {
 
 const handle_t InvalidHandle = 0;
-const handle_t CommonProcessor = 0;
+constexpr handle_t CommonProcessor = 0;
 
 using processors_t = std::map<handle_t, ProcessorUPtr>;
 
