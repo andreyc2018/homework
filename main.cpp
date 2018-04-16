@@ -31,9 +31,17 @@ int main(int argc, char const** argv)
         std::size_t bulk = std::stoul(argv[1]);
         std::thread t1(full_session, bulk);
         std::thread t2(full_session, bulk+3);
-        auto h = async::connect(bulk+4);
+        auto h = async::connect(bulk);
         auto h2 = async::connect(bulk);
         async::receive(h, "1", 1);
+        async::receive(h, "", 1);
+        async::receive(h, "2", 1);
+        async::receive(h, "\n", 1);
+        async::receive(h, "3", 1);
+        async::receive(h, "\n", 1);
+        async::receive(h, "4", 1);
+        async::receive(h, "12\n3\n4", 7);
+
         async::receive(h2, "1\n", 2);
         async::receive(h, "\n2\n3\n4\n5\n6\n{\na\n", 15);
         async::receive(h, "b\nc\nd\n}\n89\n", 11);

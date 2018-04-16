@@ -39,17 +39,19 @@ handle_t AsyncLibrary::open_processor(size_t bulk)
 {
     handle_t id = next_id_.fetch_add(1, std::memory_order_relaxed);
 
-    auto p = std::make_unique<Processor>(bulk, std::make_unique<ThreadWriterFactory>(console_q_, file_q_));
+    auto p = std::make_unique<Processor>(bulk,
+                                         std::make_unique<ThreadWriterFactory>(console_q_,
+                                                                               file_q_));
     processors_.emplace(id, std::move(p));
     ++async_counters_.procesors;
     return id;
 }
 
-void AsyncLibrary::process_input(handle_t id, const std::string& token)
+void AsyncLibrary::process_input(handle_t id, const std::string& input)
 {
     auto it = processors_.find(id);
     if (it != processors_.end()) {
-        processors_[id]->add_string(token);
+        processors_[id]->add_string(input);
     }
 }
 

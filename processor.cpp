@@ -4,15 +4,10 @@
 #include "spdlog/fmt/fmt.h"
 #include <numeric>
 #include <chrono>
-#include <regex>
 #include <cstring>
 
 using sc = std::chrono::system_clock;
 using seconds = std::chrono::seconds;
-
-namespace {
-std::regex eol_re("\n");
-}
 
 std::atomic_size_t Processor::next_id_ { 0 };
 
@@ -30,9 +25,11 @@ Processor::~Processor()
 
 void Processor::add_string(const std::string& input)
 {
-    for (auto it = std::sregex_token_iterator(input.begin(), input.end(), eol_re, -1);
-         it != std::sregex_token_iterator(); ++it) {
-        add_token(*it);
+    for (auto& i : input) {
+        if (collect_token(token_, i)) {
+            add_token(token_);
+            token_.clear();
+        }
     }
 }
 
@@ -44,6 +41,9 @@ void Processor::add_token(const std::string& input)
 
 void Processor::end_of_stream()
 {
+    if (!token_.empty()) {
+        add_token(token_);
+    }
     parser_.end_of_stream();
 }
 
@@ -107,4 +107,13 @@ void Processor::report(Counters& counters) const
 void Processor::destroy_writers()
 {
     writers_.clear();
+}
+
+bool Processor::collect_token(std::string& token, char l)
+{
+    if (l != '\n') {
+        token.push_back(l);
+        return false;
+    }
+    return true;
 }

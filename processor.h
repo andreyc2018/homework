@@ -35,6 +35,7 @@ class Processor
 
     private:
         size_t full_block_size_;
+        std::string token_;
         Parser parser_;
         Block block_;
         reporters_t writers_;
@@ -43,6 +44,7 @@ class Processor
         static std::atomic_size_t next_id_;
 
         void destroy_writers();
+        bool collect_token(std::string& token, char l);
 };
 
 using ProcessorUPtr = std::unique_ptr<Processor>;

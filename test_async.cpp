@@ -5,6 +5,7 @@
 #include "logger.h"
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
+#include <regex>
 
 using ::testing::Return;
 using ::testing::AnyNumber;
@@ -282,4 +283,102 @@ TEST(Processor, BreakDynamicBlock)
     p.end_of_stream();
     EXPECT_EQ("CollectingDynamicBlock", p.state().name());
     EXPECT_EQ(1, p.dynamic_level());
+}
+
+TEST(Processor, ParseStringRe)
+{
+    std::regex eol_re("\n");
+    std::vector<std::string> inputs { "1", "", "2", "\n" };
+    for (const auto& input : inputs) {
+        std::cout << "input: " << input << " ";
+        for (auto it = std::sregex_token_iterator(input.begin(), input.end(), eol_re, -1);
+             it != std::sregex_token_iterator(); ++it) {
+            std::cout << ":" << *it << ":\n";
+        }
+    }
+}
+
+bool end_of_token(char l)
+{
+    return (l == '\n' || l == '{' || l == '}');
+}
+
+bool build_token(std::string& token, char l)
+{
+    if (!end_of_token(l)) {
+        token.push_back(l);
+        return false;
+    }
+    return true;
+}
+
+TEST(Processor, BuildToken)
+{
+    Processor p(3, std::make_unique<NonWriterFactory>());
+    std::string input;
+    std::string token;
+
+    for (auto& i : input) {
+        if (build_token(token, i)) {
+            break;
+        }
+    }
+
+    EXPECT_TRUE(token.empty());
+
+    input = "1234";
+
+    for (auto& i : input) {
+        if (build_token(token, i)) {
+            break;
+        }
+    }
+
+    EXPECT_EQ("1234", token);
+
+    input = "1{2";
+
+    for (auto& i : input) {
+        if (build_token(token, i)) {
+            break;
+        }
+    }
+
+    EXPECT_EQ("12341", token);
+
+    input = "12}34";
+
+    for (auto& i : input) {
+        if (build_token(token, i)) {
+            break;
+        }
+    }
+
+    EXPECT_EQ("1234112", token);
+
+    input = "123\n4";
+
+    for (auto& i : input) {
+        if (build_token(token, i)) {
+            break;
+        }
+    }
+
+    EXPECT_EQ("1234112123", token);
+}
+
+void string_info(const std::string& data)
+{
+    std::cout << "capacity = " << data.capacity() << ", "
+              << "size = " << data.size() << "\n";
+}
+
+TEST(String, Reserve)
+{
+    std::string data;
+    for (int i = 1; i < 32; i += 2) {
+        string_info(data);
+        data.push_back('0');
+        data.push_back('1');
+    }
 }
