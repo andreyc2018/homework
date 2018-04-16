@@ -14,6 +14,11 @@ class Preprocessor
         virtual void parse_input(const std::string& data,
                                  async::handle_t handle, L& library)
         {
+            std::cout << "preproc: " << (void*)this << "\n";
+            for (auto& i : data) {
+                if (i != '{') {
+                }
+            }
             for (auto it = std::sregex_token_iterator(data.begin(), data.end(), eol_re, -1);
                  it != std::sregex_token_iterator(); ++it) {
                 const auto& token = *it;

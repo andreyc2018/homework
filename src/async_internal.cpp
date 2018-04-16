@@ -59,11 +59,8 @@ handle_t AsyncLibrary::open_processor(size_t bulk)
 
 void AsyncLibrary::process_input(handle_t id, const std::string& data)
 {
+    std::cout << "lib: " << (void*)this << "\n";
     preprocessor_.parse_input(data, id, *this);
-//    auto it = processors_.find(id);
-//    if (it != processors_.end()) {
-//        processors_[id]->add_string(data);
-//    }
 }
 
 void AsyncLibrary::close_processor(handle_t id)
@@ -73,7 +70,7 @@ void AsyncLibrary::close_processor(handle_t id)
         if (processors_[id]) {
             processors_[id]->end_of_stream();
             processors_[id]->report(counters_);
-            //        processors_[id]->report(std::cout);
+//            processors_[id]->report(std::cout);
             processors_.erase(it);
         }
     }

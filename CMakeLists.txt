@@ -65,9 +65,7 @@ add_executable(bulk_server
     docs/hw_assignment.md
     ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_executable(test_version
-    src/test_async.cpp
-    ${HEADER_FILES})
+add_executable(test_version src/test_async.cpp)
 
 target_compile_options(server PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(bulk_server PRIVATE -Wpedantic -Wall -Wextra)
@@ -144,4 +142,3 @@ if (DOXYGEN_FOUND)
 else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
-
