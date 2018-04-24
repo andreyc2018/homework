@@ -313,3 +313,26 @@ TEST(Async, NextHandle)
     async::handle_t expected = (async::handle_t)1;
     EXPECT_EQ(expected, id);
 }
+
+TEST(PreProc, ParseInput)
+{
+    std::string input = "";
+    auto start_pos = input.find_first_of("{");
+    std::cout << "input = " << input
+              << " start = " << start_pos << "\n";
+
+    input = "a\nb\nc\nd";
+    start_pos = input.find_first_of("{");
+    std::cout << "input = " << input
+              << " start = " << start_pos << "\n";
+
+    input = "a\nb\n{\nc\nd\n}\ne";
+    start_pos = input.find_first_of('{');
+    auto end_pos = input.find_last_of('}');
+    std::cout << "input = " << input
+              << " start = " << start_pos
+              << " end = " << end_pos
+              << " before = " << input.substr(0, start_pos-1)
+              << " substr = " << input.substr(start_pos, end_pos-start_pos+1)
+              << "\n";
+}

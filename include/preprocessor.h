@@ -15,6 +15,17 @@ class Preprocessor
                                  async::handle_t handle, L& library)
         {
             std::cout << "preproc: " << (void*)this << "\n";
+            if (library.reading_block(handle)) {
+                auto close_pos = data.find_last_of('}');
+                if (close_pos == std::string::npos) {
+                    library.process_token(handle, data);
+                    return;
+                }
+                else {
+                    library.process_token(handle, data.substr(0, close_pos-1));
+                }
+            }
+
             for (auto& i : data) {
                 if (i != '{') {
                 }
