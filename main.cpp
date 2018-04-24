@@ -29,6 +29,16 @@ int main(int argc, char const** argv)
         }
 
         std::size_t bulk = std::stoul(argv[1]);
+        std::string input = "0\n\n1\n2\n3\n";
+        auto h = async::connect(bulk);
+        async::receive(h, input.c_str(), input.size());
+        async::disconnect(h);
+        auto h1 = async::connect(bulk);
+        for (auto c : input) {
+            async::receive(h1, &c, 1);
+        }
+        async::disconnect(h1);
+        /*
         std::thread t1(full_session, bulk);
         std::thread t2(full_session, bulk+3);
         auto h = async::connect(bulk);
@@ -49,6 +59,7 @@ int main(int argc, char const** argv)
         async::disconnect(h2);
         t2.join();
         t1.join();
+        */
     }
     catch(const std::exception &e) {
         std::cerr << e.what() << std::endl;
