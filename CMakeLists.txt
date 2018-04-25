@@ -56,6 +56,7 @@ add_library(server SHARED
         src/logger.cpp
         src/parser.cpp
         src/parserstate.cpp
+        src/preprocessor.cpp
         src/processor.cpp
         ${HEADER_FILES})
 

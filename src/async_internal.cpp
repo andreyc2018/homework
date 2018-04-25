@@ -6,7 +6,8 @@ using namespace async::details;
 std::atomic<handle_t> AsyncLibrary::next_id_ { (handle_t)1 };
 
 AsyncLibrary::AsyncLibrary()
-    : console_q_()
+    : preprocessor_(*this)
+    , console_q_()
     , console_(console_q_)
     , file_q_()
     , file_1_(file_q_, 1)
@@ -39,20 +40,13 @@ AsyncLibrary::~AsyncLibrary()
 
 handle_t AsyncLibrary::open_processor(size_t bulk)
 {
-    if (bulk_ == 0 && processors_.empty()) {
-        bulk_ = bulk;
-        auto p = std::make_unique<Processor>(bulk,
-                                             std::make_unique<ThreadWriterFactory>(console_q_,
-                                                                                   file_q_));
-        processors_.emplace(CommonProcessor, std::move(p));
+    if (bulk_ == 0) {
+        preprocessor_.open_processor(CommonProcessor, bulk,
+                                     console_q_, file_q_);
+        ++async_counters_.procesors;
     }
     handle_t id = next_id_.fetch_add(1, std::memory_order_relaxed);
-
-//    auto p = std::make_unique<Processor>(bulk,
-//                                         std::make_unique<ThreadWriterFactory>(console_q_,
-//                                                                               file_q_));
-    ProcessorUPtr p;
-    processors_.emplace(id, std::move(p));
+    preprocessor_.open_processor(id, bulk, console_q_, file_q_);
     ++async_counters_.procesors;
     return id;
 }
@@ -60,37 +54,12 @@ handle_t AsyncLibrary::open_processor(size_t bulk)
 void AsyncLibrary::process_input(handle_t id, const std::string& data)
 {
     std::cout << "lib: " << (void*)this << "\n";
-    preprocessor_.parse_input(data, id, *this);
+    preprocessor_.parse_input(id, data);
 }
 
 void AsyncLibrary::close_processor(handle_t id)
 {
-    auto it = processors_.find(id);
-    if (it != processors_.end()) {
-        if (processors_[id]) {
-            processors_[id]->end_of_stream();
-            processors_[id]->report(counters_);
-//            processors_[id]->report(std::cout);
-            processors_.erase(it);
-        }
-    }
-}
-
-void AsyncLibrary::create_processor(handle_t id)
-{
-    if (!processors_[id]) {
-        auto p = std::make_unique<Processor>(bulk_,
-                                             std::make_unique<ThreadWriterFactory>(console_q_,
-                                                                                   file_q_));
-        processors_[id] = std::move(p);
-    }
-}
-
-void AsyncLibrary::process_token(handle_t id, const std::string& token)
-{
-    if (processors_[id]) {
-        processors_[id]->add_token(token);
-    }
+    preprocessor_.close_processor(id, counters_);
 }
 
 void AsyncLibrary::set_bulk(std::size_t bulk)

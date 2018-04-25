@@ -1,7 +1,6 @@
 #pragma once
 
 #include "async.h"
-#include "processor.h"
 #include "preprocessor.h"
 #include "listeners.h"
 #include "logger.h"
@@ -14,9 +13,7 @@ namespace async {
 namespace details {
 
 const handle_t InvalidHandle = 0;
-constexpr handle_t CommonProcessor = 0;
-
-using processors_t = std::map<handle_t, ProcessorUPtr>;
+constexpr async::handle_t CommonProcessor = 0;
 
 struct AsyncCounters
 {
@@ -34,10 +31,6 @@ class AsyncLibrary
                            const std::string& data);
         void close_processor(handle_t id);
 
-        void create_processor(handle_t id);
-        void process_token(handle_t id,
-                           const std::string& token);
-
         MessageQueue& console_q() { return console_q_; }
         MessageQueue& file_q() { return file_q_; }
 
@@ -45,8 +38,7 @@ class AsyncLibrary
 
     private:
         static std::atomic<handle_t> next_id_;
-        processors_t processors_;
-        Preprocessor<AsyncLibrary, CommonProcessor> preprocessor_;
+        Preprocessor preprocessor_;
         MessageQueue console_q_;
         ConsoleListener console_;
         MessageQueue file_q_;
