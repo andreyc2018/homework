@@ -26,7 +26,6 @@ class Preprocessor
 
         virtual void parse_input(async::handle_t id,
                                  const std::string& data);
-
     private:
         async::details::AsyncLibrary& library_;
         processors_t processors_;
