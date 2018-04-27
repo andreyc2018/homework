@@ -29,10 +29,15 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/spdlog/include)
 
 set(HEADER_FILES
+        include/filedivider.h
+        include/filesystemops.h
         include/yamr_tools.h)
 
 add_library(yamr_tools
-        src/yamr.cpp ${HEADER_FILES})
+        src/filedivider.cpp
+        src/filesystemops.cpp
+        src/yamr.cpp
+        ${HEADER_FILES})
 
 add_executable(yamr
         src/main.cpp
