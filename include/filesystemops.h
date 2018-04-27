@@ -2,20 +2,16 @@
 
 #include <string>
 
-template<typename Impl>
-class FileSystemOps : public Impl
+class FileSystemOps
 {
     public:
-        static size_t file_size(const std::string& filename)
-        {
-            return Impl::file_size(filename);
-        }
+        virtual size_t file_size(const std::string& filename) = 0;
+        virtual void unlink(const std::string& filename) = 0;
 };
 
-class BoostFS
+class LinuxFSOps : public FileSystemOps
 {
     public:
-        size_t file_size(const std::string& filename);
+        size_t file_size(const std::string& filename) override;
+        void unlink(const std::string& filename) override;
 };
-
-using BoostFSOps = FileSystemOps<BoostFS>;
