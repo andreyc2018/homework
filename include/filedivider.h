@@ -21,11 +21,15 @@ class FileDivider
             off_t end;
         };
         using chunks_t = std::vector<chunk_t>;
+        using iterator = chunks_t::reverse_iterator;
 
         FileDivider(const std::string& filename, size_t n);
 
         void create_chunks();
         const chunks_t& chunks() { return chunks_; }
+
+        iterator begin() { return chunks_.rbegin(); }
+        iterator end() { return chunks_.rend(); }
 
     private:
         const std::string filename_;

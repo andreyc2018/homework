@@ -31,11 +31,17 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
 set(HEADER_FILES
         include/filedivider.h
         include/filesystemops.h
+        include/mapper.h
+        include/reducer.h
+        include/scheduler.h
         include/yamr_tools.h)
 
 add_library(yamr_tools
         src/filedivider.cpp
         src/filesystemops.cpp
+        src/mapper.cpp
+        src/reducer.cpp
+        src/scheduler.cpp
         src/yamr.cpp
         ${HEADER_FILES})
 

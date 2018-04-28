@@ -141,12 +141,12 @@ void print_chunks(const std::string& fname, const FileDivider::chunks_t& chunks)
 
 void write_chunks(const std::string& src_fname,
                   const std::string& dst_fname,
-                  const FileDivider::chunks_t& chunks)
+                  FileDivider& chunks)
 {
     std::ifstream src_file(src_fname);
     std::ofstream dst_file(dst_fname);
 
-    for(auto i = chunks.rbegin(); i != chunks.rend(); ++i) {
+    for(auto i = chunks.begin(); i != chunks.end(); ++i) {
         auto c = *i;
         auto size = c.end-c.begin;
         std::string str(size+1, '\0');
@@ -263,7 +263,7 @@ TEST(FileDivider, CreateChunks)
 
     EXPECT_EQ(n, divider.chunks().size());
 
-    write_chunks("test_file", "dst_file", divider.chunks());
+    write_chunks("test_file", "dst_file", divider);
 
     std::string exp_str = get_file_contents("test_file");
     std::string real_str = get_file_contents("dst_file");
