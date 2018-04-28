@@ -16,9 +16,9 @@ class FileDivider
     public:
         struct chunk_t
         {
-            chunk_t(off_t o, size_t s) : offset(o), size(s) {}
-            off_t offset;
-            size_t size;
+            chunk_t(off_t b, off_t e) : begin(b), end(e) {}
+            off_t begin;
+            off_t end;
         };
         using chunks_t = std::vector<chunk_t>;
 

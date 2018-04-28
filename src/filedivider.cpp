@@ -12,12 +12,14 @@ FileDivider::FileDivider(const std::string& filename, size_t n)
 void FileDivider::create_chunks()
 {
     LinuxFSOps fs;
-    auto filesize = fs.file_size(filename_);
-    auto size = filesize / n_;
-    size_t chunk_size = size;
+    auto file_size = fs.file_size(filename_);
+    auto chunk_size = file_size / n_;
+    off_t begin = file_size - chunk_size;
+    off_t end = begin + chunk_size;
+
+    if (begin <= 0 && end <= 0) {
+        return;
+    }
 
     std::ifstream file(filename_);
-    for (size_t offset = chunk_size; offset <= filesize; offset += chunk_size) {
-        file.seekg(offset);
-    }
 }

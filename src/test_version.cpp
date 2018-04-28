@@ -3,17 +3,6 @@
 #include <gtest/gtest.h>
 #include <fstream>
 
-class FakeFSOps : public FileSystemOps
-{
-    public:
-        size_t file_size(const std::string&)
-        {
-            return file_size_;
-        }
-
-        size_t file_size_ { 0 };
-};
-
 TEST(YAMR, GetSize)
 {
     std::ofstream file("test_file");
@@ -31,69 +20,156 @@ TEST(YAMR, GetSize)
     fs.unlink("test_file");
 }
 
-TEST(YAMR, Calculate_Chunks)
-{
-    size_t file_size = 417;
-    size_t n = 5;
-    size_t chunk_size = file_size / n;
-
-    EXPECT_EQ(83, chunk_size);
-
-    FileDivider::chunks_t chunks;
-    for (size_t offset = 0; offset < file_size; offset += chunk_size) {
-        if (chunks.size() == n - 1) {
-            chunk_size = file_size - offset;
-        }
-        FileDivider::chunk_t part (offset, chunk_size);
-        chunks.push_back(part);
-    }
-
-    EXPECT_EQ(n, chunks.size());
-
-    for (const auto& c : chunks) {
-        std::cout << "o = " << c.offset
-                  << " s = " << c.size << "\n";
-    }
-}
-
 TEST(YAMR, Adjust_Chunks)
 {
-    std::string content = "cblagf@mail.com\n"
-                          "cjjage@aol.com\n"
-                          "ejd@hotmail.com\n"
-                          "fiflb@hotmail.com\n"
-                          "fka@aol.com\n"
-                          "gbf@gmail.com\n"
-                          "hdl@gmail.com\n"
-                          "ibe@gmail.com\n"
-                          "icilalc@gmail.com\n"
-                          "jlf@aol.com\n";
+    std::string content = "first@mail.com\n"
 
-    size_t file_size = content.size();
+                          "second@aol.com\n"
+                          "third@hotmail.com\n"
+                          "fourth@hotmail.com\n"
+
+                          "fith@aol.com\n"
+                          "sixth@gmail.com\n"
+                          "seventh@gmail.com\n"
+
+                          "eighth@gmail.com\n"
+                          "ninth@gmail.com\n"
+                          "tenth@aol.com\n";
+
+    ssize_t file_size = content.size();
+    std::cout << "file_size = " << file_size << "\n";
+    EXPECT_EQ(161, file_size);
+
     size_t n = 4;
     size_t chunk_size = file_size / n;
 
-    EXPECT_EQ(37, chunk_size);
+    EXPECT_EQ(40, chunk_size);
 
     FileDivider::chunks_t chunks;
-    for (size_t offset = 0, size = chunk_size; offset < file_size; offset += size, size = chunk_size) {
-        for (;content[offset+size-1] != '\n' && size > 0; --size);
+    off_t begin = file_size-chunk_size;
+    off_t end = begin+chunk_size;
+    EXPECT_GE(begin, 0);
+    EXPECT_GE(end, 0);
 
-        if (chunks.size() == n - 1) {
-            size = file_size - offset;
+    do {
+        std::cout << "b: begin = " << begin << " end = " << end
+                  << " e-b = " << end - begin
+                  << "\nsubstr = \n"
+                  << content.substr(begin, end-begin);
+
+        while (begin > 0 && end > 0 &&
+               (content[begin-1] != '\n' || content[end-1] != '\n'))
+        {
+            if (content[begin-1] != '\n' && begin > 1) {
+                --begin;
+                ++end;
+            }
+            if (end != file_size && content[end-1] != '\n' && end > 1) {
+                --end;
+            }
         }
-        FileDivider::chunk_t part (offset, size);
+
+        std::cout << "\na: begin = " << begin << " end = " << end
+                  << " e-b = " << end - begin
+                  << "\nsubstr = \n"
+                  << content.substr(begin, end-begin);
+
+        FileDivider::chunk_t part (begin, end);
         chunks.push_back(part);
-    }
+
+        end = begin;
+        begin -= (chunk_size+1);
+        if (begin < 0) {
+            begin = 0;
+        }
+
+    } while (begin >= 0 && end > 0);
 
     EXPECT_EQ(n, chunks.size());
 
     for (const auto& c : chunks) {
-        std::cout << "o = " << c.offset
-                  << " s = " << c.size
-                  << "\n:\n" << content.substr(c.offset, c.size)
+        std::cout << "b = " << c.begin
+                  << " e = " << c.end
+                  << "\n:\n" << content.substr(c.begin, c.end-c.begin)
                   << ":\n";
     }
+}
+
+TEST(YAMR, Adjust_Chunks_File)
+{
+    std::string content = "first@mail.com\n"
+
+                          "second@aol.com\n"
+                          "third@hotmail.com\n"
+                          "fourth@hotmail.com\n"
+
+                          "fith@aol.com\n"
+                          "sixth@gmail.com\n"
+                          "seventh@gmail.com\n"
+
+                          "eighth@gmail.com\n"
+                          "ninth@gmail.com\n"
+                          "tenth@aol.com\n";
+
+    std::ofstream test_file("test_file");
+    test_file << content;
+    test_file.close();
+
+    LinuxFSOps fs;
+
+    ssize_t file_size = fs.file_size("test_file");
+
+    std::cout << "file_size = " << file_size << "\n";
+    EXPECT_EQ(161, file_size);
+
+    size_t n = 4;
+    size_t chunk_size = file_size / n;
+
+    EXPECT_EQ(40, chunk_size);
+
+    FileDivider::chunks_t chunks;
+    off_t begin = file_size-chunk_size;
+    off_t end = begin+chunk_size;
+    EXPECT_GE(begin, 0);
+    EXPECT_GE(end, 0);
+
+#if 0
+    std::ifstream file("test_file");
+
+    do {
+        while (begin > 0 && end > 0 &&
+               (content[begin-1] != '\n' || content[end-1] != '\n'))
+        {
+            if (content[begin-1] != '\n' && begin > 1) {
+                --begin;
+                ++end;
+            }
+            if (end != file_size && content[end-1] != '\n' && end > 1) {
+                --end;
+            }
+        }
+
+        FileDivider::chunk_t part (begin, end);
+        chunks.push_back(part);
+
+        end = begin;
+        begin -= (chunk_size+1);
+        if (begin < 0) {
+            begin = 0;
+        }
+
+    } while (begin >= 0 && end > 0);
+
+    EXPECT_EQ(n, chunks.size());
+
+    for (const auto& c : chunks) {
+        std::cout << "b = " << c.begin
+                  << " e = " << c.end
+                  << "\n:\n" << content.substr(c.begin, c.end-c.begin)
+                  << ":\n";
+    }
+#endif
+    fs.unlink("test_file");
 }
 
 TEST(ERROR, Try_Catch)

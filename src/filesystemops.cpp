@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-size_t LinuxFSOps::file_size(const std::string& filename)
+ssize_t LinuxFSOps::file_size(const std::string& filename)
 {
     struct stat st_buffer;
     int rc = stat(filename.c_str(), &st_buffer);
