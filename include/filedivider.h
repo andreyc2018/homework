@@ -6,10 +6,10 @@
  * @brief Calculates the file parts
  *
  * Take a file name and a number of parts.
- * Calculates the offsets and sizes for each part.
- * Opens a file and adjusts the offsets and sizes
+ * Calculates the begins and the ends for each part.
+ * Opens a file and adjusts the begins and the ends
  * to be on an end of a string.
- * A result is an array of the pairs offset and size.
+ * A result is an array of the pairs begins and the ends.
  */
 class FileDivider
 {
@@ -25,9 +25,14 @@ class FileDivider
         FileDivider(const std::string& filename, size_t n);
 
         void create_chunks();
+        const chunks_t& chunks() { return chunks_; }
 
     private:
         const std::string filename_;
         size_t n_;
         chunks_t chunks_;
+
+        void adjust_begin(std::ifstream& file, off_t& begin);
+        void adjust_end(std::ifstream& file, off_t& end);
+        void prev_chunk(off_t& begin, off_t& end, size_t chunk_size);
 };
