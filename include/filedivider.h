@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <tuple>
 
 /**
  * @brief Calculates the file parts
@@ -15,8 +14,13 @@
 class FileDivider
 {
     public:
-        using part_t = std::tuple<off_t, size_t>;
-        using chunks_t = std::vector<part_t>;
+        struct chunk_t
+        {
+            chunk_t(off_t o, size_t s) : offset(o), size(s) {}
+            off_t offset;
+            size_t size;
+        };
+        using chunks_t = std::vector<chunk_t>;
 
         FileDivider(const std::string& filename, size_t n);
 
