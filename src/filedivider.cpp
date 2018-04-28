@@ -17,6 +17,8 @@ void FileDivider::create_chunks()
     size_t chunk_size = size;
     std::ifstream file(filename_);
 
-    for (size_t offset = 0; offset <= filesize; offset += chunk_size) {
+    part_t part;
+    for (size_t offset = chunk_size; offset <= filesize; offset += chunk_size) {
+        file.seekg(offset);
     }
 }
