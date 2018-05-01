@@ -31,6 +31,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}
 set(HEADER_FILES
         include/filedivider.h
         include/filesystemops.h
+        include/logger.h
         include/mapper.h
         include/reducer.h
         include/scheduler.h
@@ -39,6 +40,7 @@ set(HEADER_FILES
 add_library(yamr_tools
         src/filedivider.cpp
         src/filesystemops.cpp
+        src/logger.cpp
         src/mapper.cpp
         src/reducer.cpp
         src/scheduler.cpp
@@ -50,8 +52,7 @@ add_executable(yamr
         ${HEADER_FILES}
         ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-add_executable(test_version
-        src/test_version.cpp ${HEADER_FILES})
+add_executable(test_version src/test_version.cpp)
 
 target_compile_options(yamr PRIVATE -Wpedantic -Wall -Wextra)
 target_compile_options(yamr_tools PRIVATE -Wpedantic -Wall -Wextra)

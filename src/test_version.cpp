@@ -1,5 +1,7 @@
 #include "filesystemops.h"
 #include "filedivider.h"
+#include "scheduler.h"
+#include "logger.h"
 #include <gtest/gtest.h>
 #include <fstream>
 
@@ -272,4 +274,14 @@ TEST(FileDivider, CreateChunks)
     LinuxFSOps fs;
     fs.unlink("test_file");
     fs.unlink("dst_file");
+}
+
+TEST(Scheduller, Run)
+{
+    gLogger->set_level(spdlog::level::debug);
+
+    std::string filename = "test_file";
+    preapre_test_file(filename);
+    Scheduler s;
+    s.run(filename, 4, 2);
 }

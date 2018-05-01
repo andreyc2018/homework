@@ -1,4 +1,5 @@
 #include "filedivider.h"
+#include "logger.h"
 #include <iostream>
 
 int main(int argc, char const** argv)
@@ -16,6 +17,10 @@ int main(int argc, char const** argv)
                          "  rnum - number of reducers\n";
             exit(1);
         }
+        if (argc > 4) {
+            gLogger->set_level(spdlog::level::debug);
+        }
+
         const std::string file(argv[1]);
         int mnum = std::stoi(argv[2]);
         int rnum = std::stoi(argv[3]);
