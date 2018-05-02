@@ -1,19 +1,26 @@
-#include "mapper.h"
+#include "maprunner.h"
 #include "logger.h"
-#include <iostream>
+#include <fstream>
 
-Mapper::Mapper(const std::string& filename, off_t begin, off_t end)
+MapRunner::MapRunner(const std::string& filename, off_t begin, off_t end)
     : filename_(filename)
     , begin_(begin)
     , end_(end)
 {
-    gLogger->debug("{}: Creating mapper for file {} and range {} - {}",
+    gLogger->debug("{}: Creating MapRunner for file {} and range {} - {}",
                    (void*)this, filename_, begin, end);
 }
 
-void Mapper::run()
+void MapRunner::run()
 {
-    gLogger->debug("{}: Running mapper on {} reading range {} - {}",
+    gLogger->debug("{}: Running MapRunner on {} reading range {} - {}",
                    (void*)this, filename_, begin_, end_);
-    std::cout << "file: " << filename_ << '\n';
+    std::ifstream in_file(filename_);
+    in_file.seekg(begin_);
+    do {
+        std::string line;
+        std::getline(in_file, line);
+        gLogger->debug("{}: {} : {}, {}",
+                       (void*)this, line, in_file.tellg(), in_file.eof());
+    } while(!in_file.eof() && in_file.tellg() < end_);
 }

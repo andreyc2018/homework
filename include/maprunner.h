@@ -1,11 +1,12 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
-class Mapper
+class MapRunner
 {
     public:
-        Mapper(const std::string& filename, off_t begin, off_t end);
+        MapRunner(const std::string& filename, off_t begin, off_t end);
 
         void run();
 
@@ -18,3 +19,5 @@ class Mapper
         const off_t begin_;
         const off_t end_;
 };
+
+using MapRunnerUPtr = std::unique_ptr<MapRunner>;

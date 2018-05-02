@@ -1,6 +1,6 @@
-#include "reducer.h"
+#include "reducerunner.h"
 
-Reducer::Reducer()
+ReduceRunner::ReduceRunner()
 {
 
 }

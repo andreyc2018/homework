@@ -271,6 +271,29 @@ TEST(FileDivider, CreateChunks)
     std::string real_str = get_file_contents("dst_file");
     EXPECT_EQ(exp_str, real_str);
 
+    std::ifstream in_file("dst_file");
+    std::string line;
+    auto it = divider.begin();
+    ++it;
+    in_file.seekg(it->begin);
+    std::getline(in_file, line);
+    std::string expected = "second@aol.com";
+    EXPECT_EQ(expected, line);
+
+//    for (int i = 1; it != divider.end(); ++i, ++it) {
+//        in_file.seekg(it->begin);
+//        std::getline(in_file, line);
+//        std::cout << "i = " << i << " begin = " << it->begin << " end = " << it->end << "\n";
+//        std::cout << "i = " << i << " " << line << "\n";
+//    }
+    it += 2;
+    in_file.seekg(it->begin);
+    std::getline(in_file, line);
+    expected = "eighth@gmail.com";
+    EXPECT_EQ(expected, line);
+
+    in_file.close();
+
     LinuxFSOps fs;
     fs.unlink("test_file");
     fs.unlink("dst_file");

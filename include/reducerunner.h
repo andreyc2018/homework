@@ -1,7 +1,7 @@
 #pragma once
 
-class Reducer
+class ReduceRunner
 {
     public:
-        Reducer();
+        ReduceRunner();
 };
