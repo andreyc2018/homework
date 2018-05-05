@@ -1,12 +1,14 @@
 #pragma once
 
+#include "mapemailaddress.h"
 #include <string>
 #include <memory>
 
 class MapRunner
 {
     public:
-        MapRunner(const std::string& filename, off_t begin, off_t end);
+        MapRunner(MapEmailAddressUPtr&& m, const std::string& filename,
+                  off_t begin, off_t end);
 
         void run();
 
@@ -18,6 +20,7 @@ class MapRunner
         const std::string filename_;
         const off_t begin_;
         const off_t end_;
+        MapEmailAddressUPtr mapper_;
 };
 
 using MapRunnerUPtr = std::unique_ptr<MapRunner>;

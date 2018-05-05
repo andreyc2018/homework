@@ -78,7 +78,6 @@ TEST(YAMR, Adjust_Chunks)
 
         while (begin > 0 && content[begin-1] != '\n') {
             --begin;
-            ++end;
         }
 
         while (end > 0 && content[end-1] != '\n' && end != file_size) {

@@ -32,6 +32,7 @@ set(HEADER_FILES
         include/filedivider.h
         include/filesystemops.h
         include/logger.h
+        include/mapemailaddress.h
         include/maprunner.h
         include/reducerunner.h
         include/scheduler.h
@@ -41,6 +42,7 @@ add_library(yamr_tools
         src/filedivider.cpp
         src/filesystemops.cpp
         src/logger.cpp
+        src/mapemailaddress.cpp
         src/maprunner.cpp
         src/reducerunner.cpp
         src/scheduler.cpp
