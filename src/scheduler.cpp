@@ -20,7 +20,7 @@ void Scheduler::run(const std::string& filename, size_t mnum, size_t rnum)
     fd.create_chunks();
     for(auto i = fd.begin(); i != fd.end(); ++i) {
         auto m = std::make_unique<MapEmailAddress>();
-        mappers_.push_back(std::make_unique<MapRunner>(filename, i->begin, i->end));
+        mappers_.push_back(std::make_unique<MapRunner>(m, filename, i->begin, i->end));
         threads_.emplace_back(&MapRunner::run, mappers_.back().get());
     }
 }

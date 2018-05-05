@@ -4,7 +4,6 @@
 MapEmailAddress::MapEmailAddress()
     : unique_idx_(0)
 {
-    gLogger->debug("{}", data_.end());
 }
 
 void MapEmailAddress::process_input(const std::string& input)

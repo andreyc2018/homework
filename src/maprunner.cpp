@@ -2,7 +2,7 @@
 #include "logger.h"
 #include <fstream>
 
-MapRunner::MapRunner(MapEmailAddressUPtr&& m, const std::string& filename,
+MapRunner::MapRunner(MapEmailAddressUPtr& m, const std::string& filename,
                      off_t begin, off_t end)
     : mapper_(std::move(m))
     , filename_(filename)
@@ -29,6 +29,6 @@ void MapRunner::run()
     auto d = mapper_->data();
     std::sort(std::begin(d), std::end(d));
     for (const auto& s : d) {
-        gLogger->debug("{}", s);
+        gLogger->debug("{}: {}", (void*)this, s);
     }
 }
