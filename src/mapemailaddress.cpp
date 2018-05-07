@@ -8,6 +8,8 @@ MapEmailAddress::MapEmailAddress()
 
 void MapEmailAddress::process_input(const std::string& input)
 {
+    for (size_t i = 0; i < input.size(); ++i) {
+    }
     data_.push_back(input);
 }
 

@@ -2,6 +2,7 @@
 #include "filedivider.h"
 #include "scheduler.h"
 #include "logger.h"
+#include "trie.h"
 #include <gtest/gtest.h>
 #include <fstream>
 
@@ -279,12 +280,6 @@ TEST(FileDivider, CreateChunks)
     std::string expected = "second@aol.com";
     EXPECT_EQ(expected, line);
 
-//    for (int i = 1; it != divider.end(); ++i, ++it) {
-//        in_file.seekg(it->begin);
-//        std::getline(in_file, line);
-//        std::cout << "i = " << i << " begin = " << it->begin << " end = " << it->end << "\n";
-//        std::cout << "i = " << i << " " << line << "\n";
-//    }
     it += 2;
     in_file.seekg(it->begin);
     std::getline(in_file, line);
@@ -306,4 +301,9 @@ TEST(Scheduller, Run)
     preapre_test_file(filename);
     Scheduler s;
     s.run(filename, 4, 2);
+}
+
+TEST(Trie, Init)
+{
+    TrieNode<char> root;
 }

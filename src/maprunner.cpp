@@ -1,10 +1,13 @@
 #include "maprunner.h"
 #include "logger.h"
+#include "scheduler.h"
 #include <fstream>
 
-MapRunner::MapRunner(MapEmailAddressUPtr& m, const std::string& filename,
+MapRunner::MapRunner(Scheduler& scheduler,
+                     MapEmailAddressUPtr& m, const std::string& filename,
                      off_t begin, off_t end)
-    : mapper_(std::move(m))
+    : scheduler_(scheduler)
+    , mapper_(std::move(m))
     , filename_(filename)
     , begin_(begin)
     , end_(end)
@@ -31,4 +34,5 @@ void MapRunner::run()
     for (const auto& s : d) {
         gLogger->debug("{}: {}", (void*)this, s);
     }
+    scheduler_.mapper_finished();
 }

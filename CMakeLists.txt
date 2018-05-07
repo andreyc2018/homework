@@ -36,6 +36,7 @@ set(HEADER_FILES
         include/maprunner.h
         include/reducerunner.h
         include/scheduler.h
+        include/trie.h
         include/yamr_tools.h)
 
 add_library(yamr_tools
@@ -46,6 +47,7 @@ add_library(yamr_tools
         src/maprunner.cpp
         src/reducerunner.cpp
         src/scheduler.cpp
+        src/trie.cpp
         src/yamr.cpp
         ${HEADER_FILES})
 
