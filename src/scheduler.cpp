@@ -28,6 +28,8 @@ void Scheduler::run(const std::string& filename, size_t mnum, size_t)
     std::unique_lock<std::mutex> lock(mappers_mutex_);
     gLogger->debug("Waiting for the mappers: {}", n_mappers_.load(std::memory_order_relaxed));
     n_mappers_cv_.wait(lock, [this](){ return this->n_mappers_ < 1; });
+    for(auto& m : mappers_) {
+    }
 }
 
 void Scheduler::mapper_finished()
