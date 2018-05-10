@@ -311,5 +311,6 @@ TEST(TrieNode, Init)
 TEST(Trie, Add)
 {
     Trie t;
-    t.add("one@gmail.com");
+    t.add("one");
+    std::cout << t;
 }
