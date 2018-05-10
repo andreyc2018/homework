@@ -1,13 +1,16 @@
 #pragma once
 
+#include "logger.h"
 #include <map>
+#include <iostream>
 
-template<typename T>
 class TrieNode
 {
     public:
-        using node_t = TrieNode<T>;
-        using children_t = std::map<T, node_t>;
+        using type_t = char;
+        using node_t = TrieNode;
+        using children_t = std::map<type_t, node_t>;
+        using iterator = children_t::iterator;
 
         TrieNode() {}
         TrieNode(TrieNode&& rv) = default;
@@ -16,20 +19,40 @@ class TrieNode
         TrieNode& operator=(TrieNode&& rv) = default;
         TrieNode& operator=(const TrieNode& v) = default;
 
+        iterator find(type_t v)
+        {
+        }
+
+        bool operator==(const type_t& other) const { return value_ == other; }
+        bool operator!=(const type_t& other) const { return !operator==(other); }
+        bool operator==(const TrieNode& other) const { return operator==(other.value_); }
+        bool operator!=(const TrieNode& other) const { return !operator==(other.value_); }
+
     private:
-        T value_;
+        type_t value_;
         children_t children_;
 };
 
-template<typename T>
 class Trie
 {
     public:
-        using node_t = TrieNode<T>;
+        using node_t = TrieNode;
         Trie() {}
 
-        T find(std::string data)
+        T find(const std::string& /*data*/)
         {
+        }
+
+        void add(const std::string& data)
+        {
+            node_t& current = root_;
+            for (const auto& e : data) {
+                std::cout << e << " ";
+                auto it = root_.find(e);
+                if (root_.contains(e)) {
+                }
+            }
+            std::cout << '\n';
         }
 
     private:

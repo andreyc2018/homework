@@ -303,7 +303,13 @@ TEST(Scheduller, Run)
     s.run(filename, 4, 2);
 }
 
-TEST(Trie, Init)
+TEST(TrieNode, Init)
 {
-    TrieNode<char> root;
+    TrieNode root;
+}
+
+TEST(Trie, Add)
+{
+    Trie t;
+    t.add("one@gmail.com");
 }
