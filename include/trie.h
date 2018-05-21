@@ -94,7 +94,7 @@ class Trie
         node_t root_;
 };
 
-std::ostream& operator<<(std::ostream& out, const Trie& trie)
-{
-    Trie::node_t& current = trie.root_;
-}
+//std::ostream& operator<<(std::ostream& out, const Trie& trie)
+//{
+//    Trie::node_t& current = trie.root_;
+//}
